@@ -1,5 +1,4 @@
 import { SpecieModel } from '@prisma/client';
-import { Decimal } from '@prisma/client/runtime/library';
 
 import Mapper from '@/shared/core/domain/Mapper';
 import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';

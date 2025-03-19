@@ -36,7 +36,7 @@ export class UpdateSpecieService {
     const specie = await this.specieRepo.findById(dto.id);
 
     if (!specie) {
-      throw new GenericException(`Espécia com id ${dto.id} não encontrada`, HttpStatus.NOT_FOUND);
+      throw new GenericException(`Espécie com id ${dto.id} não encontrada`, HttpStatus.NOT_FOUND);
     }
 
     if (dto?.name) {

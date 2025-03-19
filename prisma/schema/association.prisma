@@ -6,7 +6,24 @@ model AssociationModel {
     updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz()
     deleted   Boolean  @default(false)
 
-    users UserModel[]
+    users        UserModel[]
+    publications PublicationModel[]
 
     @@map("association")
+}
+
+model PublicationModel {
+    id            String  @id @default(uuid()) @db.Uuid
+    associationId String? @db.Uuid
+    title         String
+    content       String
+    enabled       Boolean @default(true)
+
+    createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+    updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz()
+    deleted   Boolean  @default(false)
+
+    association AssociationModel? @relation(fields: [associationId], references: [id])
+
+    @@map("post")
 }
