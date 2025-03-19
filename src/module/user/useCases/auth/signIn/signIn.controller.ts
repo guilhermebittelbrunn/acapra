@@ -14,8 +14,6 @@ export class SignInController {
   async handle(@ValidatedBody() body: SignInDTO) {
     const { user, tokens } = await this.useCase.execute(body);
 
-    console.log({ user: UserMapper.toDTO(user), tokens });
-
     return {
       user: UserMapper.toDTO(user),
       tokens,

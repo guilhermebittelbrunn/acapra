@@ -9,8 +9,13 @@ import UserType from '../domain/user/userType.domain';
 import { UserTypeEnum } from '@/shared/types/user';
 import UserEmail from '../domain/user/userEmail.domain';
 import UserPassword from '../domain/user/userPassword.domain';
+import AssociationMapper, {
+  AssociationModelWithRelations,
+} from '@/module/association/mappers/association.mapper';
 
-export interface UserModelWithRelations extends UserModel {}
+export interface UserModelWithRelations extends UserModel {
+  association?: AssociationModelWithRelations;
+}
 
 class BaseUserMapper extends Mapper<User, UserModelWithRelations, UserDTO> {
   toDomain(user: UserModelWithRelations): User {
@@ -23,19 +28,22 @@ class BaseUserMapper extends Mapper<User, UserModelWithRelations, UserDTO> {
         name: user.name,
         email: userEmail as UserEmail,
         password: userPassword as UserPassword,
+        associationId: new UniqueEntityID(user.associationId),
         type: userType as UserType,
         deleted: user.deleted,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
+        association: AssociationMapper.toDomainOrUndefined(user?.association),
       },
       new UniqueEntityID(user.id),
-    );
+    ) as User;
   }
   async toPersistence(user: User): Promise<UserModelWithRelations> {
     return {
       id: user.id.toValue(),
       name: user.name,
       email: user.email.value,
+      associationId: user.associationId.toValue(),
       password: await user.password?.getHashedValue(),
       type: user.type.value,
       deleted: user.deleted,
@@ -44,11 +52,15 @@ class BaseUserMapper extends Mapper<User, UserModelWithRelations, UserDTO> {
     } as UserModelWithRelations;
   }
   toDTO(user: User): UserDTO {
+    console.log('user :>> ', user);
+
     return {
       id: user.id.toValue(),
+      associationId: user.associationId.toValue(),
       name: user.name,
       email: user.email.value,
       type: user.type.value as UserTypeEnum,
+      association: AssociationMapper.toDTOOrUndefined(user?.association),
     };
   }
 }

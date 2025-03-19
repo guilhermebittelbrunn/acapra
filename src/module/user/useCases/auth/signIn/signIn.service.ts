@@ -1,7 +1,8 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { SignInDTO } from './dto/signIn.dto';
 import { IUserRepository, IUserRepositorySymbol } from '@/repositories/user.repository.interface';
 import { JwtService } from '@/infra/jwt/jwt.service';
+import { GenericException } from '@/shared/core/logic/GenericException';
 
 @Injectable()
 export class SignInService {
@@ -14,13 +15,13 @@ export class SignInService {
     const user = await this.userRepo.findByEmail(email);
 
     if (!user || !user?.password) {
-      throw new HttpException('Credenciais inválidas', HttpStatus.UNAUTHORIZED);
+      throw new GenericException('Usuário não encontrado', HttpStatus.NOT_FOUND);
     }
 
     const passwordMatch = await user.password.compare(password);
 
     if (!passwordMatch) {
-      throw new HttpException('Senha incorreta', HttpStatus.UNAUTHORIZED);
+      throw new GenericException('Senha incorreta', HttpStatus.UNAUTHORIZED);
     }
 
     const tokens = await this.jwtService.generateTokens({

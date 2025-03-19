@@ -14,9 +14,9 @@ import configuration from './shared/config/configuration';
 import { TransformResponseInterceptor } from './shared/interceptors/transformResponse/transformResponse.interceptor';
 import { JwtStrategy } from './shared/strategies/jwt.strategy';
 import { UserApplicationModule } from './module/user/useCases/user.application.module';
-import { JwtModule } from './infra/jwt/jwt.module';
 import { ValidateUserAccessModule } from './module/user/domain/user/validateUserAccess/validateUserAccess.module';
 import { JwtRefreshStrategy } from './shared/strategies/jwtRefresh.strategy';
+import { AssociationApplicationModule } from './module/association/useCases/associationApplication.module';
 
 @Module({
   imports: [
@@ -52,6 +52,7 @@ import { JwtRefreshStrategy } from './shared/strategies/jwtRefresh.strategy';
     }),
     // modules
     UserApplicationModule,
+    AssociationApplicationModule,
   ],
   controllers: [AppController],
   providers: [

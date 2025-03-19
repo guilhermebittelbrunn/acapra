@@ -1,6 +1,7 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { IUserRepository, IUserRepositorySymbol } from '@/repositories/user.repository.interface';
 import { JwtService } from '@/infra/jwt/jwt.service';
+import { GenericException } from '@/shared/core/logic/GenericException';
 
 @Injectable()
 export class RefreshService {
@@ -12,7 +13,7 @@ export class RefreshService {
   async execute(id: string) {
     const user = await this.userRepo.findById(id);
     if (!user) {
-      throw new HttpException('Usuário não encontrado', HttpStatus.UNAUTHORIZED);
+      throw new GenericException('Usuário não encontrado', HttpStatus.UNAUTHORIZED);
     }
 
     const tokens = await this.jwtService.generateTokens({

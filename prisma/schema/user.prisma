@@ -1,13 +1,16 @@
 model UserModel {
-    id       String  @id @default(uuid()) @db.Uuid
-    name     String
-    password String
-    email    String? @unique @map("email")
-    type     String
+    id            String  @id @default(uuid()) @db.Uuid
+    associationId String? @map("association_id") @db.Uuid
+    name          String
+    password      String
+    email         String? @unique @map("email")
+    type          String
 
     createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
     updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz()
     deleted   Boolean  @default(false)
+
+    association AssociationModel? @relation(fields: [associationId], references: [id])
 
     @@map("user")
 }

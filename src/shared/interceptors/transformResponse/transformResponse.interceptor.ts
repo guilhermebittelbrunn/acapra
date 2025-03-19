@@ -1,11 +1,12 @@
+import { GenericException } from '@/shared/core/logic/GenericException';
 import {
   Injectable,
   NestInterceptor,
   ExecutionContext,
   CallHandler,
   StreamableFile,
-  HttpException,
   InternalServerErrorException,
+  HttpException,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';

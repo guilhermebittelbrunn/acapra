@@ -1,5 +1,3 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
-
 import ValueObject from '@/shared/core/domain/ValueObject';
 import Guard, { IGuardResult } from '@/shared/core/logic/guard';
 import { UserTypeEnum } from '@/shared/types/user';

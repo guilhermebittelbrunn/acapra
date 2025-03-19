@@ -18,6 +18,16 @@ export class UserRepository extends BaseRepository<'userModel', User, UserModel>
     super('userModel', prisma, als);
   }
 
+  async findCompleteById(id: string): Promise<User | null> {
+    const user = await this.manager().findUnique({
+      where: { id },
+      include: {
+        association: true,
+      },
+    });
+    return this.mapper.toDomainOrNull(user);
+  }
+
   async findByEmail(email: string): Promise<User | null> {
     const user = await this.manager().findUnique({ where: { email } });
     return this.mapper.toDomainOrNull(user);

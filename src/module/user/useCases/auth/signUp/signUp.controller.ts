@@ -1,5 +1,5 @@
 import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
-import { Controller, HttpException, HttpStatus, Post } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UserDTO } from '@/module/user/dto/user.dto';
 import UserMapper from '@/module/user/mappers/user.mapper';

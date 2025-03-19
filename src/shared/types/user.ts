@@ -1,6 +1,7 @@
 export enum UserTypeEnum {
   USER = 'user',
   ADMIN = 'admin',
+  PARTNER = 'partner',
 }
 
 export interface ISessionUser {
