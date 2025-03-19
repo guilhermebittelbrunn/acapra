@@ -90,5 +90,4 @@ A aplicação está configurada para deploy via **GitHub Actions**, sendo distri
 
 - [NestJS](https://docs.nestjs.com/)
 - [Prisma](https://www.prisma.io/docs/)
-- [Zoop API](https://docs.zoop.co/reference/introducao)
 - [Docker](https://www.docker.com/)
