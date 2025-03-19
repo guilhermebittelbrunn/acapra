@@ -11,14 +11,11 @@ export class ValidateUserAccess {
   ) {}
 
   async validate(userId: string) {
-    console.log('validate userId :>> ', userId);
     if (isEmpty(userId)) {
       return null;
     }
 
     const user = await this.userRepo.findById(userId);
-
-    console.log('user :>> ', user);
 
     if (!user) {
       return null;

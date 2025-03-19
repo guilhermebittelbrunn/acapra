@@ -4,10 +4,11 @@ import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import UserMapper from '@/module/user/mappers/user.mapper';
 import { FindUserByIdService } from './findUserById.service';
 import { FindUserByIdResponseDTO } from './dto/findUserById.response.dto';
+import { UserRoleGuard } from '@/shared/guards/userRole.guard';
 
 @Controller('/user')
 @ApiTags('user')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, UserRoleGuard)
 export class FindUserByIdController {
   constructor(private readonly useCase: FindUserByIdService) {}
 

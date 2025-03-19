@@ -11,7 +11,6 @@ export class AppController {
   @Version(VERSION_NEUTRAL)
   @Get('health-check')
   async healthCheck(): Promise<{ message: string }> {
-    console.log('healthCheck');
     return this.appService.healthCheck();
   }
 }

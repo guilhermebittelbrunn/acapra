@@ -17,6 +17,7 @@ import { UserApplicationModule } from './module/user/useCases/user.application.m
 import { ValidateUserAccessModule } from './module/user/domain/user/validateUserAccess/validateUserAccess.module';
 import { JwtRefreshStrategy } from './shared/strategies/jwtRefresh.strategy';
 import { AssociationApplicationModule } from './module/association/useCases/associationApplication.module';
+import { AnimalApplicationModule } from './module/animal/useCases/animalApplication.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { AssociationApplicationModule } from './module/association/useCases/asso
     // modules
     UserApplicationModule,
     AssociationApplicationModule,
+    AnimalApplicationModule,
   ],
   controllers: [AppController],
   providers: [
