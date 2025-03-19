@@ -29,8 +29,8 @@ async function bootstrap() {
 
 function buildOpenApiDocs(app: NestFastifyApplication) {
   const generalDocsConfig = new DocumentBuilder()
-    .setTitle('boilerplate')
-    .setDescription('Documentação da API boilerplate')
+    .setTitle('acapra')
+    .setDescription('Documentação da API acapra')
     .setVersion('1.0')
     .addBearerAuth(
       {

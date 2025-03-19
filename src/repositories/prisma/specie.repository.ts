@@ -32,6 +32,7 @@ export class SpecieRepository
         where,
         take: limit,
         skip,
+        orderBy: { sequence: 'desc', name: 'asc' },
       }),
       this.manager().count({ where }),
     ]);

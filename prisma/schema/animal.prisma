@@ -9,5 +9,24 @@ model SpecieModel {
     updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz()
     deleted   Boolean  @default(false)
 
+    breed BreedModel[]
+
     @@map("specie")
+}
+
+model BreedModel {
+    id            String  @id @default(uuid()) @db.Uuid
+    associationId String  @map("association_id") @db.Uuid
+    specieId      String  @map("specie_id") @db.Uuid
+    name          String  @unique
+    sequence      Int?
+    enabled       Boolean @default(true)
+
+    createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+    updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz()
+    deleted   Boolean  @default(false)
+
+    specie SpecieModel @relation(fields: [specieId], references: [id])
+
+    @@map("breed")
 }
