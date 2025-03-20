@@ -1,7 +1,8 @@
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+
 import { ApiUUIDProperty } from '@/infra/openAPI/swagger/decorators/apiUUIDProperty.decorator';
 import { AssociationDTO } from '@/module/association/dto/association.dto';
 import { UserTypeEnum } from '@/shared/types/user';
-import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 
 export class UserDTO {
   @ApiUUIDProperty()

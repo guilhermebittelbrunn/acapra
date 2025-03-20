@@ -1,9 +1,11 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
-import { FindAssociationByIdService } from './findAssociationById.service';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
-import AssociationMapper from '@/module/association/mappers/association.mapper';
+
+import { FindAssociationByIdService } from './findAssociationById.service';
+
 import { AssociationDTO } from '@/module/association/dto/association.dto';
+import AssociationMapper from '@/module/association/mappers/association.mapper';
+import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 
 @Controller('/association')
 @ApiTags('association')

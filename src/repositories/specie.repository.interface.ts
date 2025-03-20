@@ -1,5 +1,6 @@
-import Specie from '@/module/animal/domain/specie.domain';
 import { IBaseRepository, PaginatedResult, PaginationQuery } from './base.repository.interface';
+
+import Specie from '@/module/animal/domain/specie.domain';
 
 export interface ListSpecieByAssociationIdQuery extends PaginationQuery {
   associationId: string;

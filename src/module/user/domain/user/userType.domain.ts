@@ -1,8 +1,8 @@
 import ValueObject from '@/shared/core/domain/ValueObject';
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import GenericErrors from '@/shared/core/logic/GenericErrors';
 import Guard, { IGuardResult } from '@/shared/core/logic/guard';
 import { UserTypeEnum } from '@/shared/types/user';
-import GenericErrors from '@/shared/core/logic/GenericErrors';
-import GenericAppError from '@/shared/core/logic/GenericAppError';
 
 export interface UserTypeProps {
   value: UserTypeEnum;

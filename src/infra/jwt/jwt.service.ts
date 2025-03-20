@@ -1,7 +1,8 @@
-import { ISessionUser } from '@/shared/types/user';
-import { Global, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService as NestJwtService } from '@nestjs/jwt';
+
+import { ISessionUser } from '@/shared/types/user';
 
 @Injectable()
 export class JwtService {

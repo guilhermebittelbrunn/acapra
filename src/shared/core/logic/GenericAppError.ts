@@ -1,15 +1,15 @@
 interface IGenericAppError {
-    message: string;
+  message: string;
 }
 
 export default abstract class GenericAppError implements IGenericAppError {
-    public message: string;
+  public message: string;
 
-    addPrefix(text: string): void {
-        this.message = `${text} ${this.message}`;
-    }
+  addPrefix(text: string): void {
+    this.message = `${text} ${this.message}`;
+  }
 
-    constructor(message: string) {
-        this.message = message;
-    }
+  constructor(message: string) {
+    this.message = message;
+  }
 }

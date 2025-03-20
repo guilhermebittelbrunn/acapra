@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
-import { ListBreedsByAssociationService } from './listBreedsByAssociation.service';
+
 import { ListBreedsByAssociationController } from './listBreedsByAssociation.controller';
+import { ListBreedsByAssociationService } from './listBreedsByAssociation.service';
+
 import { IBreedRepositorySymbol } from '@/repositories/breed.repository.interface';
 import { BreedRepository } from '@/repositories/prisma/breed.repository';
 

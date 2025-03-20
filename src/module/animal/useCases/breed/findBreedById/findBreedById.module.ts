@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
+
 import { FindBreedByIdController } from './findBreedById.controller';
+import { FindBreedByIdService } from './findBreedById.service';
+
 import { IBreedRepositorySymbol } from '@/repositories/breed.repository.interface';
 import { BreedRepository } from '@/repositories/prisma/breed.repository';
-import { FindBreedByIdService } from './findBreedById.service';
 
 @Module({
   controllers: [FindBreedByIdController],

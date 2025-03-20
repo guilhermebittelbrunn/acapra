@@ -1,10 +1,12 @@
 import { BreedModel, SpecieModel } from '@prisma/client';
 
-import Mapper from '@/shared/core/domain/Mapper';
-import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
+import SpecieMapper from './specie.mapper';
+
 import Breed from '../domain/breed.domain';
 import { BreedDTO } from '../dto/breed.dto';
-import SpecieMapper from './specie.mapper';
+
+import Mapper from '@/shared/core/domain/Mapper';
+import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
 
 export interface BreedModelWithRelations extends BreedModel {
   specie?: SpecieModel;

@@ -1,14 +1,16 @@
-import { IUserRepository, IUserRepositorySymbol } from '@/repositories/user.repository.interface';
 import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+
 import { UpdateUserDTO } from './dto/updateUser.dto';
-import { GenericException } from '@/shared/core/logic/GenericException';
-import GenericAppError from '@/shared/core/logic/GenericAppError';
-import UserPassword from '@/module/user/domain/user/userPassword.domain';
-import UserEmail from '@/module/user/domain/user/userEmail.domain';
-import UserType from '@/module/user/domain/user/userType.domain';
+
 import User from '@/module/user/domain/user/user.domain';
-import { coalesce } from '@/shared/core/utils/undefinedHelpers';
+import UserEmail from '@/module/user/domain/user/userEmail.domain';
+import UserPassword from '@/module/user/domain/user/userPassword.domain';
+import UserType from '@/module/user/domain/user/userType.domain';
+import { IUserRepository, IUserRepositorySymbol } from '@/repositories/user.repository.interface';
 import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
+import { coalesce } from '@/shared/core/utils/undefinedHelpers';
 
 @Injectable()
 export class UpdateUserService {

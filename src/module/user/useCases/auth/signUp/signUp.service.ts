@@ -1,20 +1,21 @@
 import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { isEmpty } from 'class-validator';
 
-import { IUserRepository, IUserRepositorySymbol } from '@/repositories/user.repository.interface';
 import { SignUpDTO } from './dto/signUp.dto';
+
 import User from '@/module/user/domain/user/user.domain';
-import UserType from '@/module/user/domain/user/userType.domain';
-import { UserTypeEnum } from '@/shared/types/user';
-import GenericAppError from '@/shared/core/logic/GenericAppError';
-import UserPassword from '@/module/user/domain/user/userPassword.domain';
 import UserEmail from '@/module/user/domain/user/userEmail.domain';
-import { GenericException } from '@/shared/core/logic/GenericException';
+import UserPassword from '@/module/user/domain/user/userPassword.domain';
+import UserType from '@/module/user/domain/user/userType.domain';
 import {
   IAssociationRepository,
   IAssociationRepositorySymbol,
 } from '@/repositories/association.repository.interface';
-import { isEmpty } from 'class-validator';
+import { IUserRepository, IUserRepositorySymbol } from '@/repositories/user.repository.interface';
 import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
+import { UserTypeEnum } from '@/shared/types/user';
 
 @Injectable()
 export class SignUpService {

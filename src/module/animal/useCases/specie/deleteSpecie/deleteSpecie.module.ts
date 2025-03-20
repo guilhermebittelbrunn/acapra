@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
-import { DeleteSpecieService } from './deleteSpecie.service';
+
 import { DeleteSpecieController } from './deleteSpecie.controller';
-import { ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
+import { DeleteSpecieService } from './deleteSpecie.service';
+
 import { SpecieRepository } from '@/repositories/prisma/specie.repository';
+import { ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
 
 @Module({
   controllers: [DeleteSpecieController],

@@ -1,10 +1,12 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
-import { FindSpecieByIdService } from './findSpecieById.service';
 import { ApiTags } from '@nestjs/swagger';
+
+import { FindSpecieByIdService } from './findSpecieById.service';
+
+import { SpecieDTO } from '@/module/animal/dto/specie.dto';
+import SpecieMapper from '@/module/animal/mappers/specie.mapper';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
-import SpecieMapper from '@/module/animal/mappers/specie.mapper';
-import { SpecieDTO } from '@/module/animal/dto/specie.dto';
 
 @Controller('/specie')
 @ApiTags('specie')

@@ -1,17 +1,19 @@
 import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+
 import { CreateAnimalDTO } from './dto/createAnimal.dto';
-import { GenericException } from '@/shared/core/logic/GenericException';
-import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
-import GenericAppError from '@/shared/core/logic/GenericAppError';
+
+import Animal from '@/module/animal/domain/animal/animal.domain';
+import AnimalGender from '@/module/animal/domain/animal/animalGender.domain';
 import { IAnimalRepository, IAnimalRepositorySymbol } from '@/repositories/animal.repository.interface';
-import { ISpecieRepository, ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
 import { IBreedRepository, IBreedRepositorySymbol } from '@/repositories/breed.repository.interface';
 import {
   IPublicationRepository,
   IPublicationRepositorySymbol,
 } from '@/repositories/publication.repository.interface';
-import AnimalGender from '@/module/animal/domain/animal/animalGender.domain';
-import Animal from '@/module/animal/domain/animal/animal.domain';
+import { ISpecieRepository, ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
+import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
 
 @Injectable()
 export class CreateAnimalService {

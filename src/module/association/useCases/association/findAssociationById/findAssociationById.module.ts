@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
-import { FindAssociationByIdService } from './findAssociationById.service';
+
 import { FindAssociationByIdController } from './findAssociationById.controller';
+import { FindAssociationByIdService } from './findAssociationById.service';
+
 import { IAssociationRepositorySymbol } from '@/repositories/association.repository.interface';
 import { AssociationRepository } from '@/repositories/prisma/association.repository';
 

@@ -1,17 +1,17 @@
 import { UserModel } from '@prisma/client';
-import { Decimal } from '@prisma/client/runtime/library';
 
-import Mapper from '@/shared/core/domain/Mapper';
-import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
 import User from '../domain/user/user.domain';
-import { UserDTO } from '../dto/user.dto';
-import UserType from '../domain/user/userType.domain';
-import { UserTypeEnum } from '@/shared/types/user';
 import UserEmail from '../domain/user/userEmail.domain';
 import UserPassword from '../domain/user/userPassword.domain';
+import UserType from '../domain/user/userType.domain';
+import { UserDTO } from '../dto/user.dto';
+
 import AssociationMapper, {
   AssociationModelWithRelations,
 } from '@/module/association/mappers/association.mapper';
+import Mapper from '@/shared/core/domain/Mapper';
+import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
+import { UserTypeEnum } from '@/shared/types/user';
 
 export interface UserModelWithRelations extends UserModel {
   association?: AssociationModelWithRelations;

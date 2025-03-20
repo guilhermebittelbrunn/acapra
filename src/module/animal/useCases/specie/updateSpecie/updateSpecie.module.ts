@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
-import { UpdateSpecieService } from './updateSpecie.service';
+
 import { UpdateSpecieController } from './updateSpecie.controller';
-import { ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
+import { UpdateSpecieService } from './updateSpecie.service';
+
 import { SpecieRepository } from '@/repositories/prisma/specie.repository';
+import { ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
 
 @Module({
   controllers: [UpdateSpecieController],

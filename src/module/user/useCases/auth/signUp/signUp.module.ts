@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
+
 import { SignUpController } from './signUp.controller';
 import { SignUpService } from './signUp.service';
-import { IUserRepositorySymbol } from '@/repositories/user.repository.interface';
-import { UserRepository } from '@/repositories/prisma/user.repository';
+
 import { IAssociationRepositorySymbol } from '@/repositories/association.repository.interface';
 import { AssociationRepository } from '@/repositories/prisma/association.repository';
+import { UserRepository } from '@/repositories/prisma/user.repository';
+import { IUserRepositorySymbol } from '@/repositories/user.repository.interface';
 
 @Module({
   controllers: [SignUpController],

@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
-import { DeleteUserService } from './deleteUser.service';
+
 import { DeleteUserController } from './deleteUser.controller';
-import { IUserRepositorySymbol } from '@/repositories/user.repository.interface';
+import { DeleteUserService } from './deleteUser.service';
+
 import { UserRepository } from '@/repositories/prisma/user.repository';
+import { IUserRepositorySymbol } from '@/repositories/user.repository.interface';
 
 @Module({
   controllers: [DeleteUserController],

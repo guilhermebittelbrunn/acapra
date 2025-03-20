@@ -1,11 +1,13 @@
 import { Controller, Param, Put, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
-import { UserRoleGuard } from '@/shared/guards/userRole.guard';
-import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
-import { UpdateResponseDTO } from '@/shared/types/common';
+
 import { UpdatePublicationDTO } from './dto/updatePublication.dto';
 import { UpdatePublicationService } from './updatePublication.service';
+
+import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
+import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
+import { UserRoleGuard } from '@/shared/guards/userRole.guard';
+import { UpdateResponseDTO } from '@/shared/types/common';
 
 @Controller('/publication')
 @ApiTags('publication')

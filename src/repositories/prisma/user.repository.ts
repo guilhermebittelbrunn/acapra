@@ -3,13 +3,13 @@ import { Prisma, UserModel } from '@prisma/client';
 
 import { BaseRepository } from './base.repository';
 
+import { PaginatedResult } from '../base.repository.interface';
 import { IUserRepository, ListUsersByAssociationIdQuery } from '../user.repository.interface';
 
 import { PrismaService } from '@/infra/database/prisma/prisma.service';
-import { Als } from '@/shared/config/als/als.interface';
 import User from '@/module/user/domain/user/user.domain';
 import UserMapper from '@/module/user/mappers/user.mapper';
-import { PaginatedResult } from '../base.repository.interface';
+import { Als } from '@/shared/config/als/als.interface';
 
 @Injectable()
 export class UserRepository extends BaseRepository<'userModel', User, UserModel> implements IUserRepository {
@@ -38,7 +38,7 @@ export class UserRepository extends BaseRepository<'userModel', User, UserModel>
   async listByAssociationId(query: ListUsersByAssociationIdQuery): Promise<PaginatedResult<User>> {
     const { limit, page, skip } = this.getPaginationParams(query);
 
-    let where: Prisma.UserModelWhereInput = { associationId: query.associationId };
+    const where: Prisma.UserModelWhereInput = { associationId: query.associationId };
 
     const [users, total] = await Promise.all([
       this.manager().findMany({

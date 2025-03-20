@@ -1,9 +1,11 @@
 import { Controller, Post } from '@nestjs/common';
-import { SignInService } from './signIn.service';
-import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
-import { SignInDTO } from './dto/signIn.dto';
 import { ApiTags } from '@nestjs/swagger';
+
+import { SignInDTO } from './dto/signIn.dto';
+import { SignInService } from './signIn.service';
+
 import UserMapper from '@/module/user/mappers/user.mapper';
+import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
 
 @Controller('signin')
 @ApiTags('auth')

@@ -1,6 +1,7 @@
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+
 import { IAnimalRepository, IAnimalRepositorySymbol } from '@/repositories/animal.repository.interface';
 import { GenericException } from '@/shared/core/logic/GenericException';
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class FindAnimalByIdService {

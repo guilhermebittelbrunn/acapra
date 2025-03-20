@@ -1,10 +1,12 @@
 import { Controller, Delete, HttpCode, HttpStatus, Param, UseGuards } from '@nestjs/common';
-import { DeleteUserService } from './deleteUser.service';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
-import { GetUser } from '@/shared/decorators/getUser.decorator';
+
+import { DeleteUserService } from './deleteUser.service';
+
 import User from '@/module/user/domain/user/user.domain';
 import { GenericException } from '@/shared/core/logic/GenericException';
+import { GetUser } from '@/shared/decorators/getUser.decorator';
+import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 
 @Controller('/user')
 @ApiTags('user')

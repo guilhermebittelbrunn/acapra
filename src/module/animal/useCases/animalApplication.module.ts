@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
-import { SpecieModule } from './specie/specie.module';
-import { BreedModule } from './breed/breed.module';
+
 import { AnimalModule } from './animal/animal.module';
+import { BreedModule } from './breed/breed.module';
+import { SpecieModule } from './specie/specie.module';
 
 @Module({
   imports: [SpecieModule, BreedModule, AnimalModule],

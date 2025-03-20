@@ -1,11 +1,13 @@
-import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
 import { Controller, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+
+import { SignUpDTO } from './dto/signUp.dto';
+import { SignUpService } from './signUp.service';
+
+import { TransactionManagerService } from '@/infra/database/transactionManager/transactionManager.service';
 import { UserDTO } from '@/module/user/dto/user.dto';
 import UserMapper from '@/module/user/mappers/user.mapper';
-import { TransactionManagerService } from '@/infra/database/transactionManager/transactionManager.service';
-import { SignUpService } from './signUp.service';
-import { SignUpDTO } from './dto/signUp.dto';
+import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
 
 @Controller('/signup')
 @ApiTags('auth')

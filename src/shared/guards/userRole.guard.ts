@@ -1,6 +1,8 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
+
 import { UserTypeEnum } from '../types/user';
+
 import User from '@/module/user/domain/user/user.domain';
 
 /**

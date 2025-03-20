@@ -1,21 +1,23 @@
-import { IAnimalRepository, IAnimalRepositorySymbol } from '@/repositories/animal.repository.interface';
 import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+
 import { UpdateAnimalDTO } from './dto/updateAnimal.dto';
-import { GenericException } from '@/shared/core/logic/GenericException';
-import { coalesce } from '@/shared/core/utils/undefinedHelpers';
-import GenericAppError from '@/shared/core/logic/GenericAppError';
+
 import Animal from '@/module/animal/domain/animal/animal.domain';
-import { ISpecieRepository, ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
+import AnimalGender from '@/module/animal/domain/animal/animalGender.domain';
+import AnimalStatus from '@/module/animal/domain/animal/animalStatus.domain';
+import Breed from '@/module/animal/domain/breed.domain';
+import Specie from '@/module/animal/domain/specie.domain';
+import Publication from '@/module/association/domain/publication.domain';
+import { IAnimalRepository, IAnimalRepositorySymbol } from '@/repositories/animal.repository.interface';
 import { IBreedRepository, IBreedRepositorySymbol } from '@/repositories/breed.repository.interface';
 import {
   IPublicationRepository,
   IPublicationRepositorySymbol,
 } from '@/repositories/publication.repository.interface';
-import AnimalGender from '@/module/animal/domain/animal/animalGender.domain';
-import AnimalStatus from '@/module/animal/domain/animal/animalStatus.domain';
-import Specie from '@/module/animal/domain/specie.domain';
-import Breed from '@/module/animal/domain/breed.domain';
-import Publication from '@/module/association/domain/publication.domain';
+import { ISpecieRepository, ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
+import { coalesce } from '@/shared/core/utils/undefinedHelpers';
 
 @Injectable()
 export class UpdateAnimalService {

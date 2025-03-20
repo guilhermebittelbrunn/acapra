@@ -1,8 +1,10 @@
 /* eslint-disable no-inner-declarations */
 /* eslint-disable max-classes-per-file */
 import { HttpStatus } from '@nestjs/common';
+
 import GenericAppError from './GenericAppError';
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 namespace GenericErrors {
   export function getStatusCode(error: GenericAppError): HttpStatus {
     if (error instanceof GenericErrors.NotFound) {

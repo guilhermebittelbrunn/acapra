@@ -1,8 +1,10 @@
 import { Controller, Delete, HttpCode, HttpStatus, Param, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+
+import { DeleteAnimalService } from './deleteAnimal.service';
+
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
-import { DeleteAnimalService } from './deleteAnimal.service';
 
 @Controller('/animal')
 @ApiTags('animal')

@@ -1,8 +1,8 @@
-import AnimalStatus from '@/module/animal/domain/animal/animalStatus.domain';
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+
 import { IAnimalRepository, IAnimalRepositorySymbol } from '@/repositories/animal.repository.interface';
 import { GenericException } from '@/shared/core/logic/GenericException';
 import { AnimalStatusEnum } from '@/shared/types/animal';
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class DeleteAnimalService {

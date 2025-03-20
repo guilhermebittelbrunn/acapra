@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
-import { UpdateUserService } from './updateUser.service';
+
 import { UpdateUserController } from './updateUser.controller';
-import { IUserRepositorySymbol } from '@/repositories/user.repository.interface';
+import { UpdateUserService } from './updateUser.service';
+
 import { UserRepository } from '@/repositories/prisma/user.repository';
+import { IUserRepositorySymbol } from '@/repositories/user.repository.interface';
 
 @Module({
   controllers: [UpdateUserController],

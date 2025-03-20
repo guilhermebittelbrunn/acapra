@@ -1,5 +1,6 @@
-import { ISessionUser } from '@/shared/types/user';
 import { ApiProperty } from '@nestjs/swagger';
+
+import { ISessionUser } from '@/shared/types/user';
 
 class Token {
   @ApiProperty()

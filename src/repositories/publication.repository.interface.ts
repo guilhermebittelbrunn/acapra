@@ -1,5 +1,6 @@
-import Publication from '@/module/association/domain/publication.domain';
 import { IBaseRepository, PaginatedResult, PaginationQuery } from './base.repository.interface';
+
+import Publication from '@/module/association/domain/publication.domain';
 
 export interface ListPublicationByAssociationIdQuery extends PaginationQuery {
   associationId: string;

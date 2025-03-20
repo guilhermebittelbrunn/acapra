@@ -1,14 +1,16 @@
 import { Module } from '@nestjs/common';
-import { CreateAnimalService } from './createAnimal.service';
+
 import { CreateAnimalController } from './createAnimal.controller';
+import { CreateAnimalService } from './createAnimal.service';
+
 import { IAnimalRepositorySymbol } from '@/repositories/animal.repository.interface';
-import { AnimalRepository } from '@/repositories/prisma/animal.repository';
-import { ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
-import { SpecieRepository } from '@/repositories/prisma/specie.repository';
 import { IBreedRepositorySymbol } from '@/repositories/breed.repository.interface';
+import { AnimalRepository } from '@/repositories/prisma/animal.repository';
 import { BreedRepository } from '@/repositories/prisma/breed.repository';
-import { IPublicationRepositorySymbol } from '@/repositories/publication.repository.interface';
 import { PublicationRepository } from '@/repositories/prisma/publication.repository';
+import { SpecieRepository } from '@/repositories/prisma/specie.repository';
+import { IPublicationRepositorySymbol } from '@/repositories/publication.repository.interface';
+import { ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
 
 @Module({
   controllers: [CreateAnimalController],

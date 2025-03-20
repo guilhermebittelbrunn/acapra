@@ -1,13 +1,15 @@
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+
+import { UpdatePublicationDTO } from './dto/updatePublication.dto';
+
+import Publication from '@/module/association/domain/publication.domain';
 import {
   IPublicationRepository,
   IPublicationRepositorySymbol,
 } from '@/repositories/publication.repository.interface';
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { UpdatePublicationDTO } from './dto/updatePublication.dto';
+import GenericAppError from '@/shared/core/logic/GenericAppError';
 import { GenericException } from '@/shared/core/logic/GenericException';
 import { coalesce } from '@/shared/core/utils/undefinedHelpers';
-import GenericAppError from '@/shared/core/logic/GenericAppError';
-import Publication from '@/module/association/domain/publication.domain';
 
 @Injectable()
 export class UpdatePublicationService {

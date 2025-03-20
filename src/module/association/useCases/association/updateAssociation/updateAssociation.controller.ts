@@ -1,11 +1,13 @@
 import { Controller, Param, Put, UseGuards } from '@nestjs/common';
-import { UpdateAssociationService } from './updateAssociation.service';
 import { ApiTags } from '@nestjs/swagger';
-import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
+
 import { UpdateAssociationDTO } from './dto/updateAssociation.dto';
+import { UpdateAssociationService } from './updateAssociation.service';
+
 import { TransactionManagerService } from '@/infra/database/transactionManager/transactionManager.service';
-import { UpdateResponseDTO } from '@/shared/types/common';
+import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
+import { UpdateResponseDTO } from '@/shared/types/common';
 
 @Controller('/association')
 @ApiTags('association')

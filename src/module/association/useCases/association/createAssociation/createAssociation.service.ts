@@ -1,14 +1,16 @@
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+
+import { CreateAssociationDTO } from './dto/createAssociation.dto';
+
+import { Association } from '@/module/association/domain/association.domain';
 import { SignUpService } from '@/module/user/useCases/auth/signUp/signUp.service';
 import {
   IAssociationRepository,
   IAssociationRepositorySymbol,
 } from '@/repositories/association.repository.interface';
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { CreateAssociationDTO } from './dto/createAssociation.dto';
+import GenericAppError from '@/shared/core/logic/GenericAppError';
 import { GenericException } from '@/shared/core/logic/GenericException';
 import { UserTypeEnum } from '@/shared/types/user';
-import { Association } from '@/module/association/domain/association.domain';
-import GenericAppError from '@/shared/core/logic/GenericAppError';
 
 @Injectable()
 export class CreateAssociationService {

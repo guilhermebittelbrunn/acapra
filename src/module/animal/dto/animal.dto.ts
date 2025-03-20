@@ -1,8 +1,10 @@
-import { AnimalGenderEnum, AnimalStatusEnum } from '@/shared/types/animal';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
-import { SpecieDTO } from './specie.dto';
+
 import { BreedDTO } from './breed.dto';
+import { SpecieDTO } from './specie.dto';
+
 import { PublicationDTO } from '@/module/association/dto/publication.dto';
+import { AnimalGenderEnum, AnimalStatusEnum } from '@/shared/types/animal';
 
 export default class AnimalDTO {
   @ApiProperty()

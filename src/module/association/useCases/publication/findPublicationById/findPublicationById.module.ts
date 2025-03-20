@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
+
 import { FindPublicationByIdController } from './findPublicationById.controller';
-import { IPublicationRepositorySymbol } from '@/repositories/publication.repository.interface';
-import { PublicationRepository } from '@/repositories/prisma/publication.repository';
 import { FindPublicationByIdService } from './findPublicationById.service';
+
+import { PublicationRepository } from '@/repositories/prisma/publication.repository';
+import { IPublicationRepositorySymbol } from '@/repositories/publication.repository.interface';
 
 @Module({
   controllers: [FindPublicationByIdController],

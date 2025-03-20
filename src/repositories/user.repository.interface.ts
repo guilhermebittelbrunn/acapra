@@ -1,11 +1,11 @@
-import User from '@/module/user/domain/user/user.domain';
 import {
   IBaseRepository,
-  MultiEntityResponse,
   PaginatedResult,
   PaginationQuery,
   SingleEntityResponse,
 } from './base.repository.interface';
+
+import User from '@/module/user/domain/user/user.domain';
 
 export interface ListUsersByAssociationIdQuery extends PaginationQuery {
   associationId: string;

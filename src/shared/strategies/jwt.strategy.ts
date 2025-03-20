@@ -4,8 +4,9 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { ITokenPayload, JWT_DEFAULT_STRATEGY } from '../types/auth';
-import { ValidateUserAccess } from '@/module/user/domain/user/validateUserAccess/validateUserAccess.service';
+
 import User from '@/module/user/domain/user/user.domain';
+import { ValidateUserAccess } from '@/module/user/domain/user/validateUserAccess/validateUserAccess.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, JWT_DEFAULT_STRATEGY) {

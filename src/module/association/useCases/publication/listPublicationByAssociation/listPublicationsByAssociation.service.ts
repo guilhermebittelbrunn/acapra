@@ -1,9 +1,11 @@
+import { Inject, Injectable } from '@nestjs/common';
+
+import { ListPublicationByAssociationDTO } from './dto/listPublicationsByAssociation.dto';
+
 import {
   IPublicationRepository,
   IPublicationRepositorySymbol,
 } from '@/repositories/publication.repository.interface';
-import { Inject, Injectable } from '@nestjs/common';
-import { ListPublicationByAssociationDTO } from './dto/listPublicationsByAssociation.dto';
 
 @Injectable()
 export class ListPublicationsByAssociationService {

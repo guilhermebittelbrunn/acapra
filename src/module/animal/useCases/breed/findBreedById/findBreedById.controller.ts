@@ -1,10 +1,12 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+
+import { FindBreedByIdService } from './findBreedById.service';
+
+import { BreedDTO } from '@/module/animal/dto/breed.dto';
+import BreedMapper from '@/module/animal/mappers/breed.mapper';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
-import BreedMapper from '@/module/animal/mappers/breed.mapper';
-import { BreedDTO } from '@/module/animal/dto/breed.dto';
-import { FindBreedByIdService } from './findBreedById.service';
 
 @Controller('/breed')
 @ApiTags('breed')

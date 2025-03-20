@@ -8,16 +8,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './infra/database/prisma/prisma.module';
 import { TransactionManagerModule } from './infra/database/transactionManager/transactionManager.module';
+import { AnimalApplicationModule } from './module/animal/useCases/animalApplication.module';
+import { AssociationApplicationModule } from './module/association/useCases/associationApplication.module';
+import { ValidateUserAccessModule } from './module/user/domain/user/validateUserAccess/validateUserAccess.module';
+import { UserApplicationModule } from './module/user/useCases/user.application.module';
 import { AlsMiddleware } from './shared/config/als/als.middleware';
 import { AlsModule } from './shared/config/als/als.module';
 import configuration from './shared/config/configuration';
 import { TransformResponseInterceptor } from './shared/interceptors/transformResponse/transformResponse.interceptor';
 import { JwtStrategy } from './shared/strategies/jwt.strategy';
-import { UserApplicationModule } from './module/user/useCases/user.application.module';
-import { ValidateUserAccessModule } from './module/user/domain/user/validateUserAccess/validateUserAccess.module';
 import { JwtRefreshStrategy } from './shared/strategies/jwtRefresh.strategy';
-import { AssociationApplicationModule } from './module/association/useCases/associationApplication.module';
-import { AnimalApplicationModule } from './module/animal/useCases/animalApplication.module';
 
 @Module({
   imports: [

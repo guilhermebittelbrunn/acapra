@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
-import { RefreshService } from './refresh.service';
-import { IUserRepositorySymbol } from '@/repositories/user.repository.interface';
-import { UserRepository } from '@/repositories/prisma/user.repository';
-import { JwtModule } from '@/infra/jwt/jwt.module';
+
 import { RefreshController } from './refresh.controller';
+import { RefreshService } from './refresh.service';
+
+import { JwtModule } from '@/infra/jwt/jwt.module';
+import { UserRepository } from '@/repositories/prisma/user.repository';
+import { IUserRepositorySymbol } from '@/repositories/user.repository.interface';
 
 @Module({
   imports: [JwtModule],

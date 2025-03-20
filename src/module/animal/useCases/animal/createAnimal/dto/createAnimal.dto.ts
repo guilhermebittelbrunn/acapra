@@ -1,3 +1,6 @@
+import { ApiHideProperty } from '@nestjs/swagger';
+import { IsOptional } from 'class-validator';
+
 import {
   ValidatedEnum,
   ValidatedMaxLength,
@@ -7,8 +10,6 @@ import {
   ValidatedUUID,
 } from '@/shared/decorators/validatedTypes.decorator';
 import { AnimalGenderEnum } from '@/shared/types/animal';
-import { ApiHideProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateAnimalDTO {
   @ValidatedString('nome')

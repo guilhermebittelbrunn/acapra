@@ -1,10 +1,12 @@
 import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+
 import { CreateSpecieDTO } from './dto/createSpecie.dto';
-import { ISpecieRepository, ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
-import { GenericException } from '@/shared/core/logic/GenericException';
+
 import Specie from '@/module/animal/domain/specie.domain';
+import { ISpecieRepository, ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
 import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
 
 @Injectable()
 export class CreateSpecieService {

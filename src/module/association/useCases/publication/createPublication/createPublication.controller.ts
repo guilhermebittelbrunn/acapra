@@ -1,14 +1,16 @@
 import { Controller, Post, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
-import { UserRoleGuard } from '@/shared/guards/userRole.guard';
-import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
-import { CreatePublicationDTO } from './dto/createPublication.dto';
-import { GetUser } from '@/shared/decorators/getUser.decorator';
-import User from '@/module/user/domain/user/user.domain';
+
 import { CreatePublicationService } from './createPublication.service';
+import { CreatePublicationDTO } from './dto/createPublication.dto';
+
 import { PublicationDTO } from '@/module/association/dto/publication.dto';
 import PublicationMapper from '@/module/association/mappers/publication.mapper';
+import User from '@/module/user/domain/user/user.domain';
+import { GetUser } from '@/shared/decorators/getUser.decorator';
+import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
+import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
+import { UserRoleGuard } from '@/shared/guards/userRole.guard';
 
 @Controller('/publication')
 @ApiTags('publication')

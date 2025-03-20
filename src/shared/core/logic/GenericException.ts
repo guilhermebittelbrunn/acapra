@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
+
 import GenericAppError from './GenericAppError';
 import GenericErrors from './GenericErrors';
 

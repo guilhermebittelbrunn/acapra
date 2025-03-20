@@ -1,14 +1,16 @@
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+
+import { UpdateAssociationDTO } from './dto/updateAssociation.dto';
+
+import { Association } from '@/module/association/domain/association.domain';
 import {
   IAssociationRepository,
   IAssociationRepositorySymbol,
 } from '@/repositories/association.repository.interface';
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { UpdateAssociationDTO } from './dto/updateAssociation.dto';
-import { GenericException } from '@/shared/core/logic/GenericException';
-import { Association } from '@/module/association/domain/association.domain';
-import { coalesce } from '@/shared/core/utils/undefinedHelpers';
 import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
+import { coalesce } from '@/shared/core/utils/undefinedHelpers';
 
 @Injectable()
 export class UpdateAssociationService {

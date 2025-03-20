@@ -1,9 +1,10 @@
 import { SpecieModel } from '@prisma/client';
 
+import Specie from '../domain/specie.domain';
+import { SpecieDTO } from '../dto/specie.dto';
+
 import Mapper from '@/shared/core/domain/Mapper';
 import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
-import { SpecieDTO } from '../dto/specie.dto';
-import Specie from '../domain/specie.domain';
 export interface SpecieModelWithRelations extends SpecieModel {}
 
 class BaseSpecieMapper extends Mapper<Specie, SpecieModelWithRelations, SpecieDTO> {

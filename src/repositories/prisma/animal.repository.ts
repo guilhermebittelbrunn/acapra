@@ -3,13 +3,14 @@ import { Prisma, AnimalModel } from '@prisma/client';
 
 import { BaseRepository } from './base.repository';
 
-import { PrismaService } from '@/infra/database/prisma/prisma.service';
-import { Als } from '@/shared/config/als/als.interface';
 import { IAnimalRepository, ListAnimalByAssociationIdQuery } from '../animal.repository.interface';
-import AnimalMapper from '@/module/animal/mappers/animal.mapper';
 import { PaginatedResult } from '../base.repository.interface';
-import { filledArray, isEmpty } from '@/shared/core/utils/undefinedHelpers';
+
+import { PrismaService } from '@/infra/database/prisma/prisma.service';
 import Animal from '@/module/animal/domain/animal/animal.domain';
+import AnimalMapper from '@/module/animal/mappers/animal.mapper';
+import { Als } from '@/shared/config/als/als.interface';
+import { filledArray, isEmpty } from '@/shared/core/utils/undefinedHelpers';
 
 @Injectable()
 export class AnimalRepository
@@ -40,7 +41,7 @@ export class AnimalRepository
   async listByAssociationId(query: ListAnimalByAssociationIdQuery): Promise<PaginatedResult<Animal>> {
     const { limit, page, skip } = this.getPaginationParams(query);
 
-    let where: Prisma.AnimalModelWhereInput = {
+    const where: Prisma.AnimalModelWhereInput = {
       associationId: query.associationId,
       ...(!isEmpty(query.term) && { name: { contains: query.term } }),
       ...(filledArray(query.ids) && { id: { in: query.ids } }),

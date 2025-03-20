@@ -1,9 +1,10 @@
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+
 import {
   IPublicationRepository,
   IPublicationRepositorySymbol,
 } from '@/repositories/publication.repository.interface';
 import { GenericException } from '@/shared/core/logic/GenericException';
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class FindPublicationByIdService {

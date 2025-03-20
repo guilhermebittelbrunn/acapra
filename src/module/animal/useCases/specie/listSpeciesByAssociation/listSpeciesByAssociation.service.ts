@@ -1,6 +1,8 @@
-import { ISpecieRepository, ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
 import { Inject, Injectable } from '@nestjs/common';
+
 import { ListSpecieByAssociationDTO } from './dto/listSpeciesByAssociation.dto';
+
+import { ISpecieRepository, ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
 
 @Injectable()
 export class ListSpeciesByAssociationService {

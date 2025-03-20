@@ -1,13 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
+
 import { CreatePublicationDTO } from './dto/createPublication.dto';
+
+import Publication from '@/module/association/domain/publication.domain';
 import {
   IPublicationRepository,
   IPublicationRepositorySymbol,
 } from '@/repositories/publication.repository.interface';
-import { GenericException } from '@/shared/core/logic/GenericException';
 import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
-import Publication from '@/module/association/domain/publication.domain';
+import { GenericException } from '@/shared/core/logic/GenericException';
 
 @Injectable()
 export class CreatePublicationService {

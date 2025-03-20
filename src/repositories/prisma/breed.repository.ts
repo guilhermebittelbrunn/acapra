@@ -3,12 +3,13 @@ import { Prisma, BreedModel } from '@prisma/client';
 
 import { BaseRepository } from './base.repository';
 
-import { PrismaService } from '@/infra/database/prisma/prisma.service';
-import { Als } from '@/shared/config/als/als.interface';
-import Breed from '@/module/animal/domain/breed.domain';
-import { IBreedRepository, ListBreedByAssociationIdQuery } from '../breed.repository.interface';
-import BreedMapper from '@/module/animal/mappers/breed.mapper';
 import { PaginatedResult } from '../base.repository.interface';
+import { IBreedRepository, ListBreedByAssociationIdQuery } from '../breed.repository.interface';
+
+import { PrismaService } from '@/infra/database/prisma/prisma.service';
+import Breed from '@/module/animal/domain/breed.domain';
+import BreedMapper from '@/module/animal/mappers/breed.mapper';
+import { Als } from '@/shared/config/als/als.interface';
 import { filledArray } from '@/shared/core/utils/undefinedHelpers';
 
 @Injectable()

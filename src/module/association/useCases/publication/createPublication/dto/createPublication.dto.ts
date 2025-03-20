@@ -1,9 +1,6 @@
-import {
-  ValidatedMaxLength,
-  ValidatedNumber,
-  ValidatedString,
-} from '@/shared/decorators/validatedTypes.decorator';
 import { ApiHideProperty } from '@nestjs/swagger';
+
+import { ValidatedMaxLength, ValidatedString } from '@/shared/decorators/validatedTypes.decorator';
 
 export class CreatePublicationDTO {
   @ValidatedString('título')

@@ -1,10 +1,12 @@
-import { ISpecieRepository, ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
 import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+
 import { UpdateSpecieDTO } from './dto/updateSpecie.dto';
-import { GenericException } from '@/shared/core/logic/GenericException';
+
 import Specie from '@/module/animal/domain/specie.domain';
-import { coalesce } from '@/shared/core/utils/undefinedHelpers';
+import { ISpecieRepository, ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
+import { coalesce } from '@/shared/core/utils/undefinedHelpers';
 
 @Injectable()
 export class UpdateSpecieService {

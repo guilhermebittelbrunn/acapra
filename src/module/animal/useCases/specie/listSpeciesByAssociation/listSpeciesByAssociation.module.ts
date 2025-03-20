@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ListSpeciesByAssociationService } from './listSpeciesByAssociation.service';
+
 import { ListSpeciesByAssociationController } from './listSpeciesByAssociation.controller';
-import { ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
+import { ListSpeciesByAssociationService } from './listSpeciesByAssociation.service';
+
 import { SpecieRepository } from '@/repositories/prisma/specie.repository';
+import { ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
 
 @Module({
   controllers: [ListSpeciesByAssociationController],

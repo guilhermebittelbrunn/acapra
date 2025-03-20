@@ -1,10 +1,12 @@
 import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+
 import { CreateBreedDTO } from './dto/createBreed.dto';
-import { GenericException } from '@/shared/core/logic/GenericException';
+
+import Breed from '@/module/animal/domain/breed.domain';
+import { IBreedRepository, IBreedRepositorySymbol } from '@/repositories/breed.repository.interface';
 import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
-import { IBreedRepository, IBreedRepositorySymbol } from '@/repositories/breed.repository.interface';
-import Breed from '@/module/animal/domain/breed.domain';
+import { GenericException } from '@/shared/core/logic/GenericException';
 
 @Injectable()
 export class CreateBreedService {

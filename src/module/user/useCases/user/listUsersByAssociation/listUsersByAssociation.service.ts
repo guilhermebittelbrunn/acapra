@@ -1,6 +1,8 @@
-import { IUserRepository, IUserRepositorySymbol } from '@/repositories/user.repository.interface';
 import { Inject, Injectable } from '@nestjs/common';
+
 import { ListUsersByAssociationDTO } from './dto/listUsersByAssociation.dto';
+
+import { IUserRepository, IUserRepositorySymbol } from '@/repositories/user.repository.interface';
 
 @Injectable()
 export class ListUsersByAssociationService {

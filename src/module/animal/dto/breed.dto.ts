@@ -1,4 +1,5 @@
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+
 import { SpecieDTO } from './specie.dto';
 
 export class BreedDTO {

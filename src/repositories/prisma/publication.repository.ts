@@ -3,15 +3,16 @@ import { Prisma, PublicationModel } from '@prisma/client';
 
 import { BaseRepository } from './base.repository';
 
-import { PrismaService } from '@/infra/database/prisma/prisma.service';
-import { Als } from '@/shared/config/als/als.interface';
 import { PaginatedResult } from '../base.repository.interface';
 import {
   IPublicationRepository,
   ListPublicationByAssociationIdQuery,
 } from '../publication.repository.interface';
+
+import { PrismaService } from '@/infra/database/prisma/prisma.service';
 import Publication from '@/module/association/domain/publication.domain';
 import PublicationMapper from '@/module/association/mappers/publication.mapper';
+import { Als } from '@/shared/config/als/als.interface';
 
 @Injectable()
 export class PublicationRepository
@@ -28,7 +29,7 @@ export class PublicationRepository
   async listByAssociationId(query: ListPublicationByAssociationIdQuery): Promise<PaginatedResult<Publication>> {
     const { limit, page, skip } = this.getPaginationParams(query);
 
-    let where: Prisma.PublicationModelWhereInput = { associationId: query.associationId };
+    const where: Prisma.PublicationModelWhereInput = { associationId: query.associationId };
 
     const [publications, total] = await Promise.all([
       this.manager().findMany({

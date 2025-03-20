@@ -1,11 +1,13 @@
 import { Controller, Post } from '@nestjs/common';
-import { CreateAssociationService } from './createAssociation.service';
 import { ApiTags } from '@nestjs/swagger';
-import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
+
+import { CreateAssociationService } from './createAssociation.service';
 import { CreateAssociationDTO } from './dto/createAssociation.dto';
-import { AssociationDTO } from '@/module/association/dto/association.dto';
+
 import { TransactionManagerService } from '@/infra/database/transactionManager/transactionManager.service';
+import { AssociationDTO } from '@/module/association/dto/association.dto';
 import AssociationMapper from '@/module/association/mappers/association.mapper';
+import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
 
 @Controller('/association')
 @ApiTags('association')

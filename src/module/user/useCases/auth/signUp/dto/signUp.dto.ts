@@ -1,7 +1,7 @@
+import { ApiHideProperty } from '@nestjs/swagger';
+
 import { ValidatedEmail, ValidatedString } from '@/shared/decorators/validatedTypes.decorator';
 import { UserTypeEnum } from '@/shared/types/user';
-import { ApiHideProperty } from '@nestjs/swagger';
-import { IsEmail, IsString } from 'class-validator';
 
 export class SignUpDTO {
   @ValidatedEmail()

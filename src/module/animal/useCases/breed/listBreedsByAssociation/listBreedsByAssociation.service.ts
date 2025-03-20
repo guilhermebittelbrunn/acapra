@@ -1,6 +1,8 @@
-import { IBreedRepository, IBreedRepositorySymbol } from '@/repositories/breed.repository.interface';
 import { Inject, Injectable } from '@nestjs/common';
+
 import { ListBreedsByAssociationDTO } from './dto/listBreedsByAssociation.dto';
+
+import { IBreedRepository, IBreedRepositorySymbol } from '@/repositories/breed.repository.interface';
 
 @Injectable()
 export class ListBreedsByAssociationService {

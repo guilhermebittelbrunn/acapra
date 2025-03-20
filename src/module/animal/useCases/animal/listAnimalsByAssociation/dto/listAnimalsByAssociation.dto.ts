@@ -1,9 +1,10 @@
+import { ApiHideProperty } from '@nestjs/swagger';
+import { IsOptional } from 'class-validator';
+
 import { PaginationQuery } from '@/repositories/base.repository.interface';
 import { ValidatedIds } from '@/shared/decorators/validatedIds.decorator';
 import { ValidatedEnum } from '@/shared/decorators/validatedTypes.decorator';
 import { AnimalGenderEnum, AnimalStatusEnum } from '@/shared/types/animal';
-import { ApiHideProperty } from '@nestjs/swagger';
-import { IsOptional } from 'class-validator';
 
 export class ListAnimalsByAssociationDTO extends PaginationQuery {
   @IsOptional()

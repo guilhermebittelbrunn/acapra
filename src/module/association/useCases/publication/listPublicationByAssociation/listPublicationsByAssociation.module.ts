@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
+
 import { ListPublicationsByAssociationController } from './listPublicationsByAssociation.controller';
-import { IPublicationRepositorySymbol } from '@/repositories/publication.repository.interface';
-import { PublicationRepository } from '@/repositories/prisma/publication.repository';
 import { ListPublicationsByAssociationService } from './listPublicationsByAssociation.service';
+
+import { PublicationRepository } from '@/repositories/prisma/publication.repository';
+import { IPublicationRepositorySymbol } from '@/repositories/publication.repository.interface';
 
 @Module({
   controllers: [ListPublicationsByAssociationController],

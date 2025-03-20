@@ -1,7 +1,8 @@
+import { Inject, Injectable } from '@nestjs/common';
+import { isEmpty } from 'class-validator';
+
 import { IUserRepository, IUserRepositorySymbol } from '@/repositories/user.repository.interface';
 import { Als } from '@/shared/config/als/als.interface';
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { isEmpty } from 'class-validator';
 
 @Injectable()
 export class ValidateUserAccess {

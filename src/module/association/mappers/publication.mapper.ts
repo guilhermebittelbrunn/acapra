@@ -1,9 +1,10 @@
 import { PublicationModel } from '@prisma/client';
 
-import Mapper from '@/shared/core/domain/Mapper';
-import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
 import Publication from '../domain/publication.domain';
 import { PublicationDTO } from '../dto/publication.dto';
+
+import Mapper from '@/shared/core/domain/Mapper';
+import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
 
 export interface PublicationModelWithRelations extends PublicationModel {}
 

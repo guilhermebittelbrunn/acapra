@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
+
 import { FindAnimalByIdController } from './findAnimalById.controller';
+import { FindAnimalByIdService } from './findAnimalById.service';
+
 import { IAnimalRepositorySymbol } from '@/repositories/animal.repository.interface';
 import { AnimalRepository } from '@/repositories/prisma/animal.repository';
-import { FindAnimalByIdService } from './findAnimalById.service';
 
 @Module({
   controllers: [FindAnimalByIdController],

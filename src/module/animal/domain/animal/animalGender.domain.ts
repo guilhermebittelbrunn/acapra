@@ -1,7 +1,7 @@
 import ValueObject from '@/shared/core/domain/ValueObject';
-import Guard, { IGuardResult } from '@/shared/core/logic/guard';
-import GenericErrors from '@/shared/core/logic/GenericErrors';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
+import GenericErrors from '@/shared/core/logic/GenericErrors';
+import Guard, { IGuardResult } from '@/shared/core/logic/guard';
 import { AnimalGenderEnum } from '@/shared/types/animal';
 
 export interface AnimalGenderProps {

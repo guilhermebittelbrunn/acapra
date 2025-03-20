@@ -1,5 +1,6 @@
-import Breed from '@/module/animal/domain/breed.domain';
 import { IBaseRepository, PaginatedResult, PaginationQuery } from './base.repository.interface';
+
+import Breed from '@/module/animal/domain/breed.domain';
 
 export interface ListBreedByAssociationIdQuery extends PaginationQuery {
   associationId: string;

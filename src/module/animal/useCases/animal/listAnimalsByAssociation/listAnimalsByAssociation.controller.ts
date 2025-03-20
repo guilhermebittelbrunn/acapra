@@ -1,16 +1,18 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+
+import { ListAnimalsByAssociationDTO } from './dto/listAnimalsByAssociation.dto';
+import { ListAnimalsByAssociationService } from './listAnimalsByAssociation.service';
+
+import { ApiListResponse } from '@/infra/openAPI/swagger/decorators/apiListResponse.decorator';
+import AnimalDTO from '@/module/animal/dto/animal.dto';
+import AnimalMapper from '@/module/animal/mappers/animal.mapper';
+import User from '@/module/user/domain/user/user.domain';
+import { PaginatedResult } from '@/repositories/base.repository.interface';
+import { GetUser } from '@/shared/decorators/getUser.decorator';
+import { ValidatedQuery } from '@/shared/decorators/validatedQuery.decorator';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
-import { ApiListResponse } from '@/infra/openAPI/swagger/decorators/apiListResponse.decorator';
-import { GetUser } from '@/shared/decorators/getUser.decorator';
-import User from '@/module/user/domain/user/user.domain';
-import { ValidatedQuery } from '@/shared/decorators/validatedQuery.decorator';
-import { PaginatedResult } from '@/repositories/base.repository.interface';
-import AnimalMapper from '@/module/animal/mappers/animal.mapper';
-import AnimalDTO from '@/module/animal/dto/animal.dto';
-import { ListAnimalsByAssociationService } from './listAnimalsByAssociation.service';
-import { ListAnimalsByAssociationDTO } from './dto/listAnimalsByAssociation.dto';
 
 @Controller('/animal')
 @ApiTags('animal')

@@ -1,4 +1,3 @@
-import { GenericException } from '@/shared/core/logic/GenericException';
 import {
   Injectable,
   NestInterceptor,
@@ -22,8 +21,8 @@ export class TransformResponseInterceptor implements NestInterceptor {
   constructor() {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    const { method, url, body, params, query } = context.switchToHttp().getRequest();
-    const payload = { method, url, body, params, query };
+    // const { method, url, body, params, query } = context.switchToHttp().getRequest();
+    // const payload = { method, url, body, params, query };
 
     return next.handle().pipe(
       map((response) => {

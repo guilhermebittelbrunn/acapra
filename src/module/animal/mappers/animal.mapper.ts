@@ -1,16 +1,18 @@
 import { AnimalModel, AssociationModel, BreedModel, PublicationModel, SpecieModel } from '@prisma/client';
 
+import BreedMapper from './breed.mapper';
+import SpecieMapper from './specie.mapper';
+
+import Animal from '../domain/animal/animal.domain';
+import AnimalGender from '../domain/animal/animalGender.domain';
+import AnimalStatus from '../domain/animal/animalStatus.domain';
+import AnimalDTO from '../dto/animal.dto';
+
+import AssociationMapper from '@/module/association/mappers/association.mapper';
+import PublicationMapper from '@/module/association/mappers/publication.mapper';
 import Mapper from '@/shared/core/domain/Mapper';
 import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
-import Animal from '../domain/animal/animal.domain';
-import AnimalDTO from '../dto/animal.dto';
-import AnimalStatus from '../domain/animal/animalStatus.domain';
 import { AnimalGenderEnum, AnimalStatusEnum } from '@/shared/types/animal';
-import AnimalGender from '../domain/animal/animalGender.domain';
-import SpecieMapper from './specie.mapper';
-import AssociationMapper from '@/module/association/mappers/association.mapper';
-import BreedMapper from './breed.mapper';
-import PublicationMapper from '@/module/association/mappers/publication.mapper';
 
 export interface AnimalModelWithRelations extends AnimalModel {
   specie?: SpecieModel;

@@ -1,7 +1,9 @@
 import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+
 import { SignInDTO } from './dto/signIn.dto';
-import { IUserRepository, IUserRepositorySymbol } from '@/repositories/user.repository.interface';
+
 import { JwtService } from '@/infra/jwt/jwt.service';
+import { IUserRepository, IUserRepositorySymbol } from '@/repositories/user.repository.interface';
 import { GenericException } from '@/shared/core/logic/GenericException';
 
 @Injectable()

@@ -1,12 +1,13 @@
 import { Controller, Param, Put, UseGuards } from '@nestjs/common';
-import { UpdateSpecieService } from './updateSpecie.service';
 import { ApiTags } from '@nestjs/swagger';
+
+import { UpdateSpecieDTO } from './dto/updateSpecie.dto';
+import { UpdateSpecieService } from './updateSpecie.service';
+
+import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
-import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
-import { GetUser } from '@/shared/decorators/getUser.decorator';
 import { UpdateResponseDTO } from '@/shared/types/common';
-import { UpdateSpecieDTO } from './dto/updateSpecie.dto';
 
 @Controller('/specie')
 @ApiTags('specie')
