@@ -5,19 +5,21 @@ import { GenericException } from '@/shared/core/logic/GenericException';
 import Breed from '@/module/animal/domain/breed.domain';
 import { coalesce } from '@/shared/core/utils/undefinedHelpers';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
+import Specie from '@/module/animal/domain/specie.domain';
 
 @Injectable()
 export class UpdateBreedService {
   constructor(@Inject(IBreedRepositorySymbol) private readonly breedRepo: IBreedRepository) {}
 
   async execute(dto: UpdateBreedDTO): Promise<string> {
-    const { breed } = await this.validateAndFetchFields(dto);
+    const { breed, specie } = await this.validateAndFetchFields(dto);
 
     const breedOrError = Breed.create(
       {
         name: coalesce(dto.name, breed.name),
         sequence: coalesce(dto.sequence, breed.sequence),
         associationId: breed.associationId,
+        specieId: specie.id ?? breed.specieId,
         enabled: dto.enabled ?? breed.enabled,
       },
       breed.id,
@@ -33,6 +35,7 @@ export class UpdateBreedService {
   }
 
   private async validateAndFetchFields(dto: UpdateBreedDTO) {
+    let specieEntity: Specie | undefined;
     const breed = await this.breedRepo.findById(dto.id);
 
     if (!breed) {
@@ -51,6 +54,16 @@ export class UpdateBreedService {
       }
     }
 
-    return { breed };
+    if (dto.specieId) {
+      const specie = await this.breedRepo.findById(dto.specieId);
+
+      if (!specie) {
+        throw new GenericException(`Espécie com id ${dto.specieId} não encontrada`, HttpStatus.NOT_FOUND);
+      }
+
+      specieEntity = specie;
+    }
+
+    return { breed, specie: specieEntity };
   }
 }

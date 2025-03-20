@@ -38,7 +38,7 @@ export class BreedRepository
         where,
         take: limit,
         skip,
-        orderBy: { sequence: 'desc', name: 'asc' },
+        orderBy: [{ sequence: 'desc' }, { name: 'asc' }],
       }),
       this.manager().count({ where }),
     ]);

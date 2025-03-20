@@ -8,6 +8,7 @@ model AssociationModel {
 
     users        UserModel[]
     publications PublicationModel[]
+    animals      AnimalModel[]
 
     @@map("association")
 }
@@ -24,6 +25,8 @@ model PublicationModel {
     deleted   Boolean  @default(false)
 
     association AssociationModel? @relation(fields: [associationId], references: [id])
+
+    animals AnimalModel[]
 
     @@map("post")
 }

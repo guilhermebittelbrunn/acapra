@@ -34,8 +34,6 @@ export class UpdateUserService {
       new UniqueEntityID(dto.id),
     );
 
-    console.log('userOrError :>> ', userOrError);
-
     if (userOrError instanceof GenericAppError) {
       throw new GenericException(userOrError);
     }
