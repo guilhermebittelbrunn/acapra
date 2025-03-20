@@ -5,6 +5,7 @@ import {
   ValidatedMaxLength,
   ValidatedNumber,
   ValidatedString,
+  ValidatedUUID,
 } from '@/shared/decorators/validatedTypes.decorator';
 
 export class CreateSpecieDTO {
@@ -15,6 +16,9 @@ export class CreateSpecieDTO {
   @IsOptional()
   @ValidatedNumber('sequência')
   sequence?: number;
+
+  @ValidatedUUID('espécie base')
+  specieBaseId: string;
 
   @ApiHideProperty()
   associationId: string;

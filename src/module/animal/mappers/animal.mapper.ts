@@ -1,7 +1,7 @@
-import { AnimalModel, AssociationModel, BreedModel, PublicationModel, SpecieModel } from '@prisma/client';
+import { AnimalModel, AssociationModel, BreedModel, PublicationModel } from '@prisma/client';
 
 import BreedMapper from './breed.mapper';
-import SpecieMapper from './specie.mapper';
+import SpecieMapper, { SpecieModelWithRelations } from './specie.mapper';
 
 import Animal from '../domain/animal/animal.domain';
 import AnimalGender from '../domain/animal/animalGender.domain';
@@ -15,7 +15,7 @@ import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
 import { AnimalGenderEnum, AnimalStatusEnum } from '@/shared/types/animal';
 
 export interface AnimalModelWithRelations extends AnimalModel {
-  specie?: SpecieModel;
+  specie?: SpecieModelWithRelations;
   association?: AssociationModel;
   breed?: BreedModel;
   publication?: PublicationModel | null;

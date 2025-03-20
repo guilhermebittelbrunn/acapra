@@ -1,4 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+
+import { SpecieBaseDTO } from './specieBase.dto';
 
 export class SpecieDTO {
   @ApiProperty()
@@ -11,8 +13,14 @@ export class SpecieDTO {
   sequence: number | null;
 
   @ApiProperty()
-  associationId: string | null;
+  associationId: string;
+
+  @ApiProperty()
+  specieBaseId: string;
 
   @ApiProperty()
   enabled: boolean;
+
+  @ApiHideProperty()
+  specieBase?: SpecieBaseDTO;
 }

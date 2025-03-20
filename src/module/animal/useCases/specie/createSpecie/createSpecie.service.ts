@@ -16,6 +16,7 @@ export class CreateSpecieService {
     const specieWithSameName = await this.specieRepo.findByIdentifier({
       name: dto.name,
       associationId: dto.associationId,
+      specieBaseId: dto.specieBaseId,
     });
 
     if (specieWithSameName) {
@@ -25,6 +26,7 @@ export class CreateSpecieService {
     const specieOrError = Specie.create({
       ...dto,
       associationId: new UniqueEntityID(dto.associationId),
+      specieBaseId: new UniqueEntityID(dto.specieBaseId),
     });
 
     if (specieOrError instanceof GenericAppError) {

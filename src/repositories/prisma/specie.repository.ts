@@ -23,6 +23,17 @@ export class SpecieRepository
     super('specieModel', prisma, als);
   }
 
+  async findCompleteById(id: string): Promise<Specie | null> {
+    const specie = await this.manager().findUnique({
+      where: { id },
+      include: {
+        specieBase: true,
+      },
+    });
+
+    return this.mapper.toDomainOrNull(specie);
+  }
+
   async listByAssociationId(query: ListSpecieByAssociationIdQuery): Promise<PaginatedResult<Specie>> {
     const { limit, page, skip } = this.getPaginationParams(query);
 
@@ -33,7 +44,7 @@ export class SpecieRepository
         where,
         take: limit,
         skip,
-        orderBy: { sequence: 'desc', name: 'asc' },
+        orderBy: [{ sequence: 'asc' }, { name: 'asc' }],
       }),
       this.manager().count({ where }),
     ]);

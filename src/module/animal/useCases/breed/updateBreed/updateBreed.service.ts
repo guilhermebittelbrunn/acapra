@@ -63,7 +63,7 @@ export class UpdateBreedService {
         throw new GenericException(`Espécie com id ${dto.specieId} não encontrada`, HttpStatus.NOT_FOUND);
       }
 
-      specieEntity = specie;
+      // specieEntity = specie;
     }
 
     return { breed, specie: specieEntity };

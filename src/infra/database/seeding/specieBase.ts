@@ -1,0 +1,78 @@
+import { SpecieBaseModel } from '@prisma/client';
+
+import { SpecieBaseTypeEnum } from '../../../shared/types/animal';
+
+export const specieBaseSeeding: SpecieBaseModel[] = [
+  {
+    id: '9549e5d6-772f-4f80-8fb4-4ef05d7b43ab',
+    name: 'Cachorro',
+    type: SpecieBaseTypeEnum.DOG,
+    enabled: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    deleted: false,
+  },
+  {
+    id: '3eeb2322-8717-4705-838d-0bef62198187',
+    name: 'Gato',
+    type: SpecieBaseTypeEnum.CAT,
+    enabled: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    deleted: false,
+  },
+  {
+    id: 'b8fbeb28-7ee3-4208-a993-d8ae571077f3',
+    name: 'Passarinho',
+    type: SpecieBaseTypeEnum.BIRD,
+    enabled: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    deleted: false,
+  },
+  {
+    id: '83f595ca-95c4-48ca-9444-6e3313f9192b',
+    name: 'Peixe',
+    type: SpecieBaseTypeEnum.FISH,
+    enabled: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    deleted: false,
+  },
+  {
+    id: '7e9c8994-9263-4965-81dc-7c7a33b48b59',
+    name: 'Réptil',
+    type: SpecieBaseTypeEnum.REPTILE,
+    enabled: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    deleted: false,
+  },
+  {
+    id: '8a4719f6-a355-4a7d-b439-555a9cce21af',
+    name: 'Roedor',
+    type: SpecieBaseTypeEnum.RODENT,
+    enabled: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    deleted: false,
+  },
+  {
+    id: '8bc98754-4052-4520-9108-d473496ec06a',
+    name: 'Fazenda',
+    type: SpecieBaseTypeEnum.FARM,
+    enabled: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    deleted: false,
+  },
+  {
+    id: '87bab805-adf3-4e4b-8ece-96402ce1b223',
+    name: 'Outro',
+    type: SpecieBaseTypeEnum.OTHER,
+    enabled: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    deleted: false,
+  },
+];

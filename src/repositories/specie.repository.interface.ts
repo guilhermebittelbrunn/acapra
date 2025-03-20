@@ -1,4 +1,9 @@
-import { IBaseRepository, PaginatedResult, PaginationQuery } from './base.repository.interface';
+import {
+  IBaseRepository,
+  PaginatedResult,
+  PaginationQuery,
+  SingleEntityResponse,
+} from './base.repository.interface';
 
 import Specie from '@/module/animal/domain/specie.domain';
 
@@ -7,6 +12,7 @@ export interface ListSpecieByAssociationIdQuery extends PaginationQuery {
 }
 
 export interface ISpecieRepository extends IBaseRepository<Specie> {
+  findCompleteById(id: string): SingleEntityResponse<Specie>;
   listByAssociationId(query: ListSpecieByAssociationIdQuery): Promise<PaginatedResult<Specie>>;
 }
 
