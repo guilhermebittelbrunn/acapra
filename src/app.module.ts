@@ -10,6 +10,7 @@ import { PrismaModule } from './infra/database/prisma/prisma.module';
 import { TransactionManagerModule } from './infra/database/transactionManager/transactionManager.module';
 import { AnimalApplicationModule } from './module/animal/useCases/animalApplication.module';
 import { AssociationApplicationModule } from './module/association/useCases/associationApplication.module';
+import { SharedApplicationModule } from './module/shared/useCases/sharedApplication.module';
 import { ValidateUserAccessModule } from './module/user/domain/user/validateUserAccess/validateUserAccess.module';
 import { UserApplicationModule } from './module/user/useCases/user.application.module';
 import { AlsMiddleware } from './shared/config/als/als.middleware';
@@ -55,6 +56,7 @@ import { JwtRefreshStrategy } from './shared/strategies/jwtRefresh.strategy';
     UserApplicationModule,
     AssociationApplicationModule,
     AnimalApplicationModule,
+    SharedApplicationModule,
   ],
   controllers: [AppController],
   providers: [
