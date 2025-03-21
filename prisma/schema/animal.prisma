@@ -10,7 +10,6 @@ model SpecieModel {
   updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz()
   deleted   Boolean  @default(false)
 
-  breed   BreedModel[]
   animals AnimalModel[]
 
   specieBase SpecieBaseModel @relation(fields: [specieBaseId], references: [id])
@@ -33,31 +32,12 @@ model SpecieBaseModel {
   @@map("specieBase")
 }
 
-model BreedModel {
-  id            String  @id @default(uuid()) @db.Uuid
-  associationId String  @map("association_id") @db.Uuid
-  specieId      String  @map("specie_id") @db.Uuid
-  name          String  @unique
-  sequence      Int?
-  enabled       Boolean @default(true)
-
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz()
-  deleted   Boolean  @default(false)
-
-  specie SpecieModel @relation(fields: [specieId], references: [id])
-
-  animals AnimalModel[]
-
-  @@map("breed")
-}
-
 model AnimalModel {
   id            String  @id @default(uuid()) @db.Uuid
   associationId String  @map("association_id") @db.Uuid
   specieId      String  @map("specie_id") @db.Uuid
   publicationId String? @map("publication_id") @db.Uuid
-  breedId       String  @map("breed_id") @db.Uuid
+  breed         String
   name          String  @unique
   age           Int
   description   String?
@@ -70,7 +50,6 @@ model AnimalModel {
   deleted   Boolean  @default(false)
 
   specie      SpecieModel?      @relation(fields: [specieId], references: [id])
-  breed       BreedModel?       @relation(fields: [breedId], references: [id])
   association AssociationModel? @relation(fields: [associationId], references: [id])
   publication PublicationModel? @relation(fields: [publicationId], references: [id])
 

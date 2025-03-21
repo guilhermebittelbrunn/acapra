@@ -1,9 +1,9 @@
-import { AnimalModel, AssociationModel, BreedModel, PublicationModel } from '@prisma/client';
+import { AnimalModel, AssociationModel, PublicationModel } from '@prisma/client';
 
-import BreedMapper from './breed.mapper';
 import SpecieMapper, { SpecieModelWithRelations } from './specie.mapper';
 
 import Animal from '../domain/animal/animal.domain';
+import AnimalBreed from '../domain/animal/animalBreed.domain';
 import AnimalGender from '../domain/animal/animalGender.domain';
 import AnimalStatus from '../domain/animal/animalStatus.domain';
 import AnimalDTO from '../dto/animal.dto';
@@ -17,7 +17,6 @@ import { AnimalGenderEnum, AnimalStatusEnum } from '@/shared/types/animal';
 export interface AnimalModelWithRelations extends AnimalModel {
   specie?: SpecieModelWithRelations;
   association?: AssociationModel;
-  breed?: BreedModel;
   publication?: PublicationModel | null;
 }
 
@@ -28,7 +27,7 @@ class BaseAnimalMapper extends Mapper<Animal, AnimalModelWithRelations, AnimalDT
         name: animal.name,
         associationId: new UniqueEntityID(animal.associationId),
         specieId: new UniqueEntityID(animal.specieId),
-        breedId: new UniqueEntityID(animal.breedId),
+        breed: AnimalBreed.create(animal.breed) as AnimalBreed,
         publicationId: UniqueEntityID.createOrUndefined(animal.publicationId),
         age: animal.age,
         status: AnimalStatus.create(animal.status as AnimalStatusEnum) as AnimalStatus,
@@ -40,7 +39,6 @@ class BaseAnimalMapper extends Mapper<Animal, AnimalModelWithRelations, AnimalDT
         updatedAt: animal.updatedAt,
         specie: SpecieMapper.toDomainOrUndefined(animal.specie),
         association: AssociationMapper.toDomainOrUndefined(animal.association),
-        breed: BreedMapper.toDomainOrUndefined(animal.breed),
         publication: PublicationMapper.toDomainOrUndefined(animal.publication),
       },
       new UniqueEntityID(animal.id),
@@ -51,7 +49,7 @@ class BaseAnimalMapper extends Mapper<Animal, AnimalModelWithRelations, AnimalDT
       id: animal.id.toValue(),
       associationId: animal.associationId.toValue(),
       specieId: animal.specieId.toValue(),
-      breedId: animal.breedId.toValue(),
+      breed: animal.breed.value,
       publicationId: animal.publicationId?.toValue(),
       name: animal.name,
       weight: animal.weight,
@@ -62,14 +60,14 @@ class BaseAnimalMapper extends Mapper<Animal, AnimalModelWithRelations, AnimalDT
       deleted: animal.deleted,
       createdAt: animal.createdAt,
       updatedAt: animal.updatedAt,
-    } as AnimalModelWithRelations;
+    };
   }
   toDTO(animal: Animal): AnimalDTO {
     return {
       id: animal.id.toValue(),
       associationId: animal.associationId.toValue(),
       specieId: animal.specieId.toValue(),
-      breedId: animal.breedId.toValue(),
+      breed: animal.breed.value,
       publicationId: animal.publicationId?.toValue(),
       name: animal.name,
       description: animal.description,
@@ -80,7 +78,6 @@ class BaseAnimalMapper extends Mapper<Animal, AnimalModelWithRelations, AnimalDT
       createdAt: animal.createdAt,
       updatedAt: animal.updatedAt,
       specie: SpecieMapper.toDTOOrUndefined(animal.specie),
-      breed: BreedMapper.toDTOOrUndefined(animal.breed),
       publication: PublicationMapper.toDTOOrUndefined(animal.publication),
     };
   }

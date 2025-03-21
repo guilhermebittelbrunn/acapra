@@ -33,6 +33,8 @@ export class CreateSpecieService {
       throw new GenericException(specieOrError);
     }
 
+    console.log('specieOrError :>> ', specieOrError);
+
     const specie = await this.specieRepo.create(specieOrError);
 
     return specie;

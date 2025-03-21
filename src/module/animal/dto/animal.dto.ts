@@ -1,6 +1,5 @@
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 
-import { BreedDTO } from './breed.dto';
 import { SpecieDTO } from './specie.dto';
 
 import { PublicationDTO } from '@/module/association/dto/publication.dto';
@@ -23,13 +22,13 @@ export default class AnimalDTO {
   weight: number;
 
   @ApiProperty()
+  breed: string;
+
+  @ApiProperty()
   associationId: string;
 
   @ApiProperty()
   specieId: string;
-
-  @ApiProperty()
-  breedId: string;
 
   @ApiProperty()
   publicationId?: string | null;
@@ -48,9 +47,6 @@ export default class AnimalDTO {
 
   @ApiHideProperty()
   specie?: SpecieDTO;
-
-  @ApiHideProperty()
-  breed?: BreedDTO;
 
   @ApiHideProperty()
   publication?: PublicationDTO | null;

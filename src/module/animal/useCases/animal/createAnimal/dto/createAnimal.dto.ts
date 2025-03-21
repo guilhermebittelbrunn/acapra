@@ -19,8 +19,8 @@ export class CreateAnimalDTO {
   @ValidatedUUID('espécie')
   specieId: string;
 
-  @ValidatedUUID('raça')
-  breedId: string;
+  @ValidatedString('raça')
+  breed: string;
 
   @IsOptional()
   @ValidatedUUID('publicação')

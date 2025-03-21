@@ -16,10 +16,6 @@ export class ListAnimalsByAssociationDTO extends PaginationQuery {
   specieIds?: string[];
 
   @IsOptional()
-  @ValidatedIds()
-  breedIds?: string[];
-
-  @IsOptional()
   @ValidatedEnum('status', AnimalStatusEnum, { each: true })
   statuses?: AnimalStatusEnum[];
 

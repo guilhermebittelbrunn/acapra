@@ -3,9 +3,9 @@ import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { CreateAnimalDTO } from './dto/createAnimal.dto';
 
 import Animal from '@/module/animal/domain/animal/animal.domain';
+import AnimalBreed from '@/module/animal/domain/animal/animalBreed.domain';
 import AnimalGender from '@/module/animal/domain/animal/animalGender.domain';
 import { IAnimalRepository, IAnimalRepositorySymbol } from '@/repositories/animal.repository.interface';
-import { IBreedRepository, IBreedRepositorySymbol } from '@/repositories/breed.repository.interface';
 import {
   IPublicationRepository,
   IPublicationRepositorySymbol,
@@ -20,21 +20,20 @@ export class CreateAnimalService {
   constructor(
     @Inject(IAnimalRepositorySymbol) private readonly animalRepo: IAnimalRepository,
     @Inject(ISpecieRepositorySymbol) private readonly specieRepo: ISpecieRepository,
-    @Inject(IBreedRepositorySymbol) private readonly breedRepo: IBreedRepository,
     @Inject(IPublicationRepositorySymbol) private readonly publicationRepo: IPublicationRepository,
   ) {}
 
   async execute(dto: CreateAnimalDTO) {
     await this.validateFields(dto);
 
-    const { gender } = this.buildEntities(dto);
+    const { gender, breed } = this.buildEntities(dto);
 
     const animalOrError = Animal.create({
       ...dto,
       associationId: new UniqueEntityID(dto.associationId),
       specieId: new UniqueEntityID(dto.specieId),
-      breedId: new UniqueEntityID(dto.breedId),
       publicationId: UniqueEntityID.createOrUndefined(dto.publicationId),
+      breed,
       gender,
     });
 
@@ -52,19 +51,6 @@ export class CreateAnimalService {
 
     if (!specie) {
       throw new GenericException(`Espécie com id ${dto.specieId} não encontrada`, HttpStatus.NOT_FOUND);
-    }
-
-    const breed = await this.breedRepo.findById(dto.breedId);
-
-    if (!breed) {
-      throw new GenericException(`Raça com id ${dto.breedId} não encontrada`, HttpStatus.NOT_FOUND);
-    }
-
-    if (!breed.specieId.equals(specie.id)) {
-      throw new GenericException(
-        `A raça ${breed.name} não pertence à espécie ${specie.name}`,
-        HttpStatus.BAD_REQUEST,
-      );
     }
 
     if (dto.publicationId) {
@@ -86,6 +72,12 @@ export class CreateAnimalService {
       throw new GenericException(genderOrError);
     }
 
-    return { gender: genderOrError };
+    const breedOrError = AnimalBreed.create(dto.breed);
+
+    if (breedOrError instanceof GenericAppError) {
+      throw new GenericException(breedOrError);
+    }
+
+    return { gender: genderOrError, breed: breedOrError };
   }
 }

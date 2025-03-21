@@ -29,7 +29,6 @@ export class AnimalRepository
       where: { id },
       include: {
         specie: true,
-        breed: true,
         publication: true,
         association: true,
       },
@@ -46,7 +45,6 @@ export class AnimalRepository
       ...(!isEmpty(query.term) && { name: { contains: query.term } }),
       ...(filledArray(query.ids) && { id: { in: query.ids } }),
       ...(filledArray(query.specieIds) && { specieId: { in: query.specieIds } }),
-      ...(filledArray(query.breedIds) && { breedId: { in: query.breedIds } }),
       ...(filledArray(query.statuses) && { status: { in: query.statuses } }),
       ...(filledArray(query.genders) && { gender: { in: query.genders } }),
     };

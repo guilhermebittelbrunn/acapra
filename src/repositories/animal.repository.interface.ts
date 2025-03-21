@@ -13,7 +13,6 @@ export interface ListAnimalByAssociationIdQuery extends PaginationQuery {
 
   ids?: string[];
   specieIds?: string[];
-  breedIds?: string[];
   statuses?: AnimalStatusEnum[];
   genders?: AnimalGenderEnum[];
 }

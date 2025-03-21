@@ -3,13 +3,12 @@ import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { UpdateAnimalDTO } from './dto/updateAnimal.dto';
 
 import Animal from '@/module/animal/domain/animal/animal.domain';
+import AnimalBreed from '@/module/animal/domain/animal/animalBreed.domain';
 import AnimalGender from '@/module/animal/domain/animal/animalGender.domain';
 import AnimalStatus from '@/module/animal/domain/animal/animalStatus.domain';
-import Breed from '@/module/animal/domain/breed.domain';
 import Specie from '@/module/animal/domain/specie.domain';
 import Publication from '@/module/association/domain/publication.domain';
 import { IAnimalRepository, IAnimalRepositorySymbol } from '@/repositories/animal.repository.interface';
-import { IBreedRepository, IBreedRepositorySymbol } from '@/repositories/breed.repository.interface';
 import {
   IPublicationRepository,
   IPublicationRepositorySymbol,
@@ -24,23 +23,22 @@ export class UpdateAnimalService {
   constructor(
     @Inject(IAnimalRepositorySymbol) private readonly animalRepo: IAnimalRepository,
     @Inject(ISpecieRepositorySymbol) private readonly specieRepo: ISpecieRepository,
-    @Inject(IBreedRepositorySymbol) private readonly breedRepo: IBreedRepository,
     @Inject(IPublicationRepositorySymbol) private readonly publicationRepo: IPublicationRepository,
   ) {}
 
   async execute(dto: UpdateAnimalDTO) {
-    const { breed, specie, publication, animal } = await this.validateAndFetchFields(dto);
+    const { specie, publication, animal } = await this.validateAndFetchFields(dto);
 
-    const { gender, status } = this.buildEntities(dto);
+    const { gender, status, breed } = this.buildEntities(dto);
 
     const animalOrError = Animal.create(
       {
         ...dto,
         specieId: coalesce(specie?.id, animal.specieId),
-        breedId: coalesce(breed?.id, animal.breedId),
         publicationId: publication?.id,
         associationId: animal.associationId,
         status: coalesce(status, animal.status),
+        breed: coalesce(breed, animal.breed),
         gender: coalesce(gender, animal.gender),
         name: coalesce(dto.name, animal.name),
         age: coalesce(dto.age, animal.age),
@@ -60,7 +58,6 @@ export class UpdateAnimalService {
 
   private async validateAndFetchFields(dto: UpdateAnimalDTO) {
     let specieEntity: Specie | undefined;
-    let breedEntity: Breed | undefined;
     let publicationEntity: Publication | undefined;
 
     const animal = await this.animalRepo.findById(dto.id);
@@ -78,15 +75,6 @@ export class UpdateAnimalService {
       specieEntity = specie;
     }
 
-    if (dto.breedId) {
-      const breed = await this.breedRepo.findById(dto.breedId);
-
-      if (!breed) {
-        throw new GenericException(`Raça com id ${dto.breedId} não encontrada`, HttpStatus.NOT_FOUND);
-      }
-      breedEntity = breed;
-    }
-
     if (dto.publicationId) {
       const publication = await this.publicationRepo.findById(dto.publicationId);
 
@@ -99,12 +87,13 @@ export class UpdateAnimalService {
       publicationEntity = publication;
     }
 
-    return { specie: specieEntity, breed: breedEntity, publication: publicationEntity, animal };
+    return { specie: specieEntity, publication: publicationEntity, animal };
   }
 
   private buildEntities(dto: UpdateAnimalDTO) {
     let gender: AnimalGender | undefined;
     let status: AnimalStatus | undefined;
+    let breed: AnimalBreed | undefined;
 
     if (dto.gender) {
       const genderOrError = AnimalGender.create(dto.gender);
@@ -126,6 +115,16 @@ export class UpdateAnimalService {
       status = statusOrError;
     }
 
-    return { gender, status };
+    if (dto.breed) {
+      const breedOrError = AnimalBreed.create(dto.breed);
+
+      if (breedOrError instanceof GenericAppError) {
+        throw new GenericException(breedOrError);
+      }
+
+      breed = breedOrError;
+    }
+
+    return { gender, status, breed };
   }
 }
