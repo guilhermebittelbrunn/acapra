@@ -5,6 +5,7 @@ import { CreateAnimalDTO } from './dto/createAnimal.dto';
 import Animal from '@/module/animal/domain/animal/animal.domain';
 import AnimalBreed from '@/module/animal/domain/animal/animalBreed.domain';
 import AnimalGender from '@/module/animal/domain/animal/animalGender.domain';
+import AnimalSize from '@/module/animal/domain/animal/animalSize.domain';
 import { IAnimalRepository, IAnimalRepositorySymbol } from '@/repositories/animal.repository.interface';
 import {
   IPublicationRepository,
@@ -26,15 +27,12 @@ export class CreateAnimalService {
   async execute(dto: CreateAnimalDTO) {
     await this.validateFields(dto);
 
-    const { gender, breed } = this.buildEntities(dto);
-
     const animalOrError = Animal.create({
       ...dto,
+      ...this.buildEntities(dto),
       associationId: new UniqueEntityID(dto.associationId),
       specieId: new UniqueEntityID(dto.specieId),
       publicationId: UniqueEntityID.createOrUndefined(dto.publicationId),
-      breed,
-      gender,
     });
 
     if (animalOrError instanceof GenericAppError) {
@@ -78,6 +76,12 @@ export class CreateAnimalService {
       throw new GenericException(breedOrError);
     }
 
-    return { gender: genderOrError, breed: breedOrError };
+    const sizeOrError = AnimalSize.create(dto.size);
+
+    if (sizeOrError instanceof GenericAppError) {
+      throw new GenericException(sizeOrError);
+    }
+
+    return { gender: genderOrError, breed: breedOrError, size: sizeOrError };
   }
 }

@@ -5,6 +5,7 @@ import { UpdateAnimalDTO } from './dto/updateAnimal.dto';
 import Animal from '@/module/animal/domain/animal/animal.domain';
 import AnimalBreed from '@/module/animal/domain/animal/animalBreed.domain';
 import AnimalGender from '@/module/animal/domain/animal/animalGender.domain';
+import AnimalSize from '@/module/animal/domain/animal/animalSize.domain';
 import AnimalStatus from '@/module/animal/domain/animal/animalStatus.domain';
 import Specie from '@/module/animal/domain/specie.domain';
 import Publication from '@/module/association/domain/publication.domain';
@@ -29,7 +30,7 @@ export class UpdateAnimalService {
   async execute(dto: UpdateAnimalDTO) {
     const { specie, publication, animal } = await this.validateAndFetchFields(dto);
 
-    const { gender, status, breed } = this.buildEntities(dto);
+    const { gender, status, breed, size } = this.buildEntities(dto);
 
     const animalOrError = Animal.create(
       {
@@ -39,10 +40,10 @@ export class UpdateAnimalService {
         associationId: animal.associationId,
         status: coalesce(status, animal.status),
         breed: coalesce(breed, animal.breed),
+        size: coalesce(size, animal.size),
         gender: coalesce(gender, animal.gender),
         name: coalesce(dto.name, animal.name),
         age: coalesce(dto.age, animal.age),
-        weight: coalesce(dto.weight, animal.weight),
       },
       animal.id,
     );
@@ -94,6 +95,7 @@ export class UpdateAnimalService {
     let gender: AnimalGender | undefined;
     let status: AnimalStatus | undefined;
     let breed: AnimalBreed | undefined;
+    let size: AnimalSize | undefined;
 
     if (dto.gender) {
       const genderOrError = AnimalGender.create(dto.gender);
@@ -125,6 +127,16 @@ export class UpdateAnimalService {
       breed = breedOrError;
     }
 
-    return { gender, status, breed };
+    if (dto.size) {
+      const sizeOrError = AnimalSize.create(dto.size);
+
+      if (sizeOrError instanceof GenericAppError) {
+        throw new GenericException(sizeOrError);
+      }
+
+      size = sizeOrError;
+    }
+
+    return { gender, status, breed, size };
   }
 }

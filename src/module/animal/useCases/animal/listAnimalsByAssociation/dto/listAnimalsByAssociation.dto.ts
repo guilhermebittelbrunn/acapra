@@ -4,7 +4,7 @@ import { IsOptional } from 'class-validator';
 import { PaginationQuery } from '@/repositories/base.repository.interface';
 import { ValidatedIds } from '@/shared/decorators/validatedIds.decorator';
 import { ValidatedEnum } from '@/shared/decorators/validatedTypes.decorator';
-import { AnimalGenderEnum, AnimalStatusEnum } from '@/shared/types/animal';
+import { AnimalGenderEnum, AnimalSizeEnum, AnimalStatusEnum } from '@/shared/types/animal';
 
 export class ListAnimalsByAssociationDTO extends PaginationQuery {
   @IsOptional()
@@ -22,6 +22,10 @@ export class ListAnimalsByAssociationDTO extends PaginationQuery {
   @IsOptional()
   @ValidatedEnum('genêro', AnimalGenderEnum, { each: true })
   genders?: AnimalGenderEnum[];
+
+  @IsOptional()
+  @ValidatedEnum('tamanho', AnimalGenderEnum, { each: true })
+  sizes?: AnimalSizeEnum[];
 
   @ApiHideProperty()
   associationId: string;

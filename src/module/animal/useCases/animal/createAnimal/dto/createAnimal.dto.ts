@@ -9,7 +9,7 @@ import {
   ValidatedString,
   ValidatedUUID,
 } from '@/shared/decorators/validatedTypes.decorator';
-import { AnimalGenderEnum } from '@/shared/types/animal';
+import { AnimalGenderEnum, AnimalSizeEnum } from '@/shared/types/animal';
 
 export class CreateAnimalDTO {
   @ValidatedString('nome')
@@ -30,12 +30,16 @@ export class CreateAnimalDTO {
   @ValidatedMinValue('idade', 1)
   age: number;
 
+  @IsOptional()
   @ValidatedNumber('peso')
   @ValidatedMinValue('peso', 0, false)
-  weight: number;
+  weight?: number;
 
   @ValidatedEnum('genêro', AnimalGenderEnum)
   gender: AnimalGenderEnum;
+
+  @ValidatedEnum('Tamanho', AnimalGenderEnum)
+  size: AnimalSizeEnum;
 
   @IsOptional()
   @ValidatedString('descrição')

@@ -3,7 +3,7 @@ import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { SpecieDTO } from './specie.dto';
 
 import { PublicationDTO } from '@/module/association/dto/publication.dto';
-import { AnimalGenderEnum, AnimalStatusEnum } from '@/shared/types/animal';
+import { AnimalGenderEnum, AnimalSizeEnum, AnimalStatusEnum } from '@/shared/types/animal';
 
 export default class AnimalDTO {
   @ApiProperty()
@@ -19,7 +19,10 @@ export default class AnimalDTO {
   age: number;
 
   @ApiProperty()
-  weight: number;
+  weight?: number | null;
+
+  @ApiProperty()
+  size: AnimalSizeEnum;
 
   @ApiProperty()
   breed: string;

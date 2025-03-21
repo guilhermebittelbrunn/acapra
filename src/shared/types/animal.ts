@@ -9,6 +9,12 @@ export enum AnimalGenderEnum {
   FEMALE = 'female',
 }
 
+export enum AnimalSizeEnum {
+  SMALL = 'small',
+  MEDIUM = 'medium',
+  BIG = 'big',
+}
+
 export enum SpecieBaseTypeEnum {
   DOG = 'dog',
   CAT = 'cat',

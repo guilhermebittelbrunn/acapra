@@ -43,7 +43,8 @@ model AnimalModel {
   description   String?
   status        String
   gender        String
-  weight        Float
+  weight        Float?
+  size          String
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz()

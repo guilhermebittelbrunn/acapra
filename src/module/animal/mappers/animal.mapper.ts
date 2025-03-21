@@ -5,6 +5,7 @@ import SpecieMapper, { SpecieModelWithRelations } from './specie.mapper';
 import Animal from '../domain/animal/animal.domain';
 import AnimalBreed from '../domain/animal/animalBreed.domain';
 import AnimalGender from '../domain/animal/animalGender.domain';
+import AnimalSize from '../domain/animal/animalSize.domain';
 import AnimalStatus from '../domain/animal/animalStatus.domain';
 import AnimalDTO from '../dto/animal.dto';
 
@@ -12,7 +13,7 @@ import AssociationMapper from '@/module/association/mappers/association.mapper';
 import PublicationMapper from '@/module/association/mappers/publication.mapper';
 import Mapper from '@/shared/core/domain/Mapper';
 import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
-import { AnimalGenderEnum, AnimalStatusEnum } from '@/shared/types/animal';
+import { AnimalGenderEnum, AnimalSizeEnum, AnimalStatusEnum } from '@/shared/types/animal';
 
 export interface AnimalModelWithRelations extends AnimalModel {
   specie?: SpecieModelWithRelations;
@@ -34,6 +35,7 @@ class BaseAnimalMapper extends Mapper<Animal, AnimalModelWithRelations, AnimalDT
         gender: AnimalGender.create(animal.gender as AnimalGenderEnum) as AnimalGender,
         description: animal.description,
         weight: animal.weight,
+        size: AnimalSize.create(animal.size as AnimalSizeEnum) as AnimalSize,
         deleted: animal.deleted,
         createdAt: animal.createdAt,
         updatedAt: animal.updatedAt,
@@ -55,6 +57,7 @@ class BaseAnimalMapper extends Mapper<Animal, AnimalModelWithRelations, AnimalDT
       weight: animal.weight,
       age: animal.age,
       description: animal.description,
+      size: animal.size.value,
       gender: animal.gender.value,
       status: animal.status.value,
       deleted: animal.deleted,
@@ -75,6 +78,7 @@ class BaseAnimalMapper extends Mapper<Animal, AnimalModelWithRelations, AnimalDT
       weight: animal.weight,
       status: animal.status.value,
       gender: animal.gender.value,
+      size: animal.size.value,
       createdAt: animal.createdAt,
       updatedAt: animal.updatedAt,
       specie: SpecieMapper.toDTOOrUndefined(animal.specie),
