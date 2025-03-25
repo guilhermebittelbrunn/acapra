@@ -1,4 +1,4 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { UpdateAnimalDTO } from './dto/updateAnimal.dto';
 
@@ -16,7 +16,7 @@ import {
 } from '@/repositories/publication.repository.interface';
 import { ISpecieRepository, ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
-import { GenericException } from '@/shared/core/logic/GenericException';
+import GenericErrors from '@/shared/core/logic/GenericErrors';
 import { coalesce } from '@/shared/core/utils/undefinedHelpers';
 
 @Injectable()
@@ -28,9 +28,17 @@ export class UpdateAnimalService {
   ) {}
 
   async execute(dto: UpdateAnimalDTO) {
-    const { specie, publication, animal } = await this.validateAndFetchFields(dto);
+    const validatedFieldsOrError = await this.validateAndFetchFields(dto);
+    if (validatedFieldsOrError instanceof GenericAppError) {
+      return validatedFieldsOrError;
+    }
+    const { specie, publication, animal } = validatedFieldsOrError;
 
-    const { gender, status, breed, size } = this.buildEntities(dto);
+    const buildedEntitiesOrError = this.buildEntities(dto);
+    if (buildedEntitiesOrError instanceof GenericAppError) {
+      return buildedEntitiesOrError;
+    }
+    const { status, breed, size, gender } = buildedEntitiesOrError;
 
     const animalOrError = Animal.create(
       {
@@ -49,12 +57,10 @@ export class UpdateAnimalService {
     );
 
     if (animalOrError instanceof GenericAppError) {
-      throw new GenericException(animalOrError);
+      return animalOrError;
     }
 
-    const rawId = await this.animalRepo.update(animalOrError);
-
-    return rawId;
+    return this.animalRepo.update(animalOrError);
   }
 
   private async validateAndFetchFields(dto: UpdateAnimalDTO) {
@@ -64,14 +70,14 @@ export class UpdateAnimalService {
     const animal = await this.animalRepo.findById(dto.id);
 
     if (!animal) {
-      throw new GenericException(`Animal com id ${dto.id} não encontrado`, HttpStatus.NOT_FOUND);
+      return new GenericErrors.NotFound(`Animal com id ${dto.id} não encontrado`);
     }
 
     if (dto.specieId) {
       const specie = await this.specieRepo.findById(dto.specieId);
 
       if (!specie) {
-        throw new GenericException(`Espécie com id ${dto.specieId} não encontrada`, HttpStatus.NOT_FOUND);
+        return new GenericErrors.NotFound(`Espécie com id ${dto.specieId} não encontrada`);
       }
       specieEntity = specie;
     }
@@ -80,10 +86,7 @@ export class UpdateAnimalService {
       const publication = await this.publicationRepo.findById(dto.publicationId);
 
       if (!publication) {
-        throw new GenericException(
-          `Publicação com id ${dto.publicationId} não encontrada`,
-          HttpStatus.NOT_FOUND,
-        );
+        return new GenericErrors.NotFound(`Publicação com id ${dto.publicationId} não encontrada`);
       }
       publicationEntity = publication;
     }
@@ -101,7 +104,7 @@ export class UpdateAnimalService {
       const genderOrError = AnimalGender.create(dto.gender);
 
       if (genderOrError instanceof GenericAppError) {
-        throw new GenericException(genderOrError);
+        return genderOrError;
       }
 
       gender = genderOrError;
@@ -111,7 +114,7 @@ export class UpdateAnimalService {
       const statusOrError = AnimalStatus.create(dto.status);
 
       if (statusOrError instanceof GenericAppError) {
-        throw new GenericException(statusOrError);
+        return statusOrError;
       }
 
       status = statusOrError;
@@ -121,7 +124,7 @@ export class UpdateAnimalService {
       const breedOrError = AnimalBreed.create(dto.breed);
 
       if (breedOrError instanceof GenericAppError) {
-        throw new GenericException(breedOrError);
+        return breedOrError;
       }
 
       breed = breedOrError;
@@ -131,7 +134,7 @@ export class UpdateAnimalService {
       const sizeOrError = AnimalSize.create(dto.size);
 
       if (sizeOrError instanceof GenericAppError) {
-        throw new GenericException(sizeOrError);
+        return sizeOrError;
       }
 
       size = sizeOrError;

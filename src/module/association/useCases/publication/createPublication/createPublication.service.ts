@@ -9,7 +9,6 @@ import {
 } from '@/repositories/publication.repository.interface';
 import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
-import { GenericException } from '@/shared/core/logic/GenericException';
 
 @Injectable()
 export class CreatePublicationService {
@@ -22,11 +21,9 @@ export class CreatePublicationService {
     });
 
     if (publicationOrError instanceof GenericAppError) {
-      throw new GenericException(publicationOrError);
+      return publicationOrError;
     }
 
-    const publication = await this.publicationRepo.create(publicationOrError);
-
-    return publication;
+    return this.publicationRepo.create(publicationOrError);
   }
 }

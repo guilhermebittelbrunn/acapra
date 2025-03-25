@@ -5,6 +5,8 @@ import { FindAnimalByIdService } from './findAnimalById.service';
 
 import AnimalDTO from '@/module/animal/dto/animal.dto';
 import AnimalMapper from '@/module/animal/mappers/animal.mapper';
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
 
@@ -16,8 +18,12 @@ export class FindAnimalByIdController {
 
   @Get('/:id')
   async handle(@Param('id') animalId: string): Promise<AnimalDTO> {
-    const animal = await this.useCase.execute(animalId);
+    const result = await this.useCase.execute(animalId);
 
-    return AnimalMapper.toDTO(animal);
+    if (result instanceof GenericAppError) {
+      throw new GenericException(result);
+    }
+
+    return AnimalMapper.toDTO(result);
   }
 }

@@ -1,20 +1,24 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { UpdateTagDTO } from './dto/updateTag.dto';
 
 import Tag from '@/module/association/domain/tag.domain';
 import { ITagRepository, ITagRepositorySymbol } from '@/repositories/tag.repository.interface';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
-import { GenericException } from '@/shared/core/logic/GenericException';
+import GenericErrors from '@/shared/core/logic/GenericErrors';
 import { coalesce } from '@/shared/core/utils/undefinedHelpers';
 
 @Injectable()
 export class UpdateTagService {
   constructor(@Inject(ITagRepositorySymbol) private readonly tagRepo: ITagRepository) {}
 
-  async execute(dto: UpdateTagDTO): Promise<string> {
-    const { tag } = await this.validateAndFetchFields(dto);
+  async execute(dto: UpdateTagDTO) {
+    const validatedFieldsOrError = await this.validateAndFetchFields(dto);
+    if (validatedFieldsOrError instanceof GenericAppError) {
+      return validatedFieldsOrError;
+    }
 
+    const { tag } = validatedFieldsOrError;
     const tagOrError = Tag.create(
       {
         name: coalesce(dto.name, tag.name),
@@ -25,19 +29,17 @@ export class UpdateTagService {
     );
 
     if (tagOrError instanceof GenericAppError) {
-      throw new GenericException(tagOrError.message, HttpStatus.BAD_REQUEST);
+      return tagOrError;
     }
 
-    const rawId = await this.tagRepo.update(tagOrError);
-
-    return rawId;
+    return this.tagRepo.update(tagOrError);
   }
 
   private async validateAndFetchFields(dto: UpdateTagDTO) {
     const tag = await this.tagRepo.findById(dto.id);
 
     if (!tag) {
-      throw new GenericException(`Etiqueta com id ${dto.id} não encontrada`, HttpStatus.NOT_FOUND);
+      return new GenericErrors.NotFound(`Etiqueta com id ${dto.id} não encontrada`);
     }
 
     if (dto?.name) {
@@ -47,7 +49,7 @@ export class UpdateTagService {
       });
 
       if (tagWithSameName) {
-        throw new GenericException(`Etiqueta com nome ${dto.name} já existe`, HttpStatus.CONFLICT);
+        return new GenericErrors.Conflict(`Etiqueta com nome ${dto.name} já existe`);
       }
     }
 

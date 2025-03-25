@@ -1,17 +1,17 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { ISpecieRepository, ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
-import { GenericException } from '@/shared/core/logic/GenericException';
+import GenericErrors from '@/shared/core/logic/GenericErrors';
 
 @Injectable()
 export class DeleteSpecieService {
   constructor(@Inject(ISpecieRepositorySymbol) private readonly specieRepo: ISpecieRepository) {}
 
-  async execute(id: string): Promise<void> {
+  async execute(id: string) {
     const deleted = await this.specieRepo.delete(id);
 
     if (!deleted) {
-      throw new GenericException(`Espécie com id${id} não encontrada`, HttpStatus.NOT_FOUND);
+      return new GenericErrors.NotFound(`Espécie com id${id} não encontrada`);
     }
   }
 }

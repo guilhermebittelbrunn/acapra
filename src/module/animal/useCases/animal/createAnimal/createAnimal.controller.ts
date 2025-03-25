@@ -8,6 +8,8 @@ import { TransactionManagerService } from '@/infra/database/transactionManager/t
 import AnimalDTO from '@/module/animal/dto/animal.dto';
 import AnimalMapper from '@/module/animal/mappers/animal.mapper';
 import User from '@/module/user/domain/user/user.domain';
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
 import { GetUser } from '@/shared/decorators/getUser.decorator';
 import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
@@ -26,8 +28,12 @@ export class CreateAnimalController {
   async handle(@ValidatedBody() body: CreateAnimalDTO, @GetUser() user: User): Promise<AnimalDTO> {
     const payload = { ...body, associationId: user?.associationId.toValue() };
 
-    const animal = await this.transactionManager.run(() => this.useCase.execute(payload));
+    const result = await this.transactionManager.run(() => this.useCase.execute(payload));
 
-    return AnimalMapper.toDTO(animal);
+    if (result instanceof GenericAppError) {
+      throw new GenericException(result);
+    }
+
+    return AnimalMapper.toDTO(result);
   }
 }

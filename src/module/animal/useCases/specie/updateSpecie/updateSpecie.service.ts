@@ -1,4 +1,4 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { UpdateSpecieDTO } from './dto/updateSpecie.dto';
 
@@ -10,7 +10,7 @@ import {
   ISpecieBaseRepositorySymbol,
 } from '@/repositories/specieBase.repository.interface';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
-import { GenericException } from '@/shared/core/logic/GenericException';
+import GenericErrors from '@/shared/core/logic/GenericErrors';
 import { coalesce } from '@/shared/core/utils/undefinedHelpers';
 
 @Injectable()
@@ -20,9 +20,13 @@ export class UpdateSpecieService {
     @Inject(ISpecieBaseRepositorySymbol) private readonly specieBaseRepo: ISpecieBaseRepository,
   ) {}
 
-  async execute(dto: UpdateSpecieDTO): Promise<string> {
-    const { specie, specieBase } = await this.validateAndFetchFields(dto);
+  async execute(dto: UpdateSpecieDTO) {
+    const validatedFieldsOrError = await this.validateAndFetchFields(dto);
+    if (validatedFieldsOrError instanceof GenericAppError) {
+      return validatedFieldsOrError;
+    }
 
+    const { specie, specieBase } = validatedFieldsOrError;
     const specieOrError = Specie.create(
       {
         name: coalesce(dto.name, specie.name),
@@ -35,20 +39,18 @@ export class UpdateSpecieService {
     );
 
     if (specieOrError instanceof GenericAppError) {
-      throw new GenericException(specieOrError.message, HttpStatus.BAD_REQUEST);
+      return new GenericErrors.NotFound(specieOrError.message);
     }
 
-    const rawId = await this.specieRepo.update(specieOrError);
-
-    return rawId;
+    return this.specieRepo.update(specieOrError);
   }
 
   private async validateAndFetchFields(dto: UpdateSpecieDTO) {
-    let specieBaseEntity: SpecieBase | undefined;
     const specie = await this.specieRepo.findById(dto.id);
+    let specieBaseEntity: SpecieBase | undefined;
 
     if (!specie) {
-      throw new GenericException(`Espécie com id ${dto.id} não encontrada`, HttpStatus.NOT_FOUND);
+      return new GenericErrors.NotFound(`Espécie com id ${dto.id} não encontrada`);
     }
 
     if (dto?.name) {
@@ -58,7 +60,7 @@ export class UpdateSpecieService {
       });
 
       if (specieWithSameName) {
-        throw new GenericException(`Espécie com nome ${dto.name} já existe`, HttpStatus.CONFLICT);
+        return new GenericErrors.NotFound(`Espécie com nome ${dto.name} já existe`);
       }
     }
 
@@ -66,10 +68,7 @@ export class UpdateSpecieService {
       const specieBase = await this.specieBaseRepo.findById(dto.specieBaseId);
 
       if (!specieBase) {
-        throw new GenericException(
-          `Base de espécie com id ${dto.specieBaseId} não encontrada`,
-          HttpStatus.NOT_FOUND,
-        );
+        return new GenericErrors.NotFound(`Base de espécie com id ${dto.specieBaseId} não encontrada`);
       }
       specieBaseEntity = specieBase;
     }

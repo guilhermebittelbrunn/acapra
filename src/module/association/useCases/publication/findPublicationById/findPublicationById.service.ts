@@ -1,10 +1,10 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import {
   IPublicationRepository,
   IPublicationRepositorySymbol,
 } from '@/repositories/publication.repository.interface';
-import { GenericException } from '@/shared/core/logic/GenericException';
+import GenericErrors from '@/shared/core/logic/GenericErrors';
 
 @Injectable()
 export class FindPublicationByIdService {
@@ -14,7 +14,7 @@ export class FindPublicationByIdService {
     const publication = await this.publicationRepo.findById(id);
 
     if (!publication) {
-      throw new GenericException(`Publicação com id${id} não encontrada`, HttpStatus.NOT_FOUND);
+      return new GenericErrors.NotFound(`Publicação com id${id} não encontrada`);
     }
 
     return publication;

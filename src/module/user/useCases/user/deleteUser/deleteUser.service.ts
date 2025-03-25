@@ -1,17 +1,17 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { IUserRepository, IUserRepositorySymbol } from '@/repositories/user.repository.interface';
-import { GenericException } from '@/shared/core/logic/GenericException';
+import GenericErrors from '@/shared/core/logic/GenericErrors';
 
 @Injectable()
 export class DeleteUserService {
   constructor(@Inject(IUserRepositorySymbol) private readonly userRepo: IUserRepository) {}
 
-  async execute(id: string): Promise<void> {
+  async execute(id: string) {
     const deleted = await this.userRepo.delete(id);
 
     if (!deleted) {
-      throw new GenericException(`Usuário com id ${id} não encontrado`, HttpStatus.NOT_FOUND);
+      return new GenericErrors.NotFound(`Usuário com id ${id} não encontrado`);
     }
   }
 }

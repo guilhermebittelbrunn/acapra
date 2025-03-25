@@ -38,7 +38,7 @@ export class CreateAnimalDTO {
   @ValidatedEnum('genêro', AnimalGenderEnum)
   gender: AnimalGenderEnum;
 
-  @ValidatedEnum('Tamanho', AnimalGenderEnum)
+  @ValidatedEnum('Tamanho', AnimalSizeEnum)
   size: AnimalSizeEnum;
 
   @IsOptional()

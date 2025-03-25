@@ -4,6 +4,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { RefreshService } from './refresh.service';
 
 import User from '@/module/user/domain/user/user.domain';
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
 import { GetUser } from '@/shared/decorators/getUser.decorator';
 import { JwtRefreshGuard } from '@/shared/guards/jwtRefresh.guard';
 
@@ -15,6 +17,12 @@ export class RefreshController {
 
   @Post()
   async handle(@GetUser() user: User) {
-    return this.useCase.execute(user.id?.toValue());
+    const result = await this.useCase.execute(user.id?.toValue());
+
+    if (result instanceof GenericAppError) {
+      throw new GenericException(result);
+    }
+
+    return result;
   }
 }

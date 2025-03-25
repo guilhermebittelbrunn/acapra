@@ -5,6 +5,8 @@ import { FindUserByIdResponseDTO } from './dto/findUserById.response.dto';
 import { FindUserByIdService } from './findUserById.service';
 
 import UserMapper from '@/module/user/mappers/user.mapper';
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
 
@@ -16,8 +18,12 @@ export class FindUserByIdController {
 
   @Get('/:id')
   async handle(@Param('id') id: string): Promise<FindUserByIdResponseDTO> {
-    const user = await this.useCase.execute(id);
+    const result = await this.useCase.execute(id);
 
-    return UserMapper.toDTO(user);
+    if (result instanceof GenericAppError) {
+      throw new GenericException(result);
+    }
+
+    return UserMapper.toDTO(result);
   }
 }

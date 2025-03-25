@@ -5,6 +5,8 @@ import { FindSpecieByIdResponseDTO } from './dto/findSpecieById.response.dto';
 import { FindSpecieByIdService } from './findSpecieById.service';
 
 import SpecieMapper from '@/module/animal/mappers/specie.mapper';
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
 
@@ -16,8 +18,12 @@ export class FindSpecieByIdController {
 
   @Get('/:id')
   async handle(@Param('id') specieId: string): Promise<FindSpecieByIdResponseDTO> {
-    const specie = await this.useCase.execute(specieId);
+    const result = await this.useCase.execute(specieId);
 
-    return SpecieMapper.toDTO(specie);
+    if (result instanceof GenericAppError) {
+      throw new GenericException(result);
+    }
+
+    return SpecieMapper.toDTO(result);
   }
 }

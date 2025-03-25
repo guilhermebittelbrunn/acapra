@@ -4,11 +4,14 @@ import {
   ExecutionContext,
   CallHandler,
   StreamableFile,
-  InternalServerErrorException,
   HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
 
 const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
 
@@ -50,11 +53,15 @@ export class TransformResponseInterceptor implements NestInterceptor {
           // this.loggerService.create({ error, payload });
         }
 
+        if (error instanceof GenericAppError) {
+          throw new GenericException(error);
+        }
+
         if (error instanceof HttpException) {
           throw error;
         }
 
-        throw new InternalServerErrorException();
+        throw new HttpException('Erro interno do servidor', HttpStatus.INTERNAL_SERVER_ERROR);
       }),
     );
   }

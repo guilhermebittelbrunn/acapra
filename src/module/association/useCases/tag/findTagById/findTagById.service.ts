@@ -1,7 +1,7 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { ITagRepository, ITagRepositorySymbol } from '@/repositories/tag.repository.interface';
-import { GenericException } from '@/shared/core/logic/GenericException';
+import GenericErrors from '@/shared/core/logic/GenericErrors';
 
 @Injectable()
 export class FindTagByIdService {
@@ -11,7 +11,7 @@ export class FindTagByIdService {
     const tag = await this.tagRepo.findById(id);
 
     if (!tag) {
-      throw new GenericException(`Etiqueta com id ${id} não encontrada`, HttpStatus.NOT_FOUND);
+      return new GenericErrors.NotFound(`Etiqueta com id ${id} não encontrada`);
     }
 
     return tag;

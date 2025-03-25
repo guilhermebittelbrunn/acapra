@@ -1,4 +1,4 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { UpdateAssociationDTO } from './dto/updateAssociation.dto';
 
@@ -9,7 +9,7 @@ import {
 } from '@/repositories/association.repository.interface';
 import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
-import { GenericException } from '@/shared/core/logic/GenericException';
+import GenericErrors from '@/shared/core/logic/GenericErrors';
 import { coalesce } from '@/shared/core/utils/undefinedHelpers';
 
 @Injectable()
@@ -23,7 +23,7 @@ export class UpdateAssociationService {
     const association = await this.associationRepo.findById(dto.id);
 
     if (!association) {
-      throw new GenericException(`Associação com id ${dto.id} não encontrada`, HttpStatus.NOT_FOUND);
+      return new GenericErrors.NotFound(`Associação com id ${dto.id} não encontrada`);
     }
 
     const associationOrError = Association.create(
@@ -34,11 +34,9 @@ export class UpdateAssociationService {
     );
 
     if (associationOrError instanceof GenericAppError) {
-      throw new GenericException(associationOrError);
+      return associationOrError;
     }
 
-    const rawId = await this.associationRepo.update(associationOrError);
-
-    return rawId;
+    return this.associationRepo.update(associationOrError);
   }
 }

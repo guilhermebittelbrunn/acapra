@@ -1,4 +1,4 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { CreateTagDTO } from './dto/createTag.dto';
 
@@ -6,7 +6,7 @@ import Tag from '@/module/association/domain/tag.domain';
 import { ITagRepository, ITagRepositorySymbol } from '@/repositories/tag.repository.interface';
 import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
-import { GenericException } from '@/shared/core/logic/GenericException';
+import GenericErrors from '@/shared/core/logic/GenericErrors';
 
 @Injectable()
 export class CreateTagService {
@@ -19,7 +19,7 @@ export class CreateTagService {
     });
 
     if (tagWithSameName) {
-      throw new GenericException(`Etiqueta com o nome ${dto.name} já cadastrada`, HttpStatus.CONFLICT);
+      return new GenericErrors.Conflict(`Etiqueta com o nome ${dto.name} já cadastrada`);
     }
 
     const tagOrError = Tag.create({
@@ -28,11 +28,9 @@ export class CreateTagService {
     });
 
     if (tagOrError instanceof GenericAppError) {
-      throw new GenericException(tagOrError);
+      return tagOrError;
     }
 
-    const tag = await this.tagRepo.create(tagOrError);
-
-    return tag;
+    return this.tagRepo.create(tagOrError);
   }
 }

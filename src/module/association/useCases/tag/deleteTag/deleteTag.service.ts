@@ -1,17 +1,17 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { ITagRepository, ITagRepositorySymbol } from '@/repositories/tag.repository.interface';
-import { GenericException } from '@/shared/core/logic/GenericException';
+import GenericErrors from '@/shared/core/logic/GenericErrors';
 
 @Injectable()
 export class DeleteTagService {
   constructor(@Inject(ITagRepositorySymbol) private readonly tagRepo: ITagRepository) {}
 
-  async execute(id: string): Promise<void> {
+  async execute(id: string) {
     const deleted = await this.tagRepo.delete(id);
 
     if (!deleted) {
-      throw new GenericException(`Etiqueta com id${id} não encontrada`, HttpStatus.NOT_FOUND);
+      return new GenericErrors.NotFound(`Etiqueta com id${id} não encontrada`);
     }
   }
 }

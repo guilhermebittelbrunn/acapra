@@ -4,6 +4,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { UpdatePublicationDTO } from './dto/updatePublication.dto';
 import { UpdatePublicationService } from './updatePublication.service';
 
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
 import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
@@ -20,8 +22,12 @@ export class UpdatePublicationController {
     @ValidatedBody() body: UpdatePublicationDTO,
     @Param('id') publicationId: string,
   ): Promise<UpdateResponseDTO> {
-    const id = await this.useCase.execute({ ...body, id: publicationId });
+    const result = await this.useCase.execute({ ...body, id: publicationId });
 
-    return { id };
+    if (result instanceof GenericAppError) {
+      throw new GenericException(result);
+    }
+
+    return { id: result };
   }
 }

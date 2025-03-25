@@ -4,6 +4,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { DeleteUserService } from './deleteUser.service';
 
 import User from '@/module/user/domain/user/user.domain';
+import GenericAppError from '@/shared/core/logic/GenericAppError';
 import { GenericException } from '@/shared/core/logic/GenericException';
 import { GetUser } from '@/shared/decorators/getUser.decorator';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
@@ -21,6 +22,10 @@ export class DeleteUserController {
       throw new GenericException('Você não pode deletar seu próprio usuário', HttpStatus.FORBIDDEN);
     }
 
-    await this.useCase.execute(userId);
+    const result = await this.useCase.execute(userId);
+
+    if (result instanceof GenericAppError) {
+      throw new GenericException(result);
+    }
   }
 }

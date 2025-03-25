@@ -7,6 +7,8 @@ import { CreatePublicationDTO } from './dto/createPublication.dto';
 import { PublicationDTO } from '@/module/association/dto/publication.dto';
 import PublicationMapper from '@/module/association/mappers/publication.mapper';
 import User from '@/module/user/domain/user/user.domain';
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
 import { GetUser } from '@/shared/decorators/getUser.decorator';
 import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
@@ -21,8 +23,12 @@ export class CreatePublicationController {
   @Post()
   async handle(@ValidatedBody() body: CreatePublicationDTO, @GetUser() user: User): Promise<PublicationDTO> {
     const payload = { ...body, associationId: user?.associationId.toValue() };
-    const publication = await this.useCase.execute(payload);
+    const result = await this.useCase.execute(payload);
 
-    return PublicationMapper.toDTO(publication);
+    if (result instanceof GenericAppError) {
+      throw new GenericException(result);
+    }
+
+    return PublicationMapper.toDTO(result);
   }
 }

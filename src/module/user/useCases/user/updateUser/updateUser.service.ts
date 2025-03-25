@@ -1,4 +1,4 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { UpdateUserDTO } from './dto/updateUser.dto';
 
@@ -9,7 +9,7 @@ import UserType from '@/module/user/domain/user/userType.domain';
 import { IUserRepository, IUserRepositorySymbol } from '@/repositories/user.repository.interface';
 import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
-import { GenericException } from '@/shared/core/logic/GenericException';
+import GenericErrors from '@/shared/core/logic/GenericErrors';
 import { coalesce } from '@/shared/core/utils/undefinedHelpers';
 
 @Injectable()
@@ -18,13 +18,16 @@ export class UpdateUserService {
 
   async execute(dto: UpdateUserDTO) {
     const user = await this.userRepo.findById(dto.id);
-
     if (!user) {
-      throw new GenericException(`Usuário com id ${dto.id} não encontrado`, HttpStatus.NOT_FOUND);
+      return new GenericErrors.NotFound(`Usuário com id ${dto.id} não encontrado`);
     }
 
-    const { userType, userPassword, userEmail } = await this.buildEntities(dto);
+    const buildedEntitiesOrError = await this.buildEntities(dto);
+    if (buildedEntitiesOrError instanceof GenericAppError) {
+      return buildedEntitiesOrError;
+    }
 
+    const { userType, userPassword, userEmail } = buildedEntitiesOrError;
     const userOrError = User.create(
       {
         ...user,
@@ -37,11 +40,10 @@ export class UpdateUserService {
     );
 
     if (userOrError instanceof GenericAppError) {
-      throw new GenericException(userOrError);
+      return userOrError;
     }
 
-    const rawId = await this.userRepo.update(userOrError);
-    return rawId;
+    return this.userRepo.update(userOrError);
   }
 
   private async buildEntities(dto: UpdateUserDTO) {
@@ -51,9 +53,8 @@ export class UpdateUserService {
 
     if (dto.type) {
       const userTypeOrError = UserType.create(dto.type);
-
       if (userTypeOrError instanceof GenericAppError) {
-        throw new GenericException(userTypeOrError);
+        return userTypeOrError;
       }
 
       userType = userTypeOrError;
@@ -61,9 +62,8 @@ export class UpdateUserService {
 
     if (dto.password) {
       const userPasswordOrError = UserPassword.create({ value: dto.password, hashed: false });
-
       if (userPasswordOrError instanceof GenericAppError) {
-        throw new GenericException(userPasswordOrError);
+        return userPasswordOrError;
       }
 
       userPassword = userPasswordOrError;
@@ -71,15 +71,13 @@ export class UpdateUserService {
 
     if (dto.email) {
       const userWithSameCredentials = await this.userRepo.findByEmail(dto.email);
-
       if (userWithSameCredentials) {
-        throw new GenericException(`E-mail já em uso: ${dto.email}`, HttpStatus.CONFLICT);
+        return new GenericErrors.Conflict(`E-mail já em uso: ${dto.email}`);
       }
 
       const userEmailOrError = UserEmail.create(dto.email);
-
       if (userEmailOrError instanceof GenericAppError) {
-        throw new GenericException(userEmailOrError);
+        return userEmailOrError;
       }
 
       userEmail = userEmailOrError;

@@ -1,4 +1,4 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { UpdatePublicationDTO } from './dto/updatePublication.dto';
 
@@ -8,16 +8,21 @@ import {
   IPublicationRepositorySymbol,
 } from '@/repositories/publication.repository.interface';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
-import { GenericException } from '@/shared/core/logic/GenericException';
+import GenericErrors from '@/shared/core/logic/GenericErrors';
 import { coalesce } from '@/shared/core/utils/undefinedHelpers';
 
 @Injectable()
 export class UpdatePublicationService {
   constructor(@Inject(IPublicationRepositorySymbol) private readonly publicationRepo: IPublicationRepository) {}
 
-  async execute(dto: UpdatePublicationDTO): Promise<string> {
-    const { publication } = await this.validateAndFetchFields(dto);
+  async execute(dto: UpdatePublicationDTO) {
+    const validatedFieldsOrError = await this.validateAndFetchFields(dto);
 
+    if (validatedFieldsOrError instanceof GenericAppError) {
+      return validatedFieldsOrError;
+    }
+
+    const { publication } = validatedFieldsOrError;
     const publicationOrError = Publication.create(
       {
         title: coalesce(dto.title, publication.title),
@@ -29,19 +34,17 @@ export class UpdatePublicationService {
     );
 
     if (publicationOrError instanceof GenericAppError) {
-      throw new GenericException(publicationOrError.message, HttpStatus.BAD_REQUEST);
+      return publicationOrError;
     }
 
-    const rawId = await this.publicationRepo.update(publicationOrError);
-
-    return rawId;
+    return this.publicationRepo.update(publicationOrError);
   }
 
   private async validateAndFetchFields(dto: UpdatePublicationDTO) {
     const publication = await this.publicationRepo.findById(dto.id);
 
     if (!publication) {
-      throw new GenericException(`Espécie com id ${dto.id} não encontrada`, HttpStatus.NOT_FOUND);
+      return new GenericErrors.NotFound(`Espécie com id ${dto.id} não encontrada`);
     }
 
     return { publication };

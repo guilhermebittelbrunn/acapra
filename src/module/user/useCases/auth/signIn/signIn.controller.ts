@@ -5,6 +5,8 @@ import { SignInDTO } from './dto/signIn.dto';
 import { SignInService } from './signIn.service';
 
 import UserMapper from '@/module/user/mappers/user.mapper';
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
 import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
 
 @Controller('signin')
@@ -14,11 +16,15 @@ export class SignInController {
 
   @Post()
   async handle(@ValidatedBody() body: SignInDTO) {
-    const { user, tokens } = await this.useCase.execute(body);
+    const result = await this.useCase.execute(body);
+
+    if (result instanceof GenericAppError) {
+      throw new GenericException(result);
+    }
 
     return {
-      user: UserMapper.toDTO(user),
-      tokens,
+      user: UserMapper.toDTO(result.user),
+      tokens: result.tokens,
     };
   }
 }

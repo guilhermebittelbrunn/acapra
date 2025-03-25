@@ -3,6 +3,8 @@ import { ApiTags } from '@nestjs/swagger';
 
 import { DeleteTagService } from './deleteTag.service';
 
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
 
@@ -15,6 +17,10 @@ export class DeleteTagController {
   @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async handle(@Param('id') tagId: string): Promise<void> {
-    await this.useCase.execute(tagId);
+    const result = await this.useCase.execute(tagId);
+
+    if (result instanceof GenericAppError) {
+      throw new GenericException(result);
+    }
   }
 }

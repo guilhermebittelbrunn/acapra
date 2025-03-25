@@ -1,4 +1,4 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { CreateAssociationDTO } from './dto/createAssociation.dto';
 
@@ -9,7 +9,7 @@ import {
   IAssociationRepositorySymbol,
 } from '@/repositories/association.repository.interface';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
-import { GenericException } from '@/shared/core/logic/GenericException';
+import GenericErrors from '@/shared/core/logic/GenericErrors';
 import { UserTypeEnum } from '@/shared/types/user';
 
 @Injectable()
@@ -24,13 +24,13 @@ export class CreateAssociationService {
     const associationWithSameCredentials = await this.associationRepo.findByIdentifier({ name: dto.name });
 
     if (associationWithSameCredentials) {
-      throw new GenericException(`Já existe uma associação com esse nome: ${dto.name}`, HttpStatus.CONFLICT);
+      return new GenericErrors.Conflict(`Já existe uma associação com esse nome: ${dto.name}`);
     }
 
     const associationOrError = Association.create({ ...dto });
 
     if (associationOrError instanceof GenericAppError) {
-      throw new GenericException(associationOrError);
+      return associationOrError;
     }
 
     const association = await this.associationRepo.create(associationOrError);

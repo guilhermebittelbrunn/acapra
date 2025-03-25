@@ -1,7 +1,7 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { IUserRepository, IUserRepositorySymbol } from '@/repositories/user.repository.interface';
-import { GenericException } from '@/shared/core/logic/GenericException';
+import GenericErrors from '@/shared/core/logic/GenericErrors';
 
 @Injectable()
 export class FindUserByIdService {
@@ -11,7 +11,7 @@ export class FindUserByIdService {
     const user = await this.userRepo.findCompleteById(id);
 
     if (!user) {
-      throw new GenericException(`Usuário com id ${id} não encontrado`, HttpStatus.NOT_FOUND);
+      return new GenericErrors.NotFound(`Usuário com id ${id} não encontrado`);
     }
 
     return user;

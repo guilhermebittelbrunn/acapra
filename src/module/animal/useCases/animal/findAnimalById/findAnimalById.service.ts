@@ -1,7 +1,7 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { IAnimalRepository, IAnimalRepositorySymbol } from '@/repositories/animal.repository.interface';
-import { GenericException } from '@/shared/core/logic/GenericException';
+import GenericErrors from '@/shared/core/logic/GenericErrors';
 
 @Injectable()
 export class FindAnimalByIdService {
@@ -11,7 +11,7 @@ export class FindAnimalByIdService {
     const animal = await this.animalRepo.findCompleteById(id);
 
     if (!animal) {
-      throw new GenericException(`Animal com id${id} não encontrada`, HttpStatus.NOT_FOUND);
+      return new GenericErrors.NotFound(`Animal com id${id} não encontrada`);
     }
 
     return animal;

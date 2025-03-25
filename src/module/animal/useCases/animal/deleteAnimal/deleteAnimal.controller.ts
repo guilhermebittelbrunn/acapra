@@ -3,6 +3,8 @@ import { ApiTags } from '@nestjs/swagger';
 
 import { DeleteAnimalService } from './deleteAnimal.service';
 
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
 
@@ -15,6 +17,10 @@ export class DeleteAnimalController {
   @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async handle(@Param('id') animalId: string): Promise<void> {
-    await this.useCase.execute(animalId);
+    const result = await this.useCase.execute(animalId);
+
+    if (result instanceof GenericAppError) {
+      throw new GenericException(result);
+    }
   }
 }

@@ -5,6 +5,8 @@ import { FindAssociationByIdService } from './findAssociationById.service';
 
 import { AssociationDTO } from '@/module/association/dto/association.dto';
 import AssociationMapper from '@/module/association/mappers/association.mapper';
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 
 @Controller('/association')
@@ -15,8 +17,12 @@ export class FindAssociationByIdController {
 
   @Get('/:id')
   async handle(@Param('id') associationId: string): Promise<AssociationDTO> {
-    const association = await this.useCase.execute(associationId);
+    const result = await this.useCase.execute(associationId);
 
-    return AssociationMapper.toDTO(association);
+    if (result instanceof GenericAppError) {
+      throw new GenericException(result);
+    }
+
+    return AssociationMapper.toDTO(result);
   }
 }

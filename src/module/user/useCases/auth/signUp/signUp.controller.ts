@@ -7,6 +7,8 @@ import { SignUpService } from './signUp.service';
 import { TransactionManagerService } from '@/infra/database/transactionManager/transactionManager.service';
 import { UserDTO } from '@/module/user/dto/user.dto';
 import UserMapper from '@/module/user/mappers/user.mapper';
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
 import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
 
 @Controller('/signup')
@@ -20,6 +22,11 @@ export class SignUpController {
   @Post()
   async handle(@ValidatedBody() body: SignUpDTO): Promise<UserDTO> {
     const result = await this.transactionManager.run(() => this.useCase.execute(body));
+
+    if (result instanceof GenericAppError) {
+      throw new GenericException(result);
+    }
+
     return UserMapper.toDTO(result);
   }
 }

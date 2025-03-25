@@ -4,6 +4,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { UpdateUserDTO } from './dto/updateUser.dto';
 import { UpdateUserService } from './updateUser.service';
 
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
 import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UpdateResponseDTO } from '@/shared/types/common';
@@ -16,8 +18,12 @@ export class UpdateUserController {
 
   @Put('/:id')
   async handle(@ValidatedBody() body: UpdateUserDTO, @Param('id') userId: string): Promise<UpdateResponseDTO> {
-    const id = await this.useCase.execute({ ...body, id: userId });
+    const result = await this.useCase.execute({ ...body, id: userId });
 
-    return { id };
+    if (result instanceof GenericAppError) {
+      throw new GenericException(result);
+    }
+
+    return { id: result };
   }
 }

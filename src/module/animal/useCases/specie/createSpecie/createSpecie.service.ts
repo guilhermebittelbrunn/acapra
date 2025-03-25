@@ -1,4 +1,4 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { CreateSpecieDTO } from './dto/createSpecie.dto';
 
@@ -6,7 +6,7 @@ import Specie from '@/module/animal/domain/specie.domain';
 import { ISpecieRepository, ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
 import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
-import { GenericException } from '@/shared/core/logic/GenericException';
+import GenericErrors from '@/shared/core/logic/GenericErrors';
 
 @Injectable()
 export class CreateSpecieService {
@@ -20,7 +20,7 @@ export class CreateSpecieService {
     });
 
     if (specieWithSameName) {
-      throw new GenericException(`Espécie com o nome ${dto.name} já cadastrada`, HttpStatus.CONFLICT);
+      return new GenericErrors.Conflict(`Espécie com o nome ${dto.name} já cadastrada`);
     }
 
     const specieOrError = Specie.create({
@@ -30,13 +30,9 @@ export class CreateSpecieService {
     });
 
     if (specieOrError instanceof GenericAppError) {
-      throw new GenericException(specieOrError);
+      return specieOrError;
     }
 
-    console.log('specieOrError :>> ', specieOrError);
-
-    const specie = await this.specieRepo.create(specieOrError);
-
-    return specie;
+    return this.specieRepo.create(specieOrError);
   }
 }

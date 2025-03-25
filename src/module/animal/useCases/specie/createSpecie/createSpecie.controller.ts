@@ -7,6 +7,8 @@ import { CreateSpecieDTO } from './dto/createSpecie.dto';
 import { SpecieDTO } from '@/module/animal/dto/specie.dto';
 import SpecieMapper from '@/module/animal/mappers/specie.mapper';
 import User from '@/module/user/domain/user/user.domain';
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
 import { GetUser } from '@/shared/decorators/getUser.decorator';
 import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
@@ -21,8 +23,12 @@ export class CreateSpecieController {
   @Post()
   async handle(@ValidatedBody() body: CreateSpecieDTO, @GetUser() user: User): Promise<SpecieDTO> {
     const payload = { ...body, associationId: user?.associationId.toValue() };
-    const specie = await this.useCase.execute(payload);
+    const result = await this.useCase.execute(payload);
 
-    return SpecieMapper.toDTO(specie);
+    if (result instanceof GenericAppError) {
+      throw new GenericException(result);
+    }
+
+    return SpecieMapper.toDTO(result);
   }
 }

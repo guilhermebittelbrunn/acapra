@@ -1,4 +1,4 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { isEmpty } from 'class-validator';
 
 import { SignUpDTO } from './dto/signUp.dto';
@@ -14,7 +14,7 @@ import {
 import { IUserRepository, IUserRepositorySymbol } from '@/repositories/user.repository.interface';
 import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
-import { GenericException } from '@/shared/core/logic/GenericException';
+import GenericErrors from '@/shared/core/logic/GenericErrors';
 import { UserTypeEnum } from '@/shared/types/user';
 
 @Injectable()
@@ -25,20 +25,28 @@ export class SignUpService {
   ) {}
 
   async execute(dto: SignUpDTO) {
-    const { associationId } = await this.validateAndFetchFields(dto);
+    const validatedField = await this.validateAndFetchFields(dto);
+    if (validatedField instanceof GenericAppError) {
+      return validatedField;
+    }
 
-    const { userType, userPassword, userEmail } = this.buildEntities(dto);
+    const entities = this.buildEntities(dto);
+    if (entities instanceof GenericAppError) {
+      return entities;
+    }
+
+    const { userType, userPassword, userEmail } = entities;
 
     const userOrError = User.create({
       ...dto,
-      associationId,
+      associationId: validatedField.associationId,
       email: userEmail,
       password: userPassword,
       type: userType,
     });
 
     if (userOrError instanceof GenericAppError) {
-      throw new GenericException(userOrError);
+      return userOrError;
     }
 
     return this.userRepo.create(userOrError);
@@ -50,14 +58,14 @@ export class SignUpService {
     const userWithSameCredentials = await this.userRepo.findByEmail(dto.email);
 
     if (userWithSameCredentials) {
-      throw new GenericException(`E-mail já em uso: ${dto.email}`, HttpStatus.CONFLICT);
+      return new GenericErrors.Conflict(`E-mail já em uso: ${dto.email}`);
     }
 
     if (!isEmpty(dto.associationId)) {
       const association = await this.associationRepo.findById(dto.associationId);
 
       if (!association) {
-        throw new GenericException('Associação não encontrada', HttpStatus.NOT_FOUND);
+        return new GenericErrors.Conflict('Associação não encontrada');
       }
 
       associationId = association.id;
@@ -70,19 +78,19 @@ export class SignUpService {
     const userType = UserType.create(dto.type || UserTypeEnum.USER);
 
     if (userType instanceof GenericAppError) {
-      throw new GenericException(userType);
+      return userType;
     }
 
     const userPassword = UserPassword.create({ value: dto.password, hashed: false });
 
     if (userPassword instanceof GenericAppError) {
-      throw new GenericException(userPassword);
+      return userPassword;
     }
 
     const userEmail = UserEmail.create(dto.email);
 
     if (userEmail instanceof GenericAppError) {
-      throw new GenericException(userEmail);
+      return userEmail;
     }
 
     return { userType, userPassword, userEmail };

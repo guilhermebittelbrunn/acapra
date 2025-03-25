@@ -5,6 +5,8 @@ import { FindPublicationByIdService } from './findPublicationById.service';
 
 import { PublicationDTO } from '@/module/association/dto/publication.dto';
 import PublicationMapper from '@/module/association/mappers/publication.mapper';
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
 
@@ -16,8 +18,12 @@ export class FindPublicationByIdController {
 
   @Get('/:id')
   async handle(@Param('id') publicationId: string): Promise<PublicationDTO> {
-    const publication = await this.useCase.execute(publicationId);
+    const result = await this.useCase.execute(publicationId);
 
-    return PublicationMapper.toDTO(publication);
+    if (result instanceof GenericAppError) {
+      throw new GenericException(result);
+    }
+
+    return PublicationMapper.toDTO(result);
   }
 }

@@ -3,6 +3,8 @@ import { ApiTags } from '@nestjs/swagger';
 
 import { DeleteSpecieService } from './deleteSpecie.service';
 
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
 
@@ -15,6 +17,10 @@ export class DeleteSpecieController {
   @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async handle(@Param('id') specieId: string): Promise<void> {
-    await this.useCase.execute(specieId);
+    const result = await this.useCase.execute(specieId);
+
+    if (result instanceof GenericAppError) {
+      throw new GenericException(result);
+    }
   }
 }

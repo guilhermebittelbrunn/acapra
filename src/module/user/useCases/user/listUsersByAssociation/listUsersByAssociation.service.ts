@@ -9,8 +9,6 @@ export class ListUsersByAssociationService {
   constructor(@Inject(IUserRepositorySymbol) private readonly userRepo: IUserRepository) {}
 
   async execute(query: ListUsersByAssociationDTO) {
-    const users = await this.userRepo.listByAssociationId(query);
-
-    return users;
+    return this.userRepo.listByAssociationId(query);
   }
 }

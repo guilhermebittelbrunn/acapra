@@ -1,10 +1,10 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import {
   IAssociationRepository,
   IAssociationRepositorySymbol,
 } from '@/repositories/association.repository.interface';
-import { GenericException } from '@/shared/core/logic/GenericException';
+import GenericErrors from '@/shared/core/logic/GenericErrors';
 
 @Injectable()
 export class FindAssociationByIdService {
@@ -17,7 +17,7 @@ export class FindAssociationByIdService {
     const association = await this.associationRepo.findById(id);
 
     if (!association) {
-      throw new GenericException(`Associação com id ${id} não encontrada`, HttpStatus.NOT_FOUND);
+      return new GenericErrors.NotFound(`Associação com id ${id} não encontrada`);
     }
 
     return association;
