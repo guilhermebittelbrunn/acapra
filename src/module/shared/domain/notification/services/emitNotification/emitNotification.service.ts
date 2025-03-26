@@ -22,7 +22,6 @@ export class EmitNotificationService {
 
     if (dto?.type) {
       const notificationTypeOrError = NotificationType.create(dto.type);
-
       if (notificationTypeOrError instanceof GenericAppError) {
         return notificationTypeOrError;
       }

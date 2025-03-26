@@ -12,7 +12,9 @@ model UserModel {
 
   association AssociationModel? @relation(fields: [associationId], references: [id])
 
-  notifications NotificationModel[]
+  notifications      NotificationModel[]
+  requestedAdoptions AdoptionModel[]     @relation(name: "RequestedAdoptions")
+  respondedAdoptions AdoptionModel[]     @relation(name: "RespondedAdoptions")
 
   @@map("user")
 }

@@ -25,10 +25,12 @@ export class CreateAnimalService {
   ) {}
 
   async execute(dto: CreateAnimalDTO) {
-    await this.validateFields(dto);
+    const validatedFields = await this.validateFields(dto);
+    if (validatedFields instanceof GenericAppError) {
+      return validatedFields;
+    }
 
     const entitiesOrError = this.buildEntities(dto);
-
     if (entitiesOrError instanceof GenericAppError) {
       return entitiesOrError;
     }
@@ -45,19 +47,17 @@ export class CreateAnimalService {
       return animalOrError;
     }
 
-    return this.animalRepo.create({} as any);
+    return this.animalRepo.create(animalOrError);
   }
 
   private async validateFields(dto: CreateAnimalDTO) {
     const specie = await this.specieRepo.findById(dto.specieId);
-
     if (!specie) {
       return new GenericErrors.NotFound(`Espécie com id ${dto.specieId} não encontrada`);
     }
 
     if (dto.publicationId) {
       const publication = await this.publicationRepo.findById(dto.publicationId);
-
       if (!publication) {
         return new GenericErrors.NotFound(`Publicação com id ${dto.publicationId} não encontrada`);
       }
@@ -66,19 +66,16 @@ export class CreateAnimalService {
 
   private buildEntities(dto: CreateAnimalDTO) {
     const genderOrError = AnimalGender.create(dto.gender);
-
     if (genderOrError instanceof GenericAppError) {
       return genderOrError;
     }
 
     const breedOrError = AnimalBreed.create(dto.breed);
-
     if (breedOrError instanceof GenericAppError) {
       return breedOrError;
     }
 
     const sizeOrError = AnimalSize.create(dto.size);
-
     if (sizeOrError instanceof GenericAppError) {
       return sizeOrError;
     }

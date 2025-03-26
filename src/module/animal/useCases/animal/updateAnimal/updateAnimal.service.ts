@@ -32,13 +32,14 @@ export class UpdateAnimalService {
     if (validatedFieldsOrError instanceof GenericAppError) {
       return validatedFieldsOrError;
     }
-    const { specie, publication, animal } = validatedFieldsOrError;
 
     const buildedEntitiesOrError = this.buildEntities(dto);
     if (buildedEntitiesOrError instanceof GenericAppError) {
       return buildedEntitiesOrError;
     }
+
     const { status, breed, size, gender } = buildedEntitiesOrError;
+    const { specie, publication, animal } = validatedFieldsOrError;
 
     const animalOrError = Animal.create(
       {
@@ -75,7 +76,6 @@ export class UpdateAnimalService {
 
     if (dto.specieId) {
       const specie = await this.specieRepo.findById(dto.specieId);
-
       if (!specie) {
         return new GenericErrors.NotFound(`Espécie com id ${dto.specieId} não encontrada`);
       }
@@ -84,7 +84,6 @@ export class UpdateAnimalService {
 
     if (dto.publicationId) {
       const publication = await this.publicationRepo.findById(dto.publicationId);
-
       if (!publication) {
         return new GenericErrors.NotFound(`Publicação com id ${dto.publicationId} não encontrada`);
       }
@@ -102,7 +101,6 @@ export class UpdateAnimalService {
 
     if (dto.gender) {
       const genderOrError = AnimalGender.create(dto.gender);
-
       if (genderOrError instanceof GenericAppError) {
         return genderOrError;
       }
@@ -112,7 +110,6 @@ export class UpdateAnimalService {
 
     if (dto.status) {
       const statusOrError = AnimalStatus.create(dto.status);
-
       if (statusOrError instanceof GenericAppError) {
         return statusOrError;
       }
@@ -122,7 +119,6 @@ export class UpdateAnimalService {
 
     if (dto.breed) {
       const breedOrError = AnimalBreed.create(dto.breed);
-
       if (breedOrError instanceof GenericAppError) {
         return breedOrError;
       }
@@ -132,7 +128,6 @@ export class UpdateAnimalService {
 
     if (dto.size) {
       const sizeOrError = AnimalSize.create(dto.size);
-
       if (sizeOrError instanceof GenericAppError) {
         return sizeOrError;
       }

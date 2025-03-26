@@ -78,6 +78,10 @@ export default class Animal extends Entity<IAnimalProps> {
     return this.props.status;
   }
 
+  set status(status: AnimalStatus) {
+    this.props.status = status;
+  }
+
   get gender(): AnimalGender {
     return this.props.gender;
   }
@@ -108,6 +112,10 @@ export default class Animal extends Entity<IAnimalProps> {
 
   get publication(): Publication | null | undefined {
     return this.props.publication;
+  }
+
+  get isAvailable(): boolean {
+    return [AnimalStatusEnum.AVAILABLE].includes(this.status.value);
   }
 
   public static create(props: IAnimalProps, id?: UniqueEntityID): Animal | GenericAppError {

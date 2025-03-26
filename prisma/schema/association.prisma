@@ -11,6 +11,7 @@ model AssociationModel {
   animals       AnimalModel[]
   tags          TagModel[]
   notifications NotificationModel[]
+  adoptions     AdoptionModel[]
 
   @@map("association")
 }
@@ -46,4 +47,25 @@ model TagModel {
   association AssociationModel? @relation(fields: [associationId], references: [id])
 
   @@map("tag")
+}
+
+model AdoptionModel {
+  id            String  @id @default(uuid()) @db.Uuid
+  requestedBy   String  @map("requested_by") @db.Uuid
+  respondedBy   String  @map("responded_by") @db.Uuid
+  associationId String  @map("association_id") @db.Uuid
+  animalId      String  @map("animal_id") @db.Uuid
+  observation   String?
+  status        String
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz()
+  deleted   Boolean  @default(false)
+
+  requestedByUser UserModel?        @relation(name: "RequestedAdoptions", fields: [requestedBy], references: [id])
+  respondedByUser UserModel?        @relation(name: "RespondedAdoptions", fields: [respondedBy], references: [id])
+  association     AssociationModel? @relation(fields: [associationId], references: [id])
+  animal          AnimalModel?      @relation(fields: [animalId], references: [id])
+
+  @@map("adoption")
 }
