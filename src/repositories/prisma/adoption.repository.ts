@@ -29,6 +29,22 @@ export class AdoptionRepository
     super('adoptionModel', prisma, als);
   }
 
+  async create(data: Adoption): Promise<Adoption> {
+    const persisted = await this.mapper.toPersistence(data);
+
+    const adoptionRaw = await this.manager().create({
+      data: {
+        ...persisted,
+        animal: { connect: { id: data.animalId.toValue() } },
+        requestedByUser: { connect: { id: data.requestedBy.toValue() } },
+        respondedByUser: data.respondedBy ? { connect: { id: data.respondedBy.toValue() } } : undefined,
+        association: { connect: { id: data.associationId.toValue() } },
+      } as Prisma.AdoptionModelCreateInput,
+    });
+
+    return this.mapper.toDomain(adoptionRaw);
+  }
+
   async findCompleteById(id: string): Promise<Adoption | null> {
     const adoption = await this.manager().findUnique({
       where: { id },

@@ -18,11 +18,15 @@ export class CancelAdoptionRequestService {
       return new GenericErrors.NotFound(`Adoção com id ${id} não encontrada`);
     }
 
-    if (adoption.requestedBy.equalsRaw(userId)) {
+    if (!adoption.requestedBy.equalsRaw(userId)) {
       return new GenericErrors.NotAuthorized('Você não tem permissão para cancelar esta adoção');
     }
 
-    if (![AdoptionStatusEnum.APPROVED].includes(adoption.status.value)) {
+    if ([AdoptionStatusEnum.CANCELED].includes(adoption.status.value)) {
+      return new GenericErrors.InvalidParam('Solicitação de adoção já cancelada');
+    }
+
+    if (![AdoptionStatusEnum.PENDING].includes(adoption.status.value)) {
       return new GenericErrors.InvalidParam('Não é possível cancelar uma adoção que não está pendente');
     }
 

@@ -13,8 +13,24 @@ model UserModel {
   association AssociationModel? @relation(fields: [associationId], references: [id])
 
   notifications      NotificationModel[]
+  wishLists          WishListModel[]
   requestedAdoptions AdoptionModel[]     @relation(name: "RequestedAdoptions")
   respondedAdoptions AdoptionModel[]     @relation(name: "RespondedAdoptions")
 
   @@map("user")
+}
+
+model WishListModel {
+  id       String @id @default(uuid()) @db.Uuid
+  userId   String @map("user_id") @db.Uuid
+  animalId String @map("animal_id") @db.Uuid
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz()
+  deleted   Boolean  @default(false)
+
+  user   UserModel   @relation(fields: [userId], references: [id])
+  animal AnimalModel @relation(fields: [animalId], references: [id])
+
+  @@map("wishList")
 }

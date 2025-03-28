@@ -18,7 +18,7 @@ model AssociationModel {
 
 model PublicationModel {
   id            String  @id @default(uuid()) @db.Uuid
-  associationId String? @db.Uuid
+  associationId String? @map("association_id") @db.Uuid
   title         String
   content       String
   enabled       Boolean @default(true)
@@ -52,7 +52,7 @@ model TagModel {
 model AdoptionModel {
   id            String  @id @default(uuid()) @db.Uuid
   requestedBy   String  @map("requested_by") @db.Uuid
-  respondedBy   String  @map("responded_by") @db.Uuid
+  respondedBy   String? @map("responded_by") @db.Uuid
   associationId String  @map("association_id") @db.Uuid
   animalId      String  @map("animal_id") @db.Uuid
   observation   String?

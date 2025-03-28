@@ -16,6 +16,8 @@ export interface ListAnimalByAssociationIdQuery extends PaginationQuery {
   statuses?: AnimalStatusEnum[];
   genders?: AnimalGenderEnum[];
   sizes?: AnimalSizeEnum[];
+  userId?: string;
+  favorite?: boolean;
 }
 
 export interface IAnimalRepository extends IBaseRepository<Animal> {

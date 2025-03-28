@@ -48,6 +48,8 @@ export class AnimalRepository
       ...(filledArray(query.statuses) && { status: { in: query.statuses } }),
       ...(filledArray(query.genders) && { gender: { in: query.genders } }),
       ...(filledArray(query.sizes) && { size: { in: query.sizes } }),
+      ...(!isEmpty(query.favorite) &&
+        !isEmpty(query.userId) && { wishLists: { some: { userId: query.userId } } }),
     };
 
     const [animals, total] = await Promise.all([

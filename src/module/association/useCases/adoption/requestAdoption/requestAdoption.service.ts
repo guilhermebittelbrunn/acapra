@@ -22,7 +22,7 @@ export class RequestAdoptionService {
       return new GenericErrors.NotFound(`Animal com id ${dto.animalId} não encontrado`);
     }
 
-    if (animal.isAvailable) {
+    if (!animal.isAvailable) {
       return new GenericErrors.InvalidParam(`Animal com id ${dto.animalId} não está disponível para adoção`);
     }
 

@@ -4,6 +4,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { CancelAdoptionRequestService } from './cancelAdoptionRequest.service';
 
 import User from '@/module/user/domain/user/user.domain';
+import GenericAppError from '@/shared/core/logic/GenericAppError';
+import { GenericException } from '@/shared/core/logic/GenericException';
 import { GetUser } from '@/shared/decorators/getUser.decorator';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 
@@ -15,6 +17,12 @@ export class CancelAdoptionRequestController {
 
   @Put()
   async handle(@GetUser() user: User, @Param('id') id: string) {
-    return this.useCase.execute({ id, userId: user.id.toValue() });
+    const result = await this.useCase.execute({ id, userId: user.id.toValue() });
+
+    if (result instanceof GenericAppError) {
+      throw new GenericException(result);
+    }
+
+    return { id: result };
   }
 }

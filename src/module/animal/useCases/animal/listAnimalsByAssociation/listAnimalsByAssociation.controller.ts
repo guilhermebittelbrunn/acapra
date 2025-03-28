@@ -26,7 +26,8 @@ export class ListAnimalsByAssociationController {
     @GetUser() user: User,
     @ValidatedQuery() query?: ListAnimalsByAssociationDTO,
   ): Promise<PaginatedResult<AnimalDTO>> {
-    const result = await this.useCase.execute({ ...query, associationId: user.associationId.toValue() });
+    const payload = { ...query, userId: user.id.toValue(), associationId: user.associationId.toValue() };
+    const result = await this.useCase.execute(payload);
 
     return {
       data: result.data.map(AnimalMapper.toDTO),
