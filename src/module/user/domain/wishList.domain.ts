@@ -43,8 +43,8 @@ export default class WishList extends Entity<IWishListProps> {
 
   public static create(props: IWishListProps, id?: UniqueEntityID): WishList | GenericAppError {
     const guardedProps = Guard.againstNullOrUndefinedBulk([
-      { argument: props.animalId && props.userId, argumentName: 'id do animal' },
-      { argument: props.userId && props.userId, argumentName: 'id do usuário' },
+      { argument: props.animalId, argumentName: 'id do animal' },
+      { argument: props.userId, argumentName: 'id do usuário' },
     ]);
 
     if (!guardedProps.succeeded) {
