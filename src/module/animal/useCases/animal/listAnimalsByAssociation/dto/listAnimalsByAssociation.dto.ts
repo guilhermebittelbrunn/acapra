@@ -17,16 +17,22 @@ export class ListAnimalsByAssociationDTO extends PaginationQuery {
 
   @IsOptional()
   @ValidatedEnum('status', AnimalStatusEnum, { each: true })
+  @ValidatedIds()
   statuses?: AnimalStatusEnum[];
 
   @IsOptional()
   @ValidatedEnum('genêro', AnimalGenderEnum, { each: true })
+  @ValidatedIds()
   genders?: AnimalGenderEnum[];
 
   @IsOptional()
   @ValidatedEnum('tamanho', AnimalGenderEnum, { each: true })
+  @ValidatedIds()
   sizes?: AnimalSizeEnum[];
 
   @ApiHideProperty()
   associationId: string;
+
+  @ApiHideProperty()
+  userId?: string;
 }

@@ -11,7 +11,7 @@ export class DeleteTagService {
     const deleted = await this.tagRepo.delete(id);
 
     if (!deleted) {
-      return new GenericErrors.NotFound(`Etiqueta com id${id} não encontrada`);
+      return new GenericErrors.NotFound(`Etiqueta com id ${id} não encontrada`);
     }
   }
 }

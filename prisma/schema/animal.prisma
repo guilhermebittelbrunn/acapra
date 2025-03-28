@@ -55,6 +55,7 @@ model AnimalModel {
   publication PublicationModel? @relation(fields: [publicationId], references: [id])
 
   adoptions AdoptionModel[]
+  wishLists WishListModel[]
 
   @@map("animal")
 }

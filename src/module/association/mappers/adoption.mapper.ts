@@ -37,16 +37,12 @@ class BaseAdoptionMapper extends Mapper<Adoption, AdoptionModelWithRelations, Ad
   async toPersistence(adoption: Adoption): Promise<AdoptionModelWithRelations> {
     return {
       id: adoption.id.toValue(),
-      animalId: adoption.animalId.toValue(),
-      requestedBy: adoption.requestedBy.toValue(),
-      respondedBy: adoption.respondedBy?.toValue(),
-      associationId: adoption.associationId.toValue(),
       observation: adoption.observation,
       status: adoption.status.value,
       deleted: adoption.deleted,
       createdAt: adoption.createdAt,
       updatedAt: adoption.updatedAt,
-    };
+    } as AdoptionModelWithRelations;
   }
   toDTO(adoption: Adoption): AdoptionDTO {
     return {

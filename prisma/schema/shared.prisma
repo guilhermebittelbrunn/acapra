@@ -1,7 +1,7 @@
 model NotificationModel {
   id            String  @id @default(cuid())
-  userId        String?
-  associationId String?
+  userId        String? @map("user_id") @db.Uuid
+  associationId String? @map("association_id") @db.Uuid
   title         String
   description   String?
   type          String
@@ -13,4 +13,6 @@ model NotificationModel {
 
   user        UserModel?        @relation(fields: [userId], references: [id])
   association AssociationModel? @relation(fields: [associationId], references: [id])
+
+  @@map("notification")
 }
