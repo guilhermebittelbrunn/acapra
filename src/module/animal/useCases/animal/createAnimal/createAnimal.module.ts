@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { CreateAnimalController } from './createAnimal.controller';
 import { CreateAnimalService } from './createAnimal.service';
 
+import { AddTagToAnimalModule } from '@/module/association/domain/tag/services/addTagToAnimal/addTagToAnimal.module';
 import { IAnimalRepositorySymbol } from '@/repositories/animal.repository.interface';
 import { AnimalRepository } from '@/repositories/prisma/animal.repository';
 import { PublicationRepository } from '@/repositories/prisma/publication.repository';
@@ -11,6 +12,7 @@ import { IPublicationRepositorySymbol } from '@/repositories/publication.reposit
 import { ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
 
 @Module({
+  imports: [AddTagToAnimalModule],
   controllers: [CreateAnimalController],
   providers: [
     CreateAnimalService,

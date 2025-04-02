@@ -46,7 +46,24 @@ model TagModel {
 
   association AssociationModel? @relation(fields: [associationId], references: [id])
 
+  tagAnimals TagAnimalModel[]
+
   @@map("tag")
+}
+
+model TagAnimalModel {
+  id       String @id @default(uuid()) @db.Uuid
+  tagId    String @map("tag_id") @db.Uuid
+  animalId String @map("animal_id") @db.Uuid
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz()
+  deleted   Boolean  @default(false)
+
+  tag    TagModel    @relation(fields: [tagId], references: [id])
+  animal AnimalModel @relation(fields: [animalId], references: [id])
+
+  @@map("tag_animal")
 }
 
 model AdoptionModel {

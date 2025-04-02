@@ -57,6 +57,7 @@ export interface IBaseRepository<Domain> {
   createBulk(data: Domain[]): MultiEntityResponse<Domain>;
   create(data: Domain): SingleEntityResponse<Domain>;
   update(data: UpdateFields<Domain>): Promise<RawID>;
+  updateBulk(data: UpdateFields<Domain>[]): Promise<RawID[]>;
   delete(id: GenericId): Promise<boolean>;
   deleteBulk(ids: GenericId[]): Promise<boolean>;
   getPaginationParams(query: PaginationQuery): { page: number; limit: number; skip: number };

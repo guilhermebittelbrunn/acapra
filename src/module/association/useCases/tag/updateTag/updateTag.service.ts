@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import { UpdateTagDTO } from './dto/updateTag.dto';
 
-import Tag from '@/module/association/domain/tag.domain';
+import Tag from '@/module/association/domain/tag/tag.domain';
 import { ITagRepository, ITagRepositorySymbol } from '@/repositories/tag.repository.interface';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
 import GenericErrors from '@/shared/core/logic/GenericErrors';

@@ -89,7 +89,7 @@ export class BaseRepository<ModelKey extends PrismaModel, Domain extends Entity<
   }
 
   async createBulk(data: Domain[]): Promise<Domain[]> {
-    const rawRecords = data.map(this.mapper.toPersistence);
+    const rawRecords = await Promise.all(data.map(async (row) => await this.mapper.toPersistence(row)));
 
     const recordsSaved = await (this.manager().createManyAndReturn as any)({ data: rawRecords });
 
@@ -141,6 +141,12 @@ export class BaseRepository<ModelKey extends PrismaModel, Domain extends Entity<
       data: persistence,
     });
     return id;
+  }
+
+  async updateBulk(data: UpdateFields<Domain>[]): Promise<RawID[]> {
+    // prisma does not have a bulk update method without raw sql, so we need to do it one by one
+    const promises = data.map(async (row) => await this.update(row));
+    return Promise.all(promises);
   }
 
   private async softDelete(id: GenericId): Promise<boolean> {

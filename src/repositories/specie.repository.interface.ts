@@ -9,6 +9,7 @@ import Specie from '@/module/animal/domain/specie.domain';
 
 export interface ListSpecieByAssociationIdQuery extends PaginationQuery {
   associationId: string;
+  enabled?: boolean;
 }
 
 export interface ISpecieRepository extends IBaseRepository<Specie> {

@@ -4,6 +4,7 @@ import Publication from '@/module/association/domain/publication.domain';
 
 export interface ListPublicationByAssociationIdQuery extends PaginationQuery {
   associationId: string;
+  enabled?: boolean;
 }
 
 export interface IPublicationRepository extends IBaseRepository<Publication> {

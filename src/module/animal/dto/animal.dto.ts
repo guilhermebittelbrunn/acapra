@@ -3,6 +3,7 @@ import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { SpecieDTO } from './specie.dto';
 
 import { PublicationDTO } from '@/module/association/dto/publication.dto';
+import { TagDTO } from '@/module/association/dto/tag.dto';
 import { AnimalGenderEnum, AnimalSizeEnum, AnimalStatusEnum } from '@/shared/types/animal';
 
 export default class AnimalDTO {
@@ -26,6 +27,9 @@ export default class AnimalDTO {
 
   @ApiProperty()
   breed: string;
+
+  @ApiProperty()
+  isFavorite: boolean;
 
   @ApiProperty()
   associationId: string;
@@ -53,4 +57,7 @@ export default class AnimalDTO {
 
   @ApiHideProperty()
   publication?: PublicationDTO | null;
+
+  @ApiHideProperty()
+  tags?: TagDTO[];
 }
