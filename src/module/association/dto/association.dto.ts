@@ -8,4 +8,7 @@ export class AssociationDTO {
 
   @ApiProperty()
   name: string;
+
+  @ApiUUIDProperty()
+  addressId?: string | null;
 }

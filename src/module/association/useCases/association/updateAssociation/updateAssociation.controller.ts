@@ -9,11 +9,12 @@ import GenericAppError from '@/shared/core/logic/GenericAppError';
 import { GenericException } from '@/shared/core/logic/GenericException';
 import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
+import { UserRoleGuard } from '@/shared/guards/userRole.guard';
 import { UpdateResponseDTO } from '@/shared/types/common';
 
 @Controller('/association')
 @ApiTags('association')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, UserRoleGuard)
 export class UpdateAssociationController {
   constructor(
     private readonly useCase: UpdateAssociationService,

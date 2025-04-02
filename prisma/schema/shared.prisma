@@ -16,3 +16,23 @@ model NotificationModel {
 
   @@map("notification")
 }
+
+model AddressModel {
+  id            String   @id @default(uuid()) @db.Uuid
+  street        String
+  complement    String?
+  addressNumber String   @map("address_number") @db.Char(10)
+  neighborhood  String?
+  city          String?
+  state         String   @db.Char(2)
+  country       String   @default("BR")
+  cep           String?  @db.Char(8)
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt     DateTime @default(now()) @map("updated_at") @db.Timestamptz()
+  deleted       Boolean  @default(false)
+
+  user        UserModel?
+  association AssociationModel?
+
+  @@map("address")
+}

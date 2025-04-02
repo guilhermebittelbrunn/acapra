@@ -1,6 +1,7 @@
 model AssociationModel {
-  id   String @id @default(uuid()) @db.Uuid
-  name String @unique
+  id        String  @id @default(uuid()) @db.Uuid
+  name      String  @unique
+  addressId String? @unique @map("address_id") @db.Uuid
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz()
@@ -12,6 +13,8 @@ model AssociationModel {
   tags          TagModel[]
   notifications NotificationModel[]
   adoptions     AdoptionModel[]
+
+  address AddressModel? @relation(fields: [addressId], references: [id])
 
   @@map("association")
 }
