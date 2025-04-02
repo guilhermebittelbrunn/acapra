@@ -6,6 +6,7 @@ import Animal from '@/module/animal/domain/animal/animal.domain';
 import AnimalBreed from '@/module/animal/domain/animal/animalBreed.domain';
 import AnimalGender from '@/module/animal/domain/animal/animalGender.domain';
 import AnimalSize from '@/module/animal/domain/animal/animalSize.domain';
+import { AddTagToAnimalService } from '@/module/association/domain/tag/services/addTagToAnimal/addTagToAnimal.service';
 import { IAnimalRepository, IAnimalRepositorySymbol } from '@/repositories/animal.repository.interface';
 import {
   IPublicationRepository,
@@ -15,6 +16,7 @@ import { ISpecieRepository, ISpecieRepositorySymbol } from '@/repositories/speci
 import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
 import GenericErrors from '@/shared/core/logic/GenericErrors';
+import { filledArray } from '@/shared/core/utils/undefinedHelpers';
 
 @Injectable()
 export class CreateAnimalService {
@@ -22,6 +24,7 @@ export class CreateAnimalService {
     @Inject(IAnimalRepositorySymbol) private readonly animalRepo: IAnimalRepository,
     @Inject(ISpecieRepositorySymbol) private readonly specieRepo: ISpecieRepository,
     @Inject(IPublicationRepositorySymbol) private readonly publicationRepo: IPublicationRepository,
+    private readonly addTagToAnimal: AddTagToAnimalService,
   ) {}
 
   async execute(dto: CreateAnimalDTO) {
@@ -47,7 +50,13 @@ export class CreateAnimalService {
       return animalOrError;
     }
 
-    return this.animalRepo.create(animalOrError);
+    const animalRaw = await this.animalRepo.create(animalOrError);
+
+    if (filledArray(dto.tagsIds)) {
+      await this.addTagToAnimal.execute(animalRaw, dto.tagsIds);
+    }
+
+    return animalRaw;
   }
 
   private async validateFields(dto: CreateAnimalDTO) {

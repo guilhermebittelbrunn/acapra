@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, TagModel } from '@prisma/client';
+import { isEmpty } from 'class-validator';
 
 import { BaseRepository } from './base.repository';
 
@@ -7,7 +8,7 @@ import { PaginatedResult } from '../base.repository.interface';
 import { ITagRepository, ListTagByAssociationIdQuery } from '../tag.repository.interface';
 
 import { PrismaService } from '@/infra/database/prisma/prisma.service';
-import Tag from '@/module/association/domain/tag.domain';
+import Tag from '@/module/association/domain/tag/tag.domain';
 import TagMapper from '@/module/association/mappers/tag.mapper';
 import { Als } from '@/shared/config/als/als.interface';
 
@@ -22,8 +23,12 @@ export class TagRepository extends BaseRepository<'tagModel', Tag, TagModel> imp
 
   async listByAssociationId(query: ListTagByAssociationIdQuery): Promise<PaginatedResult<Tag>> {
     const { limit, page, skip } = this.getPaginationParams(query);
+    const { enabled } = { ...query };
 
-    const where: Prisma.TagModelWhereInput = { associationId: query.associationId };
+    const where: Prisma.TagModelWhereInput = {
+      associationId: query.associationId,
+      ...(!isEmpty(query.enabled) && { enabled }),
+    };
 
     const [tags, total] = await Promise.all([
       this.manager().findMany({

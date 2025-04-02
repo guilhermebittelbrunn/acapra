@@ -31,6 +31,7 @@ export class AnimalRepository
         specie: true,
         publication: true,
         association: true,
+        tagAnimals: { include: { tag: true } },
       },
     });
 

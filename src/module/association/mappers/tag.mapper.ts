@@ -1,6 +1,6 @@
 import { TagModel } from '@prisma/client';
 
-import Tag from '../domain/tag.domain';
+import Tag from '../domain/tag/tag.domain';
 import { TagDTO } from '../dto/tag.dto';
 
 import Mapper from '@/shared/core/domain/Mapper';

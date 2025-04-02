@@ -1,6 +1,7 @@
 import { ApiHideProperty } from '@nestjs/swagger';
 import { IsOptional } from 'class-validator';
 
+import { ValidatedIds } from '@/shared/decorators/validatedIds.decorator';
 import {
   ValidatedEnum,
   ValidatedMaxLength,
@@ -44,6 +45,10 @@ export class CreateAnimalDTO {
   @IsOptional()
   @ValidatedString('descrição')
   description?: string;
+
+  @IsOptional()
+  @ValidatedIds()
+  tagsIds?: string[];
 
   @ApiHideProperty()
   associationId: string;

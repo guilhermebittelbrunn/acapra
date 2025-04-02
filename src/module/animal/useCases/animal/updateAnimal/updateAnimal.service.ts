@@ -9,6 +9,7 @@ import AnimalSize from '@/module/animal/domain/animal/animalSize.domain';
 import AnimalStatus from '@/module/animal/domain/animal/animalStatus.domain';
 import Specie from '@/module/animal/domain/specie.domain';
 import Publication from '@/module/association/domain/publication.domain';
+import { AddTagToAnimalService } from '@/module/association/domain/tag/services/addTagToAnimal/addTagToAnimal.service';
 import { IAnimalRepository, IAnimalRepositorySymbol } from '@/repositories/animal.repository.interface';
 import {
   IPublicationRepository,
@@ -17,7 +18,7 @@ import {
 import { ISpecieRepository, ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
 import GenericErrors from '@/shared/core/logic/GenericErrors';
-import { coalesce } from '@/shared/core/utils/undefinedHelpers';
+import { coalesce, filledArray } from '@/shared/core/utils/undefinedHelpers';
 
 @Injectable()
 export class UpdateAnimalService {
@@ -25,6 +26,7 @@ export class UpdateAnimalService {
     @Inject(IAnimalRepositorySymbol) private readonly animalRepo: IAnimalRepository,
     @Inject(ISpecieRepositorySymbol) private readonly specieRepo: ISpecieRepository,
     @Inject(IPublicationRepositorySymbol) private readonly publicationRepo: IPublicationRepository,
+    private readonly addTagToAnimal: AddTagToAnimalService,
   ) {}
 
   async execute(dto: UpdateAnimalDTO) {
@@ -59,6 +61,10 @@ export class UpdateAnimalService {
 
     if (animalOrError instanceof GenericAppError) {
       return animalOrError;
+    }
+
+    if (filledArray(dto.tagsIds)) {
+      await this.addTagToAnimal.execute(animalOrError, dto.tagsIds);
     }
 
     return this.animalRepo.update(animalOrError);

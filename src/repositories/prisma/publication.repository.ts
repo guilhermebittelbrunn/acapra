@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, PublicationModel } from '@prisma/client';
+import { isEmpty } from 'class-validator';
 
 import { BaseRepository } from './base.repository';
 
@@ -28,8 +29,12 @@ export class PublicationRepository
 
   async listByAssociationId(query: ListPublicationByAssociationIdQuery): Promise<PaginatedResult<Publication>> {
     const { limit, page, skip } = this.getPaginationParams(query);
+    const { enabled } = { ...query };
 
-    const where: Prisma.PublicationModelWhereInput = { associationId: query.associationId };
+    const where: Prisma.PublicationModelWhereInput = {
+      associationId: query.associationId,
+      ...(!isEmpty(enabled) && { enabled }),
+    };
 
     const [publications, total] = await Promise.all([
       this.manager().findMany({

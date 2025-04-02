@@ -1,4 +1,4 @@
-import { AnimalModel, AssociationModel, PublicationModel } from '@prisma/client';
+import { AnimalModel, AssociationModel, PublicationModel, TagAnimalModel } from '@prisma/client';
 
 import SpecieMapper, { SpecieModelWithRelations } from './specie.mapper';
 
@@ -11,6 +11,8 @@ import AnimalDTO from '../dto/animal.dto';
 
 import AssociationMapper from '@/module/association/mappers/association.mapper';
 import PublicationMapper from '@/module/association/mappers/publication.mapper';
+import TagMapper from '@/module/association/mappers/tag.mapper';
+import TagAnimalMapper from '@/module/association/mappers/tagAnimal.mapper';
 import Mapper from '@/shared/core/domain/Mapper';
 import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
 import { AnimalGenderEnum, AnimalSizeEnum, AnimalStatusEnum } from '@/shared/types/animal';
@@ -19,6 +21,7 @@ export interface AnimalModelWithRelations extends AnimalModel {
   specie?: SpecieModelWithRelations;
   association?: AssociationModel;
   publication?: PublicationModel | null;
+  tagAnimals?: TagAnimalModel[];
 }
 
 class BaseAnimalMapper extends Mapper<Animal, AnimalModelWithRelations, AnimalDTO> {
@@ -42,6 +45,7 @@ class BaseAnimalMapper extends Mapper<Animal, AnimalModelWithRelations, AnimalDT
         specie: SpecieMapper.toDomainOrUndefined(animal.specie),
         association: AssociationMapper.toDomainOrUndefined(animal.association),
         publication: PublicationMapper.toDomainOrUndefined(animal.publication),
+        tagAnimals: animal.tagAnimals?.map(TagAnimalMapper.toDomain),
       },
       new UniqueEntityID(animal.id),
     ) as Animal;
@@ -71,6 +75,7 @@ class BaseAnimalMapper extends Mapper<Animal, AnimalModelWithRelations, AnimalDT
       associationId: animal.associationId.toValue(),
       specieId: animal.specieId.toValue(),
       breed: animal.breed.value,
+      isFavorite: animal.isFavorite,
       publicationId: animal.publicationId?.toValue(),
       name: animal.name,
       description: animal.description,
@@ -83,6 +88,7 @@ class BaseAnimalMapper extends Mapper<Animal, AnimalModelWithRelations, AnimalDT
       updatedAt: animal.updatedAt,
       specie: SpecieMapper.toDTOOrUndefined(animal.specie),
       publication: PublicationMapper.toDTOOrUndefined(animal.publication),
+      tags: animal.tags?.map(TagMapper.toDTO),
     };
   }
 }

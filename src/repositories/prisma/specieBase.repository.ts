@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { SpecieBaseModel } from '@prisma/client';
+import { Prisma, SpecieBaseModel } from '@prisma/client';
+import { isEmpty } from 'class-validator';
 
 import { BaseRepository } from './base.repository';
 
@@ -25,14 +26,20 @@ export class SpecieBaseRepository
 
   async list(query: ListSpecieBaseQuery): Promise<PaginatedResult<SpecieBase>> {
     const { limit, page, skip } = this.getPaginationParams(query);
+    const { enabled } = { ...query };
+
+    const where: Prisma.SpecieBaseModelWhereInput = {
+      ...(!isEmpty(query.enabled) && { enabled }),
+    };
 
     const [specieBases, total] = await Promise.all([
       this.manager().findMany({
         take: limit,
+        where,
         skip,
         orderBy: { name: 'asc' },
       }),
-      this.manager().count(),
+      this.manager().count({ where }),
     ]);
 
     return {

@@ -2,7 +2,9 @@ import { IBaseRepository, PaginatedResult, PaginationQuery } from './base.reposi
 
 import SpecieBase from '@/module/animal/domain/specieBase.domain';
 
-export interface ListSpecieBaseQuery extends PaginationQuery {}
+export interface ListSpecieBaseQuery extends PaginationQuery {
+  enabled?: boolean;
+}
 
 export interface ISpecieBaseRepository extends IBaseRepository<SpecieBase> {
   list(query: ListSpecieBaseQuery): Promise<PaginatedResult<SpecieBase>>;
