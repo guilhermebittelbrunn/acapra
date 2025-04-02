@@ -12,7 +12,10 @@ export class UserDTO {
   name: string;
 
   @ApiProperty()
-  associationId: string;
+  associationId?: string | null;
+
+  @ApiProperty()
+  addressId: string | null;
 
   @ApiProperty()
   email?: string | null;

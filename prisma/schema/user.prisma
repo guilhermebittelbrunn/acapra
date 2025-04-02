@@ -1,6 +1,7 @@
 model UserModel {
   id            String  @id @default(uuid()) @db.Uuid
   associationId String? @map("association_id") @db.Uuid
+  addressId     String? @unique @map("address_id") @db.Uuid
   name          String
   password      String
   email         String? @unique @map("email")
@@ -11,6 +12,7 @@ model UserModel {
   deleted   Boolean  @default(false)
 
   association AssociationModel? @relation(fields: [associationId], references: [id])
+  address     AddressModel?     @relation(fields: [addressId], references: [id])
 
   notifications      NotificationModel[]
   wishLists          WishListModel[]

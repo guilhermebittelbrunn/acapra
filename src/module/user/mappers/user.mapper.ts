@@ -29,6 +29,7 @@ class BaseUserMapper extends Mapper<User, UserModelWithRelations, UserDTO> {
         email: userEmail as UserEmail,
         password: userPassword as UserPassword,
         associationId: UniqueEntityID.createOrUndefined(user.associationId),
+        addressId: UniqueEntityID.createOrUndefined(user.associationId),
         type: userType as UserType,
         deleted: user.deleted,
         createdAt: user.createdAt,
@@ -44,6 +45,7 @@ class BaseUserMapper extends Mapper<User, UserModelWithRelations, UserDTO> {
       name: user.name,
       email: user.email.value,
       associationId: user.associationId?.toValue(),
+      addressId: user.addressId?.toValue(),
       password: await user.password?.getHashedValue(),
       type: user.type.value,
       deleted: user.deleted,
@@ -55,6 +57,7 @@ class BaseUserMapper extends Mapper<User, UserModelWithRelations, UserDTO> {
     return {
       id: user.id.toValue(),
       associationId: user.associationId?.toValue(),
+      addressId: user.addressId?.toValue(),
       name: user.name,
       email: user.email.value,
       type: user.type.value as UserTypeEnum,

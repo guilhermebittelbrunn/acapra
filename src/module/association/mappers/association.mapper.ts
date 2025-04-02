@@ -12,6 +12,7 @@ class BaseAssociationMapper extends Mapper<Association, AssociationModelWithRela
     return Association.create(
       {
         name: association.name,
+        addressId: UniqueEntityID.createOrUndefined(association.addressId),
         deleted: association.deleted,
         createdAt: association.createdAt,
         updatedAt: association.updatedAt,
@@ -23,6 +24,7 @@ class BaseAssociationMapper extends Mapper<Association, AssociationModelWithRela
     return {
       id: association.id.toValue(),
       name: association.name,
+      addressId: association.addressId?.toValue(),
       deleted: association.deleted,
       createdAt: association.createdAt,
       updatedAt: association.updatedAt,
@@ -31,6 +33,7 @@ class BaseAssociationMapper extends Mapper<Association, AssociationModelWithRela
   toDTO(association: Association): AssociationDTO {
     return {
       id: association.id.toValue(),
+      addressId: association.addressId?.toValue(),
       name: association.name,
     };
   }
