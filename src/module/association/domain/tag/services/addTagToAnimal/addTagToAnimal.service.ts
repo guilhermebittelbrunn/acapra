@@ -41,7 +41,7 @@ export class AddTagToAnimalService {
       }
 
       if (tagsAnimals.find((tagAnimal) => tagAnimal.tagId.equals(tag.id))) {
-        return;
+        continue;
       }
       tagsToCreate.push(tagAnimalOrError);
     }
