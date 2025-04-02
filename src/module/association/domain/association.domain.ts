@@ -20,7 +20,7 @@ export class Association extends Entity<IAssociationProps> {
     return this._id;
   }
 
-  get addressId(): UniqueEntityID {
+  get addressId(): UniqueEntityID | null | undefined {
     return this.props.addressId;
   }
 

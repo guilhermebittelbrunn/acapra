@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import { CreateAssociationAddressDTO } from './dto/createAssociationAddress.dto';
 
-import Address from '@/module/shared/domain/address.domain,';
+import Address from '@/module/shared/domain/address.domain';
 import { IAddressRepository, IAddressRepositorySymbol } from '@/repositories/address.repository.interface';
 import {
   IAssociationRepository,

@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import { UpdateAddressDTO } from './dto/updateAddress.dto';
 
-import Address from '@/module/shared/domain/address.domain,';
+import Address from '@/module/shared/domain/address.domain';
 import { IAddressRepository, IAddressRepositorySymbol } from '@/repositories/address.repository.interface';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
 import GenericErrors from '@/shared/core/logic/GenericErrors';

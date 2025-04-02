@@ -11,7 +11,7 @@ export class FindAddressByIdService {
     const address = await this.addressRepo.findById(id);
 
     if (!address) {
-      return new GenericErrors.NotFound(`Endereço com id ${id} não encontrada`);
+      return new GenericErrors.NotFound(`Endereço com id ${id} não encontrado`);
     }
 
     return address;

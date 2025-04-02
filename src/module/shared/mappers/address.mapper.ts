@@ -1,6 +1,6 @@
 import { AddressModel } from '@prisma/client';
 
-import Address from '../domain/address.domain,';
+import Address from '../domain/address.domain';
 import { AddressDTO } from '../dto/address.dto';
 
 import Mapper from '@/shared/core/domain/Mapper';
