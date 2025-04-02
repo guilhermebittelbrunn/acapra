@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { DeleteWishListByAnimalDTO } from './dto/deleteWishlistByAnimal.dto';
+import { DeleteWishListByAnimalDTO } from './dto/deleteWishListByAnimal.dto';
 
 import { IWishListRepository, IWishListRepositorySymbol } from '@/repositories/wishList.repository.interface';
 import GenericErrors from '@/shared/core/logic/GenericErrors';

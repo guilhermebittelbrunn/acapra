@@ -1,10 +1,6 @@
 # Acapra
 
-
-
 ## Resumo do Projeto
-
-
 
 ## Desenvolvimento
 
@@ -23,8 +19,8 @@
 Clone o repositório:
 
 ```sh
-git clone https://github.com/pedidos10/pagamentos10.git
-cd pagamentos10
+git clone https://github.com/guilhermebittelbrunn/acapra.git
+cd acapra
 ```
 
 Instale as dependências:
