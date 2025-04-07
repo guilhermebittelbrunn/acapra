@@ -46,9 +46,11 @@ export class AddTagToAnimalService {
       tagsToCreate.push(tagAnimalOrError);
     }
 
-    if (!filledArray(tagsToCreate)) {
-      return new GenericErrors.InvalidParam('Nenhuma tag válida');
-    }
+    /** @note animals can be defined without tags if client send empty array, if this rule change, uncomment the code below */
+
+    // if (!filledArray(tagsToCreate)) {
+    //   return new GenericErrors.InvalidParam('Nenhuma tag válida');
+    // }
 
     if (filledArray(tagsToDelete)) {
       const tagsToDeleteIds = tagsToDelete.map((tag) => tag.id.toValue());
