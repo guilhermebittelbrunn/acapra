@@ -4,6 +4,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { RefreshService } from './refresh.service';
 
 import User from '@/module/user/domain/user/user.domain';
+import UserMapper from '@/module/user/mappers/user.mapper';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
 import { GenericException } from '@/shared/core/logic/GenericException';
 import { GetUser } from '@/shared/decorators/getUser.decorator';
@@ -23,6 +24,6 @@ export class RefreshController {
       throw new GenericException(result);
     }
 
-    return result;
+    return { tokens: result.tokens, user: UserMapper.toDTO(result.user) };
   }
 }
