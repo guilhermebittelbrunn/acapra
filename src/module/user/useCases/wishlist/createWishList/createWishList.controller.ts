@@ -8,8 +8,8 @@ import User from '@/module/user/domain/user/user.domain';
 import WishListMapper from '@/module/user/mappers/wishList.mapper';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
 import { GenericException } from '@/shared/core/logic/GenericException';
-import { GetUser } from '@/shared/decorators/getUser.decorator';
 import { ValidatedBody } from '@/shared/decorators';
+import { GetUser } from '@/shared/decorators/getUser.decorator';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 
 @Controller('/wish-list')
