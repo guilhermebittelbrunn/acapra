@@ -19,7 +19,7 @@ class IsValidPhoneConstraint implements ValidatorConstraintInterface {
   }
 
   defaultMessage() {
-    return 'phone informed is not valid (correct format: 11999999999)';
+    return 'o telefone informado não é válido (formato correto: 11999999999)';
   }
 }
 

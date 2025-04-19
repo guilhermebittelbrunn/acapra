@@ -34,7 +34,7 @@ export default class Guard {
       ? { succeeded: true }
       : {
           succeeded: false,
-          message: `${argumentName} must be greater than ${minValue}`,
+          message: `${argumentName} deve ser maior que ${minValue}`,
         };
   }
 
@@ -51,7 +51,7 @@ export default class Guard {
       ? { succeeded: true }
       : {
           succeeded: false,
-          message: `Text must have at least ${numChars} characters`,
+          message: `O texto deve ter pelo menos ${numChars} caracteres`,
         };
   }
 
@@ -60,7 +60,7 @@ export default class Guard {
       ? { succeeded: true }
       : {
           succeeded: false,
-          message: `Text must not exceed ${numChars} characters`,
+          message: `O texto não deve exceder ${numChars} caracteres`,
         };
   }
 
@@ -69,11 +69,11 @@ export default class Guard {
       argument instanceof UniqueEntityID &&
       (argument.toValue() === null || argument.toValue() === undefined)
     ) {
-      return { succeeded: false, message: `${argumentName} is required` };
+      return { succeeded: false, message: `${argumentName} é obrigatório` };
     }
 
     if (argument === null || argument === undefined) {
-      return { succeeded: false, message: `${argumentName} is required` };
+      return { succeeded: false, message: `${argumentName} é obrigatório` };
     }
     return { succeeded: true };
   }
@@ -92,7 +92,7 @@ export default class Guard {
       ? { succeeded: true }
       : {
           succeeded: false,
-          message: `${argumentName} (${value}) is not one of the allowed values (${validValues.join(', ')})`,
+          message: `${argumentName} (${value}) não é um dos valores permitidos (${validValues.join(', ')})`,
         };
   }
 
@@ -101,7 +101,7 @@ export default class Guard {
       ? { succeeded: true }
       : {
           succeeded: false,
-          message: `${argumentName} must be between ${min} and ${max}`,
+          message: `${argumentName} deve estar entre ${min} e ${max}`,
         };
   }
 
@@ -115,14 +115,14 @@ export default class Guard {
 
   public static isValidDatetimeInterval(dates: DatetimeIntervalDates): IGuardResult {
     if (dates.initialDate > dates.endDate) {
-      return { succeeded: false, message: 'Initial date cannot be greater than end date' };
+      return { succeeded: false, message: 'Data inicial não pode ser maior que a data final' };
     }
 
     if (areEqualDates(dates.initialDate, dates.endDate)) {
       if (dates.initialHour && dates.endHour && dates.initialHour > dates.endHour) {
         return {
           succeeded: false,
-          message: 'Initial date/time cannot be greater than end date/time',
+          message: 'Data/hora inicial não pode ser maior que a data/hora final',
         };
       }
     }

@@ -8,7 +8,7 @@ import { ApiListResponse } from '@/infra/openAPI/swagger/decorators/apiListRespo
 import { SpecieBaseDTO } from '@/module/animal/dto/specieBase.dto';
 import SpecieBaseMapper from '@/module/animal/mappers/specieBase.mapper';
 import { PaginatedResult } from '@/repositories/base.repository.interface';
-import { ValidatedQuery } from '@/shared/decorators/validatedQuery.decorator';
+import { ValidatedQuery } from '@/shared/decorators/validatedRequest.decorator';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
 

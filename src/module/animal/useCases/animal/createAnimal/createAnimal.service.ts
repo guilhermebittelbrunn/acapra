@@ -74,21 +74,20 @@ export class CreateAnimalService {
   }
 
   private buildEntities(dto: CreateAnimalDTO) {
-    const genderOrError = AnimalGender.create(dto.gender);
-    if (genderOrError instanceof GenericAppError) {
-      return genderOrError;
-    }
+    const genderOrError = this.unwrap(AnimalGender.create(dto.gender));
 
-    const breedOrError = AnimalBreed.create(dto.breed);
-    if (breedOrError instanceof GenericAppError) {
-      return breedOrError;
-    }
+    const breedOrError = this.unwrap(AnimalBreed.create(dto.breed));
 
-    const sizeOrError = AnimalSize.create(dto.size);
-    if (sizeOrError instanceof GenericAppError) {
-      return sizeOrError;
-    }
+    const sizeOrError = this.unwrap(AnimalSize.create(dto.size));
 
     return { gender: genderOrError, breed: breedOrError, size: sizeOrError };
+  }
+
+  private unwrap<T>(result: T | GenericAppError): T {
+    if (result instanceof GenericAppError) {
+      throw result;
+    }
+
+    return result;
   }
 }

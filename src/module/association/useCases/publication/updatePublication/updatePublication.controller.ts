@@ -1,4 +1,4 @@
-import { Controller, Param, Put, UseGuards } from '@nestjs/common';
+import { Controller, Put, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { UpdatePublicationDTO } from './dto/updatePublication.dto';
@@ -6,7 +6,7 @@ import { UpdatePublicationService } from './updatePublication.service';
 
 import GenericAppError from '@/shared/core/logic/GenericAppError';
 import { GenericException } from '@/shared/core/logic/GenericException';
-import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
+import { ValidatedBody, ValidatedParams } from '@/shared/decorators';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
 import { UpdateResponseDTO } from '@/shared/types/common';
@@ -20,7 +20,7 @@ export class UpdatePublicationController {
   @Put('/:id')
   async handle(
     @ValidatedBody() body: UpdatePublicationDTO,
-    @Param('id') publicationId: string,
+    @ValidatedParams('id') publicationId: string,
   ): Promise<UpdateResponseDTO> {
     const result = await this.useCase.execute({ ...body, id: publicationId });
 

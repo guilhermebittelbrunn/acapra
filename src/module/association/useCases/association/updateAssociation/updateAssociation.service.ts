@@ -26,6 +26,12 @@ export class UpdateAssociationService {
       return new GenericErrors.NotFound(`Associação com id ${dto.id} não encontrada`);
     }
 
+    const associationWithSameCredentials = await this.associationRepo.findByIdentifier({ name: dto.name });
+
+    if (associationWithSameCredentials && !associationWithSameCredentials.id.equalsRaw(dto.id)) {
+      return new GenericErrors.Conflict(`Já existe uma associação com esse nome: ${dto.name}`);
+    }
+
     const associationOrError = Association.create(
       {
         name: coalesce(dto.name, association.name),

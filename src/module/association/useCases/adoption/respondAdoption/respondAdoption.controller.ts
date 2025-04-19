@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Put, Param } from '@nestjs/common';
+import { Controller, UseGuards, Put } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { RespondAdoptionDTO } from './dto/respondAdoption.dto';
@@ -8,8 +8,8 @@ import { TransactionManagerService } from '@/infra/database/transactionManager/t
 import User from '@/module/user/domain/user/user.domain';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
 import { GenericException } from '@/shared/core/logic/GenericException';
+import { ValidatedBody, ValidatedParams } from '@/shared/decorators';
 import { GetUser } from '@/shared/decorators/getUser.decorator';
-import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
 
@@ -23,7 +23,11 @@ export class RespondAdoptionController {
   ) {}
 
   @Put('/:id')
-  async handle(@Param('id') id: string, @ValidatedBody() body: RespondAdoptionDTO, @GetUser() user: User) {
+  async handle(
+    @ValidatedParams('id') id: string,
+    @ValidatedBody() body: RespondAdoptionDTO,
+    @GetUser() user: User,
+  ) {
     const payload = { ...body, userId: user.id.toValue(), id };
     const result = await this.transactionManager.run(() => this.useCase.execute(payload));
 

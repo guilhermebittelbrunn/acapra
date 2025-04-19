@@ -1,9 +1,9 @@
 import { ApiHideProperty } from '@nestjs/swagger';
 import { IsOptional } from 'class-validator';
 
-import { ValidatedIds } from '@/shared/decorators/validatedIds.decorator';
 import {
   ValidatedEnum,
+  ValidatedIds,
   ValidatedMaxLength,
   ValidatedMinValue,
   ValidatedNumber,

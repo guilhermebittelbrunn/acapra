@@ -10,7 +10,7 @@ import { UserDTO } from '@/module/user/dto/user.dto';
 import UserMapper from '@/module/user/mappers/user.mapper';
 import { PaginatedResult } from '@/repositories/base.repository.interface';
 import { GetUser } from '@/shared/decorators/getUser.decorator';
-import { ValidatedQuery } from '@/shared/decorators/validatedQuery.decorator';
+import { ValidatedQuery } from '@/shared/decorators/validatedRequest.decorator';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
 

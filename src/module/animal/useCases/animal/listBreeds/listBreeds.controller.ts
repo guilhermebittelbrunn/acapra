@@ -7,7 +7,7 @@ import { ListBreedsService } from './listBreeds.service';
 import { ApiListResponse } from '@/infra/openAPI/swagger/decorators/apiListResponse.decorator';
 import AnimalDTO from '@/module/animal/dto/animal.dto';
 import { PaginatedResult } from '@/repositories/base.repository.interface';
-import { ValidatedQuery } from '@/shared/decorators/validatedQuery.decorator';
+import { ValidatedQuery } from '@/shared/decorators/validatedRequest.decorator';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
 
