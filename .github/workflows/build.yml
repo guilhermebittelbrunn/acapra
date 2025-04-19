@@ -20,7 +20,9 @@ jobs:
         name: Install pnpm
         with:
           version: 9
-
+          run_install: |
+            - args: [--frozen-lockfile]
+
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
