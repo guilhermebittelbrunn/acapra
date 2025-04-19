@@ -9,7 +9,7 @@ import { AssociationDTO } from '@/module/association/dto/association.dto';
 import AssociationMapper from '@/module/association/mappers/association.mapper';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
 import { GenericException } from '@/shared/core/logic/GenericException';
-import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
+import { ValidatedBody } from '@/shared/decorators';
 
 @Controller('/association')
 @ApiTags('association')

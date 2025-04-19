@@ -1,10 +1,11 @@
-import { Controller, Delete, HttpCode, HttpStatus, Param, UseGuards } from '@nestjs/common';
+import { Controller, Delete, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { DeleteSpecieService } from './deleteSpecie.service';
 
 import GenericAppError from '@/shared/core/logic/GenericAppError';
 import { GenericException } from '@/shared/core/logic/GenericException';
+import { ValidatedParams } from '@/shared/decorators';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
 
@@ -16,7 +17,7 @@ export class DeleteSpecieController {
 
   @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async handle(@Param('id') specieId: string): Promise<void> {
+  async handle(@ValidatedParams('id') specieId: string): Promise<void> {
     const result = await this.useCase.execute(specieId);
 
     if (result instanceof GenericAppError) {

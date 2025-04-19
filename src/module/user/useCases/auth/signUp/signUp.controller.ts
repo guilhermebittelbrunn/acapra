@@ -9,7 +9,7 @@ import { UserDTO } from '@/module/user/dto/user.dto';
 import UserMapper from '@/module/user/mappers/user.mapper';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
 import { GenericException } from '@/shared/core/logic/GenericException';
-import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
+import { ValidatedBody } from '@/shared/decorators';
 
 @Controller('/signup')
 @ApiTags('auth')

@@ -10,7 +10,7 @@ import AdoptionMapper from '../../../mappers/adoption.mapper';
 import { ApiListResponse } from '@/infra/openAPI/swagger/decorators/apiListResponse.decorator';
 import User from '@/module/user/domain/user/user.domain';
 import { GetUser } from '@/shared/decorators/getUser.decorator';
-import { ValidatedQuery } from '@/shared/decorators/validatedQuery.decorator';
+import { ValidatedQuery } from '@/shared/decorators/validatedRequest.decorator';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 
 @Controller('/adoption')

@@ -22,7 +22,7 @@ class IsCpfConstraint implements ValidatorConstraintInterface {
   }
 
   defaultMessage() {
-    return 'cpf informed is not valid';
+    return 'cpf informado não é válido';
   }
 
   private validateCpf(cpf: string): boolean {
@@ -57,7 +57,7 @@ class IsCnpjConstraint implements ValidatorConstraintInterface {
   }
 
   defaultMessage() {
-    return 'cnpj informed is not valid';
+    return 'cnpj informado não é válido';
   }
 
   private validateCnpj(cnpj: string): boolean {

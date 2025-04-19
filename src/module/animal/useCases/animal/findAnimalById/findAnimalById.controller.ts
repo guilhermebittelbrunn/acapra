@@ -1,4 +1,4 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { FindAnimalByIdService } from './findAnimalById.service';
@@ -7,6 +7,7 @@ import AnimalDTO from '@/module/animal/dto/animal.dto';
 import AnimalMapper from '@/module/animal/mappers/animal.mapper';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
 import { GenericException } from '@/shared/core/logic/GenericException';
+import { ValidatedParams } from '@/shared/decorators';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
 
@@ -17,7 +18,7 @@ export class FindAnimalByIdController {
   constructor(private readonly useCase: FindAnimalByIdService) {}
 
   @Get('/:id')
-  async handle(@Param('id') animalId: string): Promise<AnimalDTO> {
+  async handle(@ValidatedParams('id') animalId: string): Promise<AnimalDTO> {
     const result = await this.useCase.execute(animalId);
 
     if (result instanceof GenericAppError) {

@@ -18,4 +18,4 @@ COPY --from=build_server /usr/src/app/prisma ./prisma
 COPY --from=build_server /usr/src/app/node_modules ./node_modules
 EXPOSE ${PORT} 80
 
-CMD ["sh", "-c", "pnpx prisma migrate deploy && pnpm start:prod"]
+CMD ["sh", "-c", "pnpx prisma@6.2.1 migrate deploy --schema=prisma/schema && pnpm tsx prisma/seed.ts && pnpm start:prod"]

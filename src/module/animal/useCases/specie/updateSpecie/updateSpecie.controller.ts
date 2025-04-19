@@ -1,4 +1,4 @@
-import { Controller, Param, Put, UseGuards } from '@nestjs/common';
+import { Controller, Put, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { UpdateSpecieDTO } from './dto/updateSpecie.dto';
@@ -6,7 +6,7 @@ import { UpdateSpecieService } from './updateSpecie.service';
 
 import GenericAppError from '@/shared/core/logic/GenericAppError';
 import { GenericException } from '@/shared/core/logic/GenericException';
-import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
+import { ValidatedBody, ValidatedParams } from '@/shared/decorators';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
 import { UpdateResponseDTO } from '@/shared/types/common';
@@ -20,7 +20,7 @@ export class UpdateSpecieController {
   @Put('/:id')
   async handle(
     @ValidatedBody() body: UpdateSpecieDTO,
-    @Param('id') specieId: string,
+    @ValidatedParams('id') specieId: string,
   ): Promise<UpdateResponseDTO> {
     const result = await this.useCase.execute({ ...body, id: specieId });
 

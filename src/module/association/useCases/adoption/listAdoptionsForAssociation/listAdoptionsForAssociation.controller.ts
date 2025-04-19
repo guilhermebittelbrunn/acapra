@@ -8,7 +8,7 @@ import { AdoptionDTO } from '../../../dto/adoption.dto';
 import AdoptionMapper from '../../../mappers/adoption.mapper';
 
 import { ApiListResponse } from '@/infra/openAPI/swagger/decorators/apiListResponse.decorator';
-import { ValidatedQuery } from '@/shared/decorators/validatedQuery.decorator';
+import { ValidatedQuery } from '@/shared/decorators/validatedRequest.decorator';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
 

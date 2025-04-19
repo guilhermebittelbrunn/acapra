@@ -11,7 +11,7 @@ import User from '@/module/user/domain/user/user.domain';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
 import { GenericException } from '@/shared/core/logic/GenericException';
 import { GetUser } from '@/shared/decorators/getUser.decorator';
-import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
+import { ValidatedBody } from '@/shared/decorators';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
 

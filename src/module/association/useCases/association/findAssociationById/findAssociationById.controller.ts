@@ -1,4 +1,4 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { FindAssociationByIdService } from './findAssociationById.service';
@@ -7,6 +7,7 @@ import { AssociationDTO } from '@/module/association/dto/association.dto';
 import AssociationMapper from '@/module/association/mappers/association.mapper';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
 import { GenericException } from '@/shared/core/logic/GenericException';
+import { ValidatedParams } from '@/shared/decorators';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 
 @Controller('/association')
@@ -16,7 +17,7 @@ export class FindAssociationByIdController {
   constructor(private readonly useCase: FindAssociationByIdService) {}
 
   @Get('/:id')
-  async handle(@Param('id') associationId: string): Promise<AssociationDTO> {
+  async handle(@ValidatedParams('id') associationId: string): Promise<AssociationDTO> {
     const result = await this.useCase.execute(associationId);
 
     if (result instanceof GenericAppError) {

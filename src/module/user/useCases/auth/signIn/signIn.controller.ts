@@ -7,7 +7,7 @@ import { SignInService } from './signIn.service';
 import UserMapper from '@/module/user/mappers/user.mapper';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
 import { GenericException } from '@/shared/core/logic/GenericException';
-import { ValidatedBody } from '@/shared/decorators/validatedBody.decorator';
+import { ValidatedBody } from '@/shared/decorators';
 
 @Controller('signin')
 @ApiTags('auth')

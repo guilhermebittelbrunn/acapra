@@ -10,7 +10,7 @@ import SpecieMapper from '@/module/animal/mappers/specie.mapper';
 import User from '@/module/user/domain/user/user.domain';
 import { PaginatedResult } from '@/repositories/base.repository.interface';
 import { GetUser } from '@/shared/decorators/getUser.decorator';
-import { ValidatedQuery } from '@/shared/decorators/validatedQuery.decorator';
+import { ValidatedQuery } from '@/shared/decorators/validatedRequest.decorator';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
 
