@@ -169,8 +169,8 @@ export default class Animal extends Entity<IAnimalProps> {
   }
 
   addPictures(pictures: Picture[]) {
-    if (pictures.length > MAX_ANIMAL_PICTURES) {
-      return new GenericErrors.InvalidParam(`O número máximo de imagens é ${MAX_ANIMAL_PICTURES}`);
+    const totalPictures = this.pictures.items.length + pictures.length;
+    if (totalPictures > MAX_ANIMAL_PICTURES) {
     }
 
     pictures.forEach((picture) => this.addPicture(picture));
