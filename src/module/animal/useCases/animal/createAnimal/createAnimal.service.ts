@@ -6,6 +6,7 @@ import Animal from '@/module/animal/domain/animal/animal.domain';
 import AnimalBreed from '@/module/animal/domain/animal/animalBreed.domain';
 import AnimalGender from '@/module/animal/domain/animal/animalGender.domain';
 import AnimalSize from '@/module/animal/domain/animal/animalSize.domain';
+import { AddAnimalPictureService } from '@/module/animal/domain/animal/services/addAnimalPicture/addAnimalPicture.service';
 import { AddTagToAnimalService } from '@/module/association/domain/tag/services/addTagToAnimal/addTagToAnimal.service';
 import { IAnimalRepository, IAnimalRepositorySymbol } from '@/repositories/animal.repository.interface';
 import {
@@ -24,6 +25,7 @@ export class CreateAnimalService {
     @Inject(IAnimalRepositorySymbol) private readonly animalRepo: IAnimalRepository,
     @Inject(ISpecieRepositorySymbol) private readonly specieRepo: ISpecieRepository,
     @Inject(IPublicationRepositorySymbol) private readonly publicationRepo: IPublicationRepository,
+    private readonly addAnimalPicture: AddAnimalPictureService,
     private readonly addTagToAnimal: AddTagToAnimalService,
   ) {}
 
@@ -50,13 +52,20 @@ export class CreateAnimalService {
       return animalOrError;
     }
 
-    const animalRaw = await this.animalRepo.create(animalOrError);
+    const animal = await this.animalRepo.create(animalOrError);
 
     if (filledArray(dto.tagsIds)) {
-      await this.addTagToAnimal.execute(animalRaw, dto.tagsIds);
+      await this.addTagToAnimal.execute(animal, dto.tagsIds);
     }
 
-    return animalRaw;
+    if (filledArray(dto.images)) {
+      const addAnimalPictureOrError = await this.addAnimalPicture.execute(animal, dto.images);
+      if (addAnimalPictureOrError instanceof GenericAppError) {
+        return addAnimalPictureOrError;
+      }
+    }
+
+    return animal;
   }
 
   private async validateFields(dto: CreateAnimalDTO) {
@@ -74,20 +83,21 @@ export class CreateAnimalService {
   }
 
   private buildEntities(dto: CreateAnimalDTO) {
-    const genderOrError = this.unwrap(AnimalGender.create(dto.gender));
-
-    const breedOrError = this.unwrap(AnimalBreed.create(dto.breed));
-
-    const sizeOrError = this.unwrap(AnimalSize.create(dto.size));
-
-    return { gender: genderOrError, breed: breedOrError, size: sizeOrError };
-  }
-
-  private unwrap<T>(result: T | GenericAppError): T {
-    if (result instanceof GenericAppError) {
-      throw result;
+    const genderOrError = AnimalGender.create(dto.gender);
+    if (genderOrError instanceof GenericAppError) {
+      return genderOrError;
     }
 
-    return result;
+    const breedOrError = AnimalBreed.create(dto.breed);
+    if (breedOrError instanceof GenericAppError) {
+      return breedOrError;
+    }
+
+    const sizeOrError = AnimalSize.create(dto.size);
+    if (sizeOrError instanceof GenericAppError) {
+      return sizeOrError;
+    }
+
+    return { gender: genderOrError, breed: breedOrError, size: sizeOrError };
   }
 }

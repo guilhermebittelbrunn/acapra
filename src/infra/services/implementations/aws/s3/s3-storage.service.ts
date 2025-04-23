@@ -1,16 +1,12 @@
-import {
-  S3Client,
-  S3ClientConfig,
-  PutObjectCommandInput,
-  DeleteObjectCommand,
-  DeleteObjectCommandInput,
-} from '@aws-sdk/client-s3';
+import { S3Client, S3ClientConfig, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { Upload } from '@aws-sdk/lib-storage';
 import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
+import { IFileStoreService, UploadFilePayload } from '@/infra/services/fileStore.interface';
+
 @Injectable()
-export class S3StorageService implements OnModuleInit, OnModuleDestroy {
+export class S3StorageService implements OnModuleInit, OnModuleDestroy, IFileStoreService {
   private readonly logger = new Logger(S3StorageService.name);
 
   private client: S3Client;
@@ -26,12 +22,6 @@ export class S3StorageService implements OnModuleInit, OnModuleDestroy {
       },
     } satisfies S3ClientConfig;
 
-    // if (!this.config.get('isTest')) {
-    //   this.logger.log(
-    //     `Connecting to S3 Storage with config ${JSON.stringify(config)}`,
-    //   );
-    // }
-
     this.client = new S3Client(config);
 
     this.logger.log('S3 Storage initialized!');
@@ -45,10 +35,17 @@ export class S3StorageService implements OnModuleInit, OnModuleDestroy {
     this.client?.destroy();
   }
 
-  async upload(input: PutObjectCommandInput) {
+  async upload(input: UploadFilePayload) {
     const upload = new Upload({
       client: this.client,
-      params: input,
+      params: {
+        Bucket: this.config.getOrThrow('s3.assetsBucket'),
+        Key: input.path,
+        Body: input.buffer,
+        ContentType: input.mimetype,
+        ACL: 'public-read',
+        ContentDisposition: 'inline',
+      },
     });
 
     const result = await upload.done();
@@ -56,9 +53,28 @@ export class S3StorageService implements OnModuleInit, OnModuleDestroy {
     return result.Location;
   }
 
-  async delete(input: DeleteObjectCommandInput) {
-    const command = new DeleteObjectCommand(input);
+  async uploadMany(input: UploadFilePayload[]) {
+    const results = [];
+    for (const file of input) {
+      const result = await this.upload(file);
+      results.push(result);
+    }
+
+    return results;
+  }
+
+  async delete(pathname: string) {
+    const command = new DeleteObjectCommand({
+      Bucket: this.config.getOrThrow('s3.assetsBucket'),
+      Key: pathname,
+    });
 
     await this.client.send(command);
+  }
+
+  async deleteBulk(paths: string[]) {
+    for (const path of paths) {
+      await this.delete(path);
+    }
   }
 }

@@ -23,11 +23,7 @@ export default () => ({
   crypto: {
     key: process.env.CRYPTO_KEY,
   },
-  zoop: {
-    apiKey: process.env.ZOOP_API_KEY,
-    marketplaceId: process.env.ZOOP_MARKETPLACE_ID,
-    baseUrl: process.env.ZOOP_BASE_URL,
-    sellerId: process.env.ZOOP_SELLER_ID,
-    webhookSecret: process.env.ZOOP_WEBHOOK_URL,
+  localFileStore: {
+    path: process.env.LOCAL_FILE_STORE_PATH,
   },
 });

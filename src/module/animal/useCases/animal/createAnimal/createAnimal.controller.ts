@@ -1,5 +1,7 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { FileFieldsInterceptor } from '@nest-lab/fastify-multer';
+import { File } from '@nest-lab/fastify-multer';
+import { Controller, Post, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 
 import { CreateAnimalService } from './createAnimal.service';
 import { CreateAnimalDTO } from './dto/createAnimal.dto';
@@ -10,9 +12,12 @@ import AnimalMapper from '@/module/animal/mappers/animal.mapper';
 import User from '@/module/user/domain/user/user.domain';
 import GenericAppError from '@/shared/core/logic/GenericAppError';
 import { GenericException } from '@/shared/core/logic/GenericException';
+import { ValidatedBody } from '@/shared/decorators';
 import { GetUser } from '@/shared/decorators/getUser.decorator';
 import { JwtAuthGuard } from '@/shared/guards/jwtAuth.guard';
 import { UserRoleGuard } from '@/shared/guards/userRole.guard';
+import { FileValidatorInterceptor } from '@/shared/interceptors/fileValidator/fileValidator.interceptor';
+import { MAX_ANIMAL_PICTURES } from '@/shared/utils/consts';
 
 @Controller('/animal')
 @ApiTags('animal')
@@ -23,9 +28,19 @@ export class CreateAnimalController {
     private readonly transactionManager: TransactionManagerService,
   ) {}
 
+  @ApiConsumes('multipart/form-data')
   @Post()
-  async handle(@Body() body: CreateAnimalDTO, @GetUser() user: User): Promise<AnimalDTO> {
-    const payload = { ...body, associationId: user?.associationId.toValue() };
+  @UseInterceptors(
+    FileFieldsInterceptor([{ name: 'images', maxCount: MAX_ANIMAL_PICTURES }]),
+    FileValidatorInterceptor,
+  )
+  async handle(
+    @ValidatedBody() body: CreateAnimalDTO,
+    @GetUser() user: User,
+    @UploadedFiles()
+    files: { images?: File[] },
+  ): Promise<AnimalDTO> {
+    const payload = { ...body, ...files, associationId: user?.associationId.toValue() };
 
     const result = await this.transactionManager.run(() => this.useCase.execute(payload));
 
@@ -33,6 +48,6 @@ export class CreateAnimalController {
       throw new GenericException(result);
     }
 
-    return AnimalMapper.toDTO(result);
+    return AnimalMapper.toDTO(result as any);
   }
 }

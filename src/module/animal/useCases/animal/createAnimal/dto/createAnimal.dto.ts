@@ -1,3 +1,4 @@
+import { File } from '@nest-lab/fastify-multer';
 import { ApiHideProperty } from '@nestjs/swagger';
 import { IsOptional } from 'class-validator';
 
@@ -52,4 +53,7 @@ export class CreateAnimalDTO {
 
   @ApiHideProperty()
   associationId: string;
+
+  @IsOptional()
+  images?: File[];
 }

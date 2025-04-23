@@ -7,6 +7,7 @@ import AnimalBreed from '@/module/animal/domain/animal/animalBreed.domain';
 import AnimalGender from '@/module/animal/domain/animal/animalGender.domain';
 import AnimalSize from '@/module/animal/domain/animal/animalSize.domain';
 import AnimalStatus from '@/module/animal/domain/animal/animalStatus.domain';
+import { AddAnimalPictureService } from '@/module/animal/domain/animal/services/addAnimalPicture/addAnimalPicture.service';
 import Specie from '@/module/animal/domain/specie.domain';
 import Publication from '@/module/association/domain/publication.domain';
 import { AddTagToAnimalService } from '@/module/association/domain/tag/services/addTagToAnimal/addTagToAnimal.service';
@@ -27,6 +28,7 @@ export class UpdateAnimalService {
     @Inject(ISpecieRepositorySymbol) private readonly specieRepo: ISpecieRepository,
     @Inject(IPublicationRepositorySymbol) private readonly publicationRepo: IPublicationRepository,
     private readonly addTagToAnimal: AddTagToAnimalService,
+    private readonly addAnimalPicture: AddAnimalPictureService,
   ) {}
 
   async execute(dto: UpdateAnimalDTO) {
@@ -65,6 +67,13 @@ export class UpdateAnimalService {
 
     if (filledArray(dto.tagsIds)) {
       await this.addTagToAnimal.execute(animalOrError, dto.tagsIds);
+    }
+
+    if (filledArray(dto.images)) {
+      const addAnimalPictureOrError = await this.addAnimalPicture.execute(animalOrError, dto.images);
+      if (addAnimalPictureOrError instanceof GenericAppError) {
+        return addAnimalPictureOrError;
+      }
     }
 
     return this.animalRepo.update(animalOrError);

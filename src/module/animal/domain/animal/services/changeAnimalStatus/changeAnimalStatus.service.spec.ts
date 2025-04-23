@@ -2,11 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { ChangeAnimalStatusService } from './changeAnimalStatus.service';
 
-import Animal from '../animal.domain';
-import AnimalBreed from '../animalBreed.domain';
-import AnimalGender from '../animalGender.domain';
-import AnimalSize from '../animalSize.domain';
-import AnimalStatus from '../animalStatus.domain';
+import Animal from '../../animal.domain';
+import AnimalBreed from '../../animalBreed.domain';
+import AnimalGender from '../../animalGender.domain';
+import AnimalSize from '../../animalSize.domain';
+import AnimalStatus from '../../animalStatus.domain';
 
 import { IAnimalRepository, IAnimalRepositorySymbol } from '@/repositories/animal.repository.interface';
 import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';

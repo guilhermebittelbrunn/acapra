@@ -1,7 +1,7 @@
 import { CacheModule } from '@nestjs/cache-manager';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggerModule } from 'nestjs-pino';
 
 import { AppController } from './app.controller';
@@ -16,10 +16,10 @@ import { UserApplicationModule } from './module/user/useCases/user.application.m
 import { AlsMiddleware } from './shared/config/als/als.middleware';
 import { AlsModule } from './shared/config/als/als.module';
 import configuration from './shared/config/configuration';
+import { HttpExceptionFilter } from './shared/exceptions/httpException.filter';
 import { TransformResponseInterceptor } from './shared/interceptors/transformResponse/transformResponse.interceptor';
 import { JwtStrategy } from './shared/strategies/jwt.strategy';
 import { JwtRefreshStrategy } from './shared/strategies/jwtRefresh.strategy';
-
 @Module({
   imports: [
     // setup
@@ -63,6 +63,10 @@ import { JwtRefreshStrategy } from './shared/strategies/jwtRefresh.strategy';
     {
       provide: APP_INTERCEPTOR,
       useClass: TransformResponseInterceptor,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
     },
     AppService,
     JwtStrategy,

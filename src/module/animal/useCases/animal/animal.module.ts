@@ -7,8 +7,11 @@ import { ListAnimalsByAssociationModule } from './listAnimalsByAssociation/listA
 import { ListBreedsModule } from './listBreeds/listBreeds.module';
 import { UpdateAnimalModule } from './updateAnimal/updateAnimal.module';
 
+import { LocalFileStoreModule } from '@/infra/services/implementations/localFileStore/localFileStore.module';
+
 @Module({
   imports: [
+    LocalFileStoreModule,
     CreateAnimalModule,
     UpdateAnimalModule,
     FindAnimalByIdModule,

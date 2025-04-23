@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
 
-import Animal from '../animal.domain';
-import AnimalStatus from '../animalStatus.domain';
+import Animal from '../../animal.domain';
+import AnimalStatus from '../../animalStatus.domain';
 
 import { IAnimalRepository, IAnimalRepositorySymbol } from '@/repositories/animal.repository.interface';
 import GenericAppError from '@/shared/core/logic/GenericAppError';

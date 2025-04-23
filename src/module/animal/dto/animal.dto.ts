@@ -4,6 +4,7 @@ import { SpecieDTO } from './specie.dto';
 
 import { PublicationDTO } from '@/module/association/dto/publication.dto';
 import { TagDTO } from '@/module/association/dto/tag.dto';
+import { PictureDTO } from '@/module/shared/dto/picture.dto';
 import { AnimalGenderEnum, AnimalSizeEnum, AnimalStatusEnum } from '@/shared/types/animal';
 
 export default class AnimalDTO {
@@ -60,4 +61,7 @@ export default class AnimalDTO {
 
   @ApiHideProperty()
   tags?: TagDTO[];
+
+  @ApiProperty()
+  pictures?: PictureDTO[];
 }

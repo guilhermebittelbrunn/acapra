@@ -4,6 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CreateAnimalService } from './createAnimal.service';
 import { CreateAnimalDTO } from './dto/createAnimal.dto';
 
+import { AddAnimalPictureService } from '@/module/animal/domain/animal/services/addAnimalPicture/addAnimalPicture.service';
 import { AddTagToAnimalService } from '@/module/association/domain/tag/services/addTagToAnimal/addTagToAnimal.service';
 import { IAnimalRepository, IAnimalRepositorySymbol } from '@/repositories/animal.repository.interface';
 import {
@@ -20,6 +21,7 @@ describe('CreateAnimalService', () => {
   let specieRepo: jest.Mocked<ISpecieRepository>;
   let publicationRepo: jest.Mocked<IPublicationRepository>;
   let addTagToAnimal: jest.Mocked<AddTagToAnimalService>;
+  let addAnimalPicture: jest.Mocked<AddAnimalPictureService>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -49,6 +51,12 @@ describe('CreateAnimalService', () => {
             execute: jest.fn(),
           },
         },
+        {
+          provide: AddAnimalPictureService,
+          useValue: {
+            execute: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -57,6 +65,7 @@ describe('CreateAnimalService', () => {
     specieRepo = module.get(ISpecieRepositorySymbol);
     publicationRepo = module.get(IPublicationRepositorySymbol);
     addTagToAnimal = module.get(AddTagToAnimalService);
+    addAnimalPicture = module.get(AddAnimalPictureService);
   });
 
   it('should create an animal successfully', async () => {
@@ -70,6 +79,7 @@ describe('CreateAnimalService', () => {
       breed: 'labrador',
       size: AnimalSizeEnum.BIG,
       tagsIds: ['tag1', 'tag2'],
+      images: [{} as any],
     };
 
     specieRepo.findById.mockResolvedValueOnce({} as any);
@@ -83,6 +93,7 @@ describe('CreateAnimalService', () => {
     expect(publicationRepo.findById).toHaveBeenCalledWith('publication-id');
     expect(animalRepo.create).toHaveBeenCalled();
     expect(addTagToAnimal.execute).toHaveBeenCalledWith({ id: 'animal-id' }, ['tag1', 'tag2']);
+    expect(addAnimalPicture.execute).toHaveBeenCalledWith({ id: 'animal-id' }, [{} as any]);
   });
 
   it('should return an error if specie is not found', async () => {

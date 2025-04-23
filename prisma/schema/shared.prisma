@@ -36,3 +36,19 @@ model AddressModel {
 
   @@map("address")
 }
+
+model PictureModel {
+  id           String  @id @default(uuid()) @db.Uuid
+  entityId     String? @map("entity_id") @db.Uuid
+  url          String
+  path         String
+  originalName String  @map("original_name")
+  sequence     Int?
+  enabled      Boolean @default(true)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz()
+  deleted   Boolean  @default(false)
+
+  @@map("picture")
+}
