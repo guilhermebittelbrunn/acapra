@@ -1,8 +1,8 @@
 import { ExceptionFilter, Catch, ArgumentsHost, HttpStatus, HttpException } from '@nestjs/common';
 import { AxiosError } from 'axios';
 
-import GenericAppError from '@/shared/core/logic/genericAppError';
-import GenericErrors from '@/shared/core/logic/genericErrors';
+import GenericAppError from '../core/logic/GenericAppError';
+import GenericErrors from '../core/logic/GenericErrors';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
