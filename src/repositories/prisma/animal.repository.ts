@@ -25,17 +25,20 @@ export class AnimalRepository
   }
 
   async findCompleteById(id: string): Promise<Animal | null> {
-    const animal = await this.manager().findUnique({
-      where: { id },
-      include: {
-        specie: true,
-        publication: true,
-        association: true,
-        tagAnimals: { include: { tag: true } },
-      },
-    });
+    const [animal, pictures] = await Promise.all([
+      this.manager().findUnique({
+        where: { id },
+        include: {
+          specie: true,
+          publication: true,
+          association: true,
+          tagAnimals: { include: { tag: true } },
+        },
+      }),
+      this.manager('pictureModel').findMany({ where: { entityId: id } }),
+    ]);
 
-    return this.mapper.toDomainOrNull(animal);
+    return this.mapper.toDomainOrNull({ ...animal, pictures });
   }
 
   async listByAssociationId(query: ListAnimalByAssociationIdQuery): Promise<PaginatedResult<Animal>> {

@@ -6,6 +6,7 @@ import { UpdateAnimalService } from './updateAnimal.service';
 import Animal from '@/module/animal/domain/animal/animal.domain';
 import AnimalGender from '@/module/animal/domain/animal/animalGender.domain';
 import AnimalStatus from '@/module/animal/domain/animal/animalStatus.domain';
+import { AddAnimalPictureService } from '@/module/animal/domain/animal/services/addAnimalPicture/addAnimalPicture.service';
 import { AddTagToAnimalService } from '@/module/association/domain/tag/services/addTagToAnimal/addTagToAnimal.service';
 import { IAnimalRepository, IAnimalRepositorySymbol } from '@/repositories/animal.repository.interface';
 import {
@@ -15,7 +16,7 @@ import {
 import { ISpecieRepository, ISpecieRepositorySymbol } from '@/repositories/specie.repository.interface';
 import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
 import GenericErrors from '@/shared/core/logic/GenericErrors';
-import { AnimalGenderEnum, AnimalStatusEnum } from '@/shared/types/animal';
+import { AnimalGenderEnum, AnimalSizeEnum, AnimalStatusEnum } from '@/shared/types/animal';
 
 describe('UpdateAnimalService', () => {
   let service: UpdateAnimalService;
@@ -23,7 +24,7 @@ describe('UpdateAnimalService', () => {
   let specieRepo: jest.Mocked<ISpecieRepository>;
   let publicationRepo: jest.Mocked<IPublicationRepository>;
   let addTagToAnimal: jest.Mocked<AddTagToAnimalService>;
-
+  let addAnimalPicture: jest.Mocked<AddAnimalPictureService>;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -53,6 +54,12 @@ describe('UpdateAnimalService', () => {
             execute: jest.fn(),
           },
         },
+        {
+          provide: AddAnimalPictureService,
+          useValue: {
+            execute: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -61,6 +68,7 @@ describe('UpdateAnimalService', () => {
     specieRepo = module.get(ISpecieRepositorySymbol);
     publicationRepo = module.get(IPublicationRepositorySymbol);
     addTagToAnimal = module.get(AddTagToAnimalService);
+    addAnimalPicture = module.get(AddAnimalPictureService);
   });
 
   it('should return NotFound error if animal is not found', async () => {
@@ -102,6 +110,9 @@ describe('UpdateAnimalService', () => {
       id: '1',
       associationId: 'association-id',
       name: 'Updated Animal',
+      age: 1,
+      size: AnimalSizeEnum.SMALL,
+      breed: 'Labrador',
       gender: AnimalGenderEnum.MALE,
       status: AnimalStatusEnum.AVAILABLE,
       tagsIds: ['tag1', 'tag2'],
@@ -126,6 +137,7 @@ describe('UpdateAnimalService', () => {
     expect(result).toEqual({ ...existingAnimal, ...dto });
     expect(animalRepo.update).toHaveBeenCalledWith(expect.objectContaining({ name: 'Updated Animal' }));
     expect(addTagToAnimal.execute).toHaveBeenCalledWith(expect.any(Object), ['tag1', 'tag2']);
+    expect(addAnimalPicture.execute).not.toHaveBeenCalled();
   });
 
   it('should handle errors during entity creation', async () => {

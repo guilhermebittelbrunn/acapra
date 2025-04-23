@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import helmet from '@fastify/helmet';
 import { VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
@@ -8,7 +9,11 @@ import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(), {
+  const adapter = new FastifyAdapter();
+
+  adapter.register(require('@fastify/multipart'));
+
+  const app = await NestFactory.create<NestFastifyApplication>(AppModule, adapter, {
     cors: true,
     bufferLogs: true,
   });

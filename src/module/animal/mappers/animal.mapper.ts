@@ -1,4 +1,4 @@
-import { AnimalModel, AssociationModel, PublicationModel, TagAnimalModel } from '@prisma/client';
+import { AnimalModel, AssociationModel, PublicationModel, TagAnimalModel, PictureModel } from '@prisma/client';
 
 import SpecieMapper, { SpecieModelWithRelations } from './specie.mapper';
 
@@ -13,6 +13,8 @@ import AssociationMapper from '@/module/association/mappers/association.mapper';
 import PublicationMapper from '@/module/association/mappers/publication.mapper';
 import TagMapper from '@/module/association/mappers/tag.mapper';
 import TagAnimalMapper from '@/module/association/mappers/tagAnimal.mapper';
+import Pictures from '@/module/shared/domain/picture/pictures.domain';
+import PictureMapper from '@/module/shared/mappers/picture.mapper';
 import Mapper from '@/shared/core/domain/Mapper';
 import UniqueEntityID from '@/shared/core/domain/UniqueEntityID';
 import { AnimalGenderEnum, AnimalSizeEnum, AnimalStatusEnum } from '@/shared/types/animal';
@@ -22,6 +24,7 @@ export interface AnimalModelWithRelations extends AnimalModel {
   association?: AssociationModel;
   publication?: PublicationModel | null;
   tagAnimals?: TagAnimalModel[];
+  pictures?: PictureModel[];
 }
 
 class BaseAnimalMapper extends Mapper<Animal, AnimalModelWithRelations, AnimalDTO> {
@@ -46,6 +49,7 @@ class BaseAnimalMapper extends Mapper<Animal, AnimalModelWithRelations, AnimalDT
         association: AssociationMapper.toDomainOrUndefined(animal.association),
         publication: PublicationMapper.toDomainOrUndefined(animal.publication),
         tagAnimals: animal.tagAnimals?.map(TagAnimalMapper.toDomain),
+        pictures: Pictures.create(animal.pictures?.map(PictureMapper.toDomain)),
       },
       new UniqueEntityID(animal.id),
     ) as Animal;
@@ -89,6 +93,7 @@ class BaseAnimalMapper extends Mapper<Animal, AnimalModelWithRelations, AnimalDT
       specie: SpecieMapper.toDTOOrUndefined(animal.specie),
       publication: PublicationMapper.toDTOOrUndefined(animal.publication),
       tags: animal.tags?.map(TagMapper.toDTO),
+      pictures: animal.pictures.items.map(PictureMapper.toDTO),
     };
   }
 }

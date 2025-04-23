@@ -6,9 +6,12 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Observable } from 'rxjs';
 
-export const MAX_FILE_SIZE_MB = 2;
+import { LocalFileStoreService } from '@/infra/services/implementations/localFileStore/localFileStore.service';
+import { MAX_FILE_SIZE_MB } from '@/shared/utils/consts';
+
 export const MAX_FILE_SIZE = MAX_FILE_SIZE_MB * 1024 * 1024;
 export const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'application/pdf'];
 
@@ -17,6 +20,11 @@ export const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'application/pdf']
  */
 @Injectable()
 export class FileValidatorInterceptor implements NestInterceptor {
+  constructor(
+    private readonly localFileStoreService: LocalFileStoreService,
+    private readonly configService: ConfigService,
+  ) {}
+
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const request = context.switchToHttp().getRequest();
     const files = request.files;
@@ -25,8 +33,8 @@ export class FileValidatorInterceptor implements NestInterceptor {
       throw new BadRequestException('no files uploaded.');
     }
 
-    Object.entries(files).forEach(([key, fileArray]: [string, any]) => {
-      fileArray.forEach((file: File) => {
+    Object.entries(files).forEach(async ([key, fileArray]: [string, any]) => {
+      fileArray.forEach(async (file: File) => {
         if (!ALLOWED_MIME_TYPES.includes(file.mimetype)) {
           throw new BadRequestException(`invalid file type for ${key}. Allowed: PDF, JPG, PNG`);
         }
@@ -34,6 +42,9 @@ export class FileValidatorInterceptor implements NestInterceptor {
         if (file.size > MAX_FILE_SIZE) {
           throw new BadRequestException(`file ${key} exceeds max size of ${MAX_FILE_SIZE_MB}MB.`);
         }
+
+        const filePath = await this.localFileStoreService.upload(file);
+        request.files[key] = filePath;
       });
     });
 

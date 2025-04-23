@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { RespondAdoptionDTO } from './dto/respondAdoption.dto';
 import { RespondAdoptionService } from './respondAdoption.service';
 
-import { ChangeAnimalStatusService } from '@/module/animal/domain/animal/services/changeAnimalStatus.service';
+import { ChangeAnimalStatusService } from '@/module/animal/domain/animal/services/changeAnimalStatus/changeAnimalStatus.service';
 import Adoption from '@/module/association/domain/adoption/adoption.domain';
 import AdoptionStatus from '@/module/association/domain/adoption/adoptionStatus.domain';
 import { EmitNotificationService } from '@/module/shared/domain/notification/services/emitNotification/emitNotification.service';
